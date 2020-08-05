@@ -49,7 +49,9 @@ public class BlastTemplate extends ConeTemplate {
    * location.
    */
   private void adjustRectangle() {
-    if (getZoneId() == null) return;
+    if (getZoneId() == null) {
+      return;
+    }
     int gridSize = MapTool.getCampaign().getZone(getZoneId()).getGrid().getSize();
     int size = getRadius() * gridSize;
 
@@ -146,8 +148,9 @@ public class BlastTemplate extends ConeTemplate {
   @Override
   protected void drawBackground(Graphics2D g) {
     Composite old = g.getComposite();
-    if (old != AlphaComposite.Clear)
+    if (old != AlphaComposite.Clear) {
       g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, DEFAULT_BG_ALPHA));
+    }
     renderer.drawBackground(g);
     g.setComposite(old);
   }

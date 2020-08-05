@@ -276,7 +276,9 @@ public class PartitionedDrawableRenderer implements DrawableRenderer {
         Graphics2D g2 = image.createGraphics();
         g2.drawImage(groupImage, 0, 0, CHUNK_SIZE, CHUNK_SIZE, null);
         g2.dispose();
-      } else drawable.draw(g, pen);
+      } else {
+        drawable.draw(g, pen);
+      }
       g.setComposite(oldComposite);
       timer.stop("createChunk:Draw");
     }
@@ -313,8 +315,12 @@ public class PartitionedDrawableRenderer implements DrawableRenderer {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
       Tuple tuple = (Tuple) o;
       return Objects.equals(key, tuple.key);
     }

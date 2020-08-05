@@ -69,16 +69,36 @@ public class FindTokenFunctions extends AbstractFunction {
 
   private static Ownership getOwnership(String strOwnership) {
     strOwnership = strOwnership.toLowerCase().trim().replace("-", "");
-    if (strOwnership.equals("byall")) return Ownership.BYALL;
-    if (strOwnership.equals("notbyall")) return Ownership.NOTBYALL;
-    if (strOwnership.equals("1") || strOwnership.equals("self")) return Ownership.SELF;
-    if (strOwnership.equals("0") || strOwnership.equals("notself")) return Ownership.NOTSELF;
-    if (strOwnership.equals("others")) return Ownership.OTHERS;
-    if (strOwnership.equals("any")) return Ownership.ANY;
-    if (strOwnership.equals("none")) return Ownership.NONE;
-    if (strOwnership.equals("single")) return Ownership.SINGLE;
-    if (strOwnership.equals("multiple")) return Ownership.MULTIPLE;
-    if (strOwnership.equals("array")) return Ownership.ARRAY;
+    if (strOwnership.equals("byall")) {
+      return Ownership.BYALL;
+    }
+    if (strOwnership.equals("notbyall")) {
+      return Ownership.NOTBYALL;
+    }
+    if (strOwnership.equals("1") || strOwnership.equals("self")) {
+      return Ownership.SELF;
+    }
+    if (strOwnership.equals("0") || strOwnership.equals("notself")) {
+      return Ownership.NOTSELF;
+    }
+    if (strOwnership.equals("others")) {
+      return Ownership.OTHERS;
+    }
+    if (strOwnership.equals("any")) {
+      return Ownership.ANY;
+    }
+    if (strOwnership.equals("none")) {
+      return Ownership.NONE;
+    }
+    if (strOwnership.equals("single")) {
+      return Ownership.SINGLE;
+    }
+    if (strOwnership.equals("multiple")) {
+      return Ownership.MULTIPLE;
+    }
+    if (strOwnership.equals("array")) {
+      return Ownership.ARRAY;
+    }
     return null;
   }
 
@@ -218,19 +238,39 @@ public class FindTokenFunctions extends AbstractFunction {
     }
 
     public boolean matchToken(Token t) {
-      if (ownership == Ownership.BYALL) return (t.isOwnedByAll());
-      if (ownership == Ownership.NOTBYALL) return (!t.isOwnedByAll());
+      if (ownership == Ownership.BYALL) {
+        return (t.isOwnedByAll());
+      }
+      if (ownership == Ownership.NOTBYALL) {
+        return (!t.isOwnedByAll());
+      }
 
-      if (ownership == Ownership.ANY) return (t.hasOwners());
-      if (ownership == Ownership.NONE) return (!t.hasOwners());
-      if (ownership == Ownership.MULTIPLE) return (t.isOwnedByAll() || t.getOwners().size() > 1);
-      if (ownership == Ownership.SINGLE) return (!t.isOwnedByAll() && t.getOwners().size() == 1);
-      if (ownership == Ownership.ARRAY) return (!Collections.disjoint(t.getOwners(), ownerList));
+      if (ownership == Ownership.ANY) {
+        return (t.hasOwners());
+      }
+      if (ownership == Ownership.NONE) {
+        return (!t.hasOwners());
+      }
+      if (ownership == Ownership.MULTIPLE) {
+        return (t.isOwnedByAll() || t.getOwners().size() > 1);
+      }
+      if (ownership == Ownership.SINGLE) {
+        return (!t.isOwnedByAll() && t.getOwners().size() == 1);
+      }
+      if (ownership == Ownership.ARRAY) {
+        return (!Collections.disjoint(t.getOwners(), ownerList));
+      }
 
       boolean isOwner = t.isOwner(playerName);
-      if (ownership == Ownership.SELF) return (isOwner);
-      if (ownership == Ownership.NOTSELF) return (!isOwner);
-      if (ownership == Ownership.OTHERS) return (!isOwner && t.hasOwners());
+      if (ownership == Ownership.SELF) {
+        return (isOwner);
+      }
+      if (ownership == Ownership.NOTSELF) {
+        return (!isOwner);
+      }
+      if (ownership == Ownership.OTHERS) {
+        return (!isOwner && t.hasOwners());
+      }
       return false;
     }
   }
@@ -455,8 +495,9 @@ public class FindTokenFunctions extends AbstractFunction {
       if ("setStates".equalsIgnoreCase(searchType) || "unsetStates".equalsIgnoreCase(searchType)) {
         JsonArray states;
         JsonElement json = jobj.get(searchType);
-        if (json.isJsonArray()) states = json.getAsJsonArray();
-        else {
+        if (json.isJsonArray()) {
+          states = json.getAsJsonArray();
+        } else {
           states = new JsonArray();
           states.add(json.getAsString());
         }
@@ -480,8 +521,9 @@ public class FindTokenFunctions extends AbstractFunction {
       } else if ("propertyType".equalsIgnoreCase(searchType)) {
         JsonArray types;
         JsonElement json = jobj.get(searchType);
-        if (json.isJsonArray()) types = json.getAsJsonArray();
-        else {
+        if (json.isJsonArray()) {
+          types = json.getAsJsonArray();
+        } else {
           types = new JsonArray();
           types.add(json.getAsString());
         }
@@ -571,8 +613,11 @@ public class FindTokenFunctions extends AbstractFunction {
         }
       } else {
         GUID guid = MapTool.getFrame().getCommandPanel().getIdentityGUID();
-        if (guid != null) token = zone.getToken(guid);
-        else token = findToken(MapTool.getFrame().getCommandPanel().getIdentity(), mapName);
+        if (guid != null) {
+          token = zone.getToken(guid);
+        } else {
+          token = findToken(MapTool.getFrame().getCommandPanel().getIdentity(), mapName);
+        }
         if (token == null) {
           throw new ParserException(
               I18N.getText("macro.function.general.noImpersonated", "getTokens"));
@@ -621,8 +666,11 @@ public class FindTokenFunctions extends AbstractFunction {
         }
       } else {
         GUID guid = MapTool.getFrame().getCommandPanel().getIdentityGUID();
-        if (guid != null) token = zone.getToken(guid);
-        else token = findToken(MapTool.getFrame().getCommandPanel().getIdentity(), mapName);
+        if (guid != null) {
+          token = zone.getToken(guid);
+        } else {
+          token = findToken(MapTool.getFrame().getCommandPanel().getIdentity(), mapName);
+        }
         if (token == null) {
           throw new ParserException(
               I18N.getText("macro.function.general.noImpersonated", "getTokens"));
@@ -657,8 +705,9 @@ public class FindTokenFunctions extends AbstractFunction {
       }
       Set<Token> matching = new HashSet<Token>();
       for (Token targetToken : tokenList) {
-        if (TokenLocationFunctions.isTokenAtXY(targetToken, zone, points))
+        if (TokenLocationFunctions.isTokenAtXY(targetToken, zone, points)) {
           matching.add(targetToken);
+        }
       }
       tokenList.retainAll(matching);
     }
@@ -720,7 +769,9 @@ public class FindTokenFunctions extends AbstractFunction {
       ZoneRenderer zoneRenderer)
       throws ParserException {
     List<Token> tokenList = new LinkedList<Token>();
-    if (originalList.size() == 0) return tokenList;
+    if (originalList.size() == 0) {
+      return tokenList;
+    }
 
     Zone zone = zoneRenderer.getZone();
     switch (findType) {
@@ -740,16 +791,23 @@ public class FindTokenFunctions extends AbstractFunction {
         Token token = resolver.getTokenInContext();
         if (token != null) {
           tokenList = getTokensFiltered(Collections.singletonList(token), originalList, match);
-        } else if (!match) tokenList = originalList;
+        } else if (!match) {
+          tokenList = originalList;
+        }
         break;
       case IMPERSONATED:
         Token t;
         GUID guid = MapTool.getFrame().getCommandPanel().getIdentityGUID();
-        if (guid != null) t = zone.getToken(guid);
-        else t = zone.resolveToken(MapTool.getFrame().getCommandPanel().getIdentity());
+        if (guid != null) {
+          t = zone.getToken(guid);
+        } else {
+          t = zone.resolveToken(MapTool.getFrame().getCommandPanel().getIdentity());
+        }
         if (t != null) {
           tokenList = getTokensFiltered(Collections.singletonList(t), originalList, match);
-        } else if (!match) tokenList = originalList;
+        } else if (!match) {
+          tokenList = originalList;
+        }
         break;
       case IMPERSONATED_GLOBAL:
         t = null;
@@ -760,7 +818,9 @@ public class FindTokenFunctions extends AbstractFunction {
         }
         if (t != null) {
           tokenList = getTokensFiltered(Collections.singletonList(t), originalList, match);
-        } else if (!match) tokenList = originalList;
+        } else if (!match) {
+          tokenList = originalList;
+        }
         break;
       case EXPOSED:
         tokenList = getTokensFiltered(new ExposedFilter(zone, match), originalList);
@@ -792,7 +852,9 @@ public class FindTokenFunctions extends AbstractFunction {
     List<Token> tokenList = new ArrayList<Token>(originalList.size());
 
     for (Token token : originalList) {
-      if (filter.matchToken(token)) tokenList.add(token);
+      if (filter.matchToken(token)) {
+        tokenList.add(token);
+      }
     }
     return tokenList;
   }
@@ -801,8 +863,11 @@ public class FindTokenFunctions extends AbstractFunction {
       List<Token> editList, List<Token> originalList, boolean match) {
     List<Token> tokenList = new ArrayList<Token>(originalList);
 
-    if (match) tokenList.retainAll(editList); // keep tokens in both lists
-    else tokenList.removeAll(editList); // remove edit list from original list
+    if (match) {
+      tokenList.retainAll(editList); // keep tokens in both lists
+    } else {
+      tokenList.removeAll(editList); // remove edit list from original list
+    }
     return tokenList;
   }
 

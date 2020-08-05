@@ -186,9 +186,15 @@ public class ExecFunction extends AbstractFunction {
    * @return true if the message if for other clients, false otherwise
    */
   public static boolean isMessageGlobal(String target, String source) {
-    if (target.equals(source)) return false;
-    if (target.equalsIgnoreCase("none")) return false;
-    if (target.equalsIgnoreCase("self")) return false;
+    if (target.equals(source)) {
+      return false;
+    }
+    if (target.equalsIgnoreCase("none")) {
+      return false;
+    }
+    if (target.equalsIgnoreCase("self")) {
+      return false;
+    }
     return true;
   }
 

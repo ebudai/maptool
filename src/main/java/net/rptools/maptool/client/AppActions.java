@@ -156,7 +156,9 @@ public class AppActions {
     if ("darwin".equalsIgnoreCase(prop)) {
       // TODO Should we install our own AWTKeyStroke class? If we do it should only be if menu
       // shortcut is CTRL...
-      if (key == InputEvent.CTRL_DOWN_MASK) key = InputEvent.META_DOWN_MASK;
+      if (key == InputEvent.CTRL_DOWN_MASK) {
+        key = InputEvent.META_DOWN_MASK;
+      }
       /*
        * In order for OpenJDK to work on Mac OS X, the user must have the X11 package installed unless they're running headless. However, in order for the Command key to work, the X11
        * Preferences must be set to "Enable the Meta Key" in X11 applications. Essentially, if this option is turned on, the Command key (called Meta in X11) will be intercepted by the X11
@@ -179,21 +181,27 @@ public class AppActions {
           ZoneRenderer renderer = MapTool.getFrame().getCurrentZoneRenderer();
           List<Token> myPlayers = new ArrayList<Token>();
           for (Token t : renderer.getZone().getPlayerTokens()) {
-            if (AppUtil.playerOwns(t) && t.isVisible() && renderer.getZone().isTokenVisible(t))
+            if (AppUtil.playerOwns(t) && t.isVisible() && renderer.getZone().isTokenVisible(t)) {
               myPlayers.add(t);
+            }
           }
           if (myPlayers.size() > 0) {
             // We want to wrap round the list of player tokens.
             // But this process only selects 1 player token.
             if (renderer.getSelectedTokensList().size() > 0) {
               Token selt = renderer.getSelectedTokensList().get(0);
-              if (myPlayers.contains(selt)) chosenOne = selt;
+              if (myPlayers.contains(selt)) {
+                chosenOne = selt;
+              }
             }
             if (chosenOne != null) {
               for (int i = 0; i < myPlayers.size(); i++) {
                 if (myPlayers.get(i).equals(chosenOne)) {
-                  if (i < myPlayers.size() - 1) chosenOne = myPlayers.get(i + 1);
-                  else chosenOne = myPlayers.get(0);
+                  if (i < myPlayers.size() - 1) {
+                    chosenOne = myPlayers.get(i + 1);
+                  } else {
+                    chosenOne = myPlayers.get(0);
+                  }
                   break;
                 }
               }
@@ -454,8 +462,9 @@ public class AppActions {
            * 4. Give the user a summary and ask for permission to begin the upload. I'm going to display a listbox and let the user click on elements of the list in order to see a preview to the
            * right. But there's no plan to make it a CheckBoxList. (Wouldn't be _that_ tough, however.)
            */
-          if (!MapTool.confirm(I18N.getText("msg.confirm.aboutToBeginFTP", missing.size() + 1)))
+          if (!MapTool.confirm(I18N.getText("msg.confirm.aboutToBeginFTP", missing.size() + 1))) {
             return;
+          }
 
           /*
            * 5. Build the index as we go, but add the images to FTP to a queue handled by another thread. Add a progress bar of some type or use the Transfer Status window.
@@ -602,7 +611,9 @@ public class AppActions {
         protected void executeAction() {
           Zone zone = MapTool.getFrame().getCurrentZoneRenderer().getZone();
           String oldName = zone.getName();
-          if (oldName == null) oldName = "";
+          if (oldName == null) {
+            oldName = "";
+          }
           String msg = I18N.getText("msg.confirm.renameMap", oldName);
           String name = JOptionPane.showInputDialog(MapTool.getFrame(), msg, oldName);
           if (name != null) {
@@ -991,8 +1002,9 @@ public class AppActions {
     // Only cut if some tokens are selected. Don't want to accidentally
     // lose what might already be in the clipboard.
     if (!tokenList.isEmpty()) {
-      if (tokenCopySet != null)
+      if (tokenCopySet != null) {
         tokenCopySet.clear(); // Just to help out the garbage collector a little bit
+      }
 
       Token topLeft = tokenList.get(0);
       tokenCopySet = new HashSet<Token>();
@@ -1770,11 +1782,12 @@ public class AppActions {
 
         @Override
         public boolean isSelected() {
-          if (isAvailable())
+          if (isAvailable()) {
             return MapTool.getFrame()
                 .getCurrentZoneRenderer()
                 .getZone()
                 .getWaypointExposureToggle();
+          }
           return false;
         }
 
@@ -1938,7 +1951,9 @@ public class AppActions {
         @Override
         protected void executeAction() {
 
-          if (!confirmNewCampaign()) return;
+          if (!confirmNewCampaign()) {
+            return;
+          }
 
           Campaign campaign = CampaignFactory.createBasicCampaign();
           AppState.setCampaignFile(null);
@@ -2124,7 +2139,9 @@ public class AppActions {
                 dialog.showDialog();
 
                 if (!dialog.accepted()) // Results stored in Preferences.userRoot()
-                return;
+                {
+                  return;
+                }
 
                 StartServerDialogPreferences serverProps =
                     new StartServerDialogPreferences(); // data retrieved from
@@ -2256,11 +2273,15 @@ public class AppActions {
 
         @Override
         protected void executeAction() {
-          if (MapTool.isCampaignDirty() && !MapTool.confirm("msg.confirm.loseChanges")) return;
+          if (MapTool.isCampaignDirty() && !MapTool.confirm("msg.confirm.loseChanges")) {
+            return;
+          }
 
           final ConnectToServerDialog dialog = new ConnectToServerDialog();
           dialog.showDialog();
-          if (!dialog.accepted()) return;
+          if (!dialog.accepted()) {
+            return;
+          }
 
           ServerDisconnectHandler.disconnectExpected = true;
           LOAD_MAP.setSeenWarning(false);
@@ -2329,8 +2350,9 @@ public class AppActions {
 
         @Override
         protected void executeAction() {
-          if (MapTool.isHostingServer() && !MapTool.confirm("msg.confirm.hostingDisconnect"))
+          if (MapTool.isHostingServer() && !MapTool.confirm("msg.confirm.hostingDisconnect")) {
             return;
+          }
           disconnectFromServer();
         }
       };
@@ -2362,7 +2384,9 @@ public class AppActions {
 
         @Override
         protected void executeAction() {
-          if (MapTool.isCampaignDirty() && !MapTool.confirm("msg.confirm.loseChanges")) return;
+          if (MapTool.isCampaignDirty() && !MapTool.confirm("msg.confirm.loseChanges")) {
+            return;
+          }
           JFileChooser chooser = new CampaignPreviewFileChooser();
           chooser.setDialogTitle(I18N.getText("msg.title.loadCampaign"));
           chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -2483,9 +2507,11 @@ public class AppActions {
         MapTool.getFrame().resetPanels();
 
       } catch (Throwable t) {
-        if (t.getCause() instanceof AppState.FailedToAcquireLockException)
+        if (t.getCause() instanceof AppState.FailedToAcquireLockException) {
           MapTool.showError("msg.error.failedLoadCampaignLock");
-        else MapTool.showError("msg.error.failedLoadCampaign", t.getCause());
+        } else {
+          MapTool.showError("msg.error.failedLoadCampaign", t.getCause());
+        }
       }
     }
   }
@@ -2617,9 +2643,11 @@ public class AppActions {
           onSuccess.run();
         }
       } catch (Throwable t) {
-        if (t.getCause() instanceof AppState.FailedToAcquireLockException)
+        if (t.getCause() instanceof AppState.FailedToAcquireLockException) {
           MapTool.showError("msg.error.failedSaveCampaignLock");
-        else MapTool.showError("msg.error.failedSaveCampaign", t.getCause());
+        } else {
+          MapTool.showError("msg.error.failedSaveCampaign", t.getCause());
+        }
       }
     }
   }
@@ -3117,8 +3145,9 @@ public class AppActions {
         @Override
         protected void executeAction() {
           AppState.setUseDoubleWideLine(!AppState.useDoubleWideLine());
-          if (MapTool.getFrame() != null && MapTool.getFrame().getCurrentZoneRenderer() != null)
+          if (MapTool.getFrame() != null && MapTool.getFrame().getCurrentZoneRenderer() != null) {
             MapTool.getFrame().getCurrentZoneRenderer().repaint();
+          }
         }
       };
 
@@ -3339,8 +3368,9 @@ public class AppActions {
 
     @Override
     protected void executeAction() {
-      if (getValue(Action.SHORT_DESCRIPTION) != null)
+      if (getValue(Action.SHORT_DESCRIPTION) != null) {
         MapTool.showDocument((String) getValue(Action.SHORT_DESCRIPTION));
+      }
     }
   }
 
@@ -3402,7 +3432,9 @@ public class AppActions {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-      if (MapTool.isCampaignDirty() && !MapTool.confirm("msg.confirm.loseChanges")) return;
+      if (MapTool.isCampaignDirty() && !MapTool.confirm("msg.confirm.loseChanges")) {
+        return;
+      }
       AppActions.loadCampaign(campaignFile);
     }
   }

@@ -238,7 +238,9 @@ public class AddTokenStateMacro implements Macro {
    *     <code>null</code>;
    */
   private Color findColor(String name) {
-    if (name == null) return Color.RED;
+    if (name == null) {
+      return Color.RED;
+    }
     try {
       return Color.decode(name);
     } catch (NumberFormatException e) {
@@ -258,7 +260,9 @@ public class AddTokenStateMacro implements Macro {
    *     <code>null</code> ;
    */
   private int findInteger(String name, int defaultValue) {
-    if (name == null) return defaultValue;
+    if (name == null) {
+      return defaultValue;
+    }
     try {
       return Integer.parseInt(name);
     } catch (NumberFormatException e) {
@@ -275,7 +279,9 @@ public class AddTokenStateMacro implements Macro {
    */
   private Quadrant findCorner(String name) {
     try {
-      if (name == null) return Quadrant.SOUTH_EAST;
+      if (name == null) {
+        return Quadrant.SOUTH_EAST;
+      }
       return Quadrant.valueOf(name.toUpperCase());
     } catch (IllegalArgumentException e) {
       if (!CORNER_MAP.containsKey(name.toLowerCase())) {

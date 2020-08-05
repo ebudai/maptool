@@ -232,7 +232,9 @@ public class MapToolUtil {
   public static Color getColor(String name) {
     name = name.trim().toLowerCase();
     Color c = COLOR_MAP.get(name);
-    if (c != null) return c;
+    if (c != null) {
+      return c;
+    }
     c = convertStringToColor(name);
     return c;
   }

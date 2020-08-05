@@ -50,7 +50,9 @@ public class ConeTemplate extends RadiusTemplate {
    * @return Returns the current value of direction.
    */
   public Direction getDirection() {
-    if (direction == null) return null;
+    if (direction == null) {
+      return null;
+    }
     return Direction.valueOf(direction);
   }
 
@@ -60,7 +62,9 @@ public class ConeTemplate extends RadiusTemplate {
    * @param direction The direction to draw the cone from the center vertex.
    */
   public void setDirection(Direction direction) {
-    if (direction != null) this.direction = direction.name();
+    if (direction != null) {
+      this.direction = direction.name();
+    }
   }
 
   /**
@@ -87,40 +91,48 @@ public class ConeTemplate extends RadiusTemplate {
       if (getDistance(x + 1, y) > radius) {
         if (getDirection() == Direction.SOUTH_EAST
             || (getDirection() == Direction.SOUTH && y >= x)
-            || (getDirection() == Direction.EAST && x >= y))
+            || (getDirection() == Direction.EAST && x >= y)) {
           paintFarVerticalBorder(g, xOff, yOff, gridSize, Quadrant.SOUTH_EAST);
+        }
         if (getDirection() == Direction.NORTH_EAST
             || (getDirection() == Direction.NORTH && y >= x)
-            || (getDirection() == Direction.EAST && x >= y))
+            || (getDirection() == Direction.EAST && x >= y)) {
           paintFarVerticalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_EAST);
+        }
         if (getDirection() == Direction.SOUTH_WEST
             || (getDirection() == Direction.SOUTH && y >= x)
-            || (getDirection() == Direction.WEST && x >= y))
+            || (getDirection() == Direction.WEST && x >= y)) {
           paintFarVerticalBorder(g, xOff, yOff, gridSize, Quadrant.SOUTH_WEST);
+        }
         if (getDirection() == Direction.NORTH_WEST
             || (getDirection() == Direction.NORTH && y >= x)
-            || (getDirection() == Direction.WEST && x >= y))
+            || (getDirection() == Direction.WEST && x >= y)) {
           paintFarVerticalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_WEST);
+        }
       } // endif
 
       // Paint lines between horizontal boundaries if needed
       if (getDistance(x, y + 1) > radius) {
         if (getDirection() == Direction.SOUTH_EAST
             || (getDirection() == Direction.SOUTH && y >= x)
-            || (getDirection() == Direction.EAST && x >= y))
+            || (getDirection() == Direction.EAST && x >= y)) {
           paintFarHorizontalBorder(g, xOff, yOff, gridSize, Quadrant.SOUTH_EAST);
+        }
         if (getDirection() == Direction.SOUTH_WEST
             || (getDirection() == Direction.SOUTH && y >= x)
-            || (getDirection() == Direction.WEST && x >= y))
+            || (getDirection() == Direction.WEST && x >= y)) {
           paintFarHorizontalBorder(g, xOff, yOff, gridSize, Quadrant.SOUTH_WEST);
+        }
         if (getDirection() == Direction.NORTH_EAST
             || (getDirection() == Direction.NORTH && y >= x)
-            || (getDirection() == Direction.EAST && x >= y))
+            || (getDirection() == Direction.EAST && x >= y)) {
           paintFarHorizontalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_EAST);
+        }
         if (getDirection() == Direction.NORTH_WEST
             || (getDirection() == Direction.NORTH && y >= x)
-            || (getDirection() == Direction.WEST && x >= y))
+            || (getDirection() == Direction.WEST && x >= y)) {
           paintFarHorizontalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_WEST);
+        }
       } // endif
     } // endif
   }
@@ -146,16 +158,20 @@ public class ConeTemplate extends RadiusTemplate {
     int radius = getRadius();
     if (getDirection().ordinal() % 2 == 0) {
       if (x == 0) {
-        if (getDirection() == Direction.SOUTH_EAST || getDirection() == Direction.SOUTH_WEST)
+        if (getDirection() == Direction.SOUTH_EAST || getDirection() == Direction.SOUTH_WEST) {
           paintCloseVerticalBorder(g, xOff, yOff, gridSize, Quadrant.SOUTH_EAST);
-        if (getDirection() == Direction.NORTH_EAST || getDirection() == Direction.NORTH_WEST)
+        }
+        if (getDirection() == Direction.NORTH_EAST || getDirection() == Direction.NORTH_WEST) {
           paintCloseVerticalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_EAST);
+        }
       } // endif
       if (y == 0) {
-        if (getDirection() == Direction.SOUTH_EAST || getDirection() == Direction.NORTH_EAST)
+        if (getDirection() == Direction.SOUTH_EAST || getDirection() == Direction.NORTH_EAST) {
           paintCloseHorizontalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_EAST);
-        if (getDirection() == Direction.SOUTH_WEST || getDirection() == Direction.NORTH_WEST)
+        }
+        if (getDirection() == Direction.SOUTH_WEST || getDirection() == Direction.NORTH_WEST) {
           paintCloseHorizontalBorder(g, xOff, yOff, gridSize, Quadrant.NORTH_WEST);
+        }
       } // endif
     } else if (getDirection().ordinal() % 2 == 1 && x == y && distance <= radius) {
       if (getDirection() == Direction.SOUTH) {
@@ -209,8 +225,12 @@ public class ConeTemplate extends RadiusTemplate {
       Graphics2D g, int x, int y, int xOff, int yOff, int gridSize, int distance) {
 
     // Drawing along the spines only?
-    if ((getDirection() == Direction.EAST || getDirection() == Direction.WEST) && y > x) return;
-    if ((getDirection() == Direction.NORTH || getDirection() == Direction.SOUTH) && x > y) return;
+    if ((getDirection() == Direction.EAST || getDirection() == Direction.WEST) && y > x) {
+      return;
+    }
+    if ((getDirection() == Direction.NORTH || getDirection() == Direction.SOUTH) && x > y) {
+      return;
+    }
 
     // Only squares w/in the radius
     if (distance <= getRadius()) {
@@ -218,20 +238,24 @@ public class ConeTemplate extends RadiusTemplate {
       // Paint the squares
       if (getDirection() == Direction.SOUTH_EAST
           || getDirection() == Direction.SOUTH
-          || getDirection() == Direction.EAST)
+          || getDirection() == Direction.EAST) {
         paintArea(g, xOff, yOff, gridSize, Quadrant.SOUTH_EAST);
+      }
       if (getDirection() == Direction.NORTH_EAST
           || getDirection() == Direction.NORTH
-          || getDirection() == Direction.EAST)
+          || getDirection() == Direction.EAST) {
         paintArea(g, xOff, yOff, gridSize, Quadrant.NORTH_EAST);
+      }
       if (getDirection() == Direction.SOUTH_WEST
           || getDirection() == Direction.SOUTH
-          || getDirection() == Direction.WEST)
+          || getDirection() == Direction.WEST) {
         paintArea(g, xOff, yOff, gridSize, Quadrant.SOUTH_WEST);
+      }
       if (getDirection() == Direction.NORTH_WEST
           || getDirection() == Direction.NORTH
-          || getDirection() == Direction.WEST)
+          || getDirection() == Direction.WEST) {
         paintArea(g, xOff, yOff, gridSize, Quadrant.NORTH_WEST);
+      }
     } // endif
   }
 
@@ -279,11 +303,13 @@ public class ConeTemplate extends RadiusTemplate {
 
     // Find the width,height
     int width = quadrantSize + BOUNDS_PADDING;
-    if (getDirection() == Direction.NORTH || getDirection() == Direction.SOUTH)
+    if (getDirection() == Direction.NORTH || getDirection() == Direction.SOUTH) {
       width += quadrantSize;
+    }
     int height = quadrantSize + BOUNDS_PADDING;
-    if (getDirection() == Direction.EAST || getDirection() == Direction.WEST)
+    if (getDirection() == Direction.EAST || getDirection() == Direction.WEST) {
       height += quadrantSize;
+    }
     return new Rectangle(x, y, width, height);
   }
 }

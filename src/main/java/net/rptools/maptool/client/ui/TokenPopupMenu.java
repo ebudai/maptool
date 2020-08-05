@@ -83,8 +83,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
     addOwnedItem(createStateMenu());
     addOwnedItem(createBarMenu());
     addOwnedItem(createInitiativeMenu());
-    if (MapTool.getFrame().getInitiativePanel().hasOwnerPermission(tokenUnderMouse))
+    if (MapTool.getFrame().getInitiativePanel().hasOwnerPermission(tokenUnderMouse)) {
       add(new ChangeInitiativeState("initiative.menu.addToInitiative"));
+    }
     addOwnedItem(createFlipMenu());
     if (getTokenUnderMouse().getCharsheetImage() != null
         && AppUtil.playerOwns(getTokenUnderMouse())) {
@@ -155,7 +156,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
       submenu.add(new RunMacroAction(macro.getLabel(), macro));
     }
     // Add the group menus in alphabetical order
-    for (JMenu submenu : groups.values()) macroMenu.add(submenu);
+    for (JMenu submenu : groups.values()) {
+      macroMenu.add(submenu);
+    }
 
     return macroMenu;
   }
@@ -486,13 +489,17 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
     } // endfor
 
     // Add the group menus in alphabetical order
-    for (JMenu menu : groups.values()) stateMenu.add(menu);
+    for (JMenu menu : groups.values()) {
+      stateMenu.add(menu);
+    }
 
     // Give each overlay a button in the proper menu
     for (BooleanTokenOverlay overlay : overlays) {
       String group = overlay.getGroup();
       JMenu menu = stateMenu;
-      if (group != null && (group = group.trim()).length() != 0) menu = groups.get(group);
+      if (group != null && (group = group.trim()).length() != 0) {
+        menu = groups.get(group);
+      }
       createStateItem(overlay.getName(), menu, getTokenUnderMouse());
     } // endfor
     return stateMenu;
@@ -519,7 +526,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
           MapTool.getFrame().getInitiativePanel().getList().indexOf(getTokenUnderMouse());
       int index = list.isEmpty() ? -1 : list.get(0);
       if (index >= 0) {
-        if (isOwner) initiativeMenu.getMenuComponent(0).setEnabled(false);
+        if (isOwner) {
+          initiativeMenu.getMenuComponent(0).setEnabled(false);
+        }
         boolean hold =
             MapTool.getFrame().getInitiativePanel().getList().getTokenInitiative(index).isHolding();
         if (hold) {
@@ -528,7 +537,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
           initiativeMenu.getMenuComponent(isOwner ? 3 : 0).setEnabled(false);
         }
       } else {
-        if (isOwner) initiativeMenu.getMenuComponent(1).setEnabled(false);
+        if (isOwner) {
+          initiativeMenu.getMenuComponent(1).setEnabled(false);
+        }
         initiativeMenu.getMenuComponent(isOwner ? 4 : 3).setEnabled(false);
         initiativeMenu.getMenuComponent(isOwner ? 3 : 0).setEnabled(false);
       } // endif
@@ -600,7 +611,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
   private JCheckBoxMenuItem createStateItem(String state, JMenu menu, Token token) {
     JCheckBoxMenuItem item = new JCheckBoxMenuItem(new ChangeStateAction(state));
     Object value = token.getState(state);
-    if (FunctionUtil.getBooleanValue(value)) item.setSelected(true);
+    if (FunctionUtil.getBooleanValue(value)) {
+      item.setSelected(true);
+    }
     menu.add(item);
     return item;
   }
@@ -818,11 +831,17 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
       if (!name.equals(key)) {
         putValue(NAME, name);
         int mnemonic = I18N.getMnemonic(key);
-        if (mnemonic != -1) putValue(MNEMONIC_KEY, mnemonic);
+        if (mnemonic != -1) {
+          putValue(MNEMONIC_KEY, mnemonic);
+        }
         String accel = I18N.getAccelerator(key);
-        if (accel != null) putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(accel));
+        if (accel != null) {
+          putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(accel));
+        }
         String description = I18N.getDescription(key);
-        if (description != null) putValue(SHORT_DESCRIPTION, description);
+        if (description != null) {
+          putValue(SHORT_DESCRIPTION, description);
+        }
       } else {
         // Default name if no I18N set
         putValue(NAME, state);
@@ -841,8 +860,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
 
         Token token = renderer.getZone().getToken(tokenGUID);
         if (aE.getActionCommand().equals("clear")) {
-          for (String state : MapTool.getCampaign().getTokenStatesMap().keySet())
+          for (String state : MapTool.getCampaign().getTokenStatesMap().keySet()) {
             token.setState(state, null);
+          }
         } else {
           token.setState(
               aE.getActionCommand(),
@@ -871,7 +891,9 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
       String input = null;
       if (name.equals("initiative.menu.setState")) {
         input = JOptionPane.showInputDialog(I18N.getText("initiative.menu.enterState"));
-        if (input == null) return;
+        if (input == null) {
+          return;
+        }
         input = input.trim();
       } // endif
       for (GUID id : selectedTokenSet) {

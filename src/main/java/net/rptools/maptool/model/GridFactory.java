@@ -53,7 +53,9 @@ public class GridFactory {
 
   public static String getGridType(Grid grid) {
     if (grid instanceof HexGridVertical) {
-      if (grid.isIsometric()) return ISOMETRIC_HEX;
+      if (grid.isIsometric()) {
+        return ISOMETRIC_HEX;
+      }
       return HEX_VERT;
     }
     if (grid instanceof HexGridHorizontal) {

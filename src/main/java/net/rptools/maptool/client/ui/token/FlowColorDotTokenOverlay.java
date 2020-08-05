@@ -76,7 +76,9 @@ public class FlowColorDotTokenOverlay extends XTokenOverlay {
    * @return Flow used to position the states
    */
   protected TokenOverlayFlow getFlow() {
-    if (flow == null && grid > 0) flow = TokenOverlayFlow.getInstance(grid);
+    if (flow == null && grid > 0) {
+      flow = TokenOverlayFlow.getInstance(grid);
+    }
     return flow;
   }
 
@@ -92,9 +94,10 @@ public class FlowColorDotTokenOverlay extends XTokenOverlay {
     try {
       g.setColor(getColor());
       g.setStroke(getStroke());
-      if (getOpacity() != 100)
+      if (getOpacity() != 100) {
         g.setComposite(
             AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+      }
       Shape s = getShape(bounds, aToken);
       g.fill(s);
     } finally {

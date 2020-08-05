@@ -307,8 +307,12 @@ public class GridTool extends DefaultTool {
       x %= gridSize;
       y %= gridSize;
 
-      if (x > 0) x -= gridSize;
-      if (y > 0) y -= gridSize;
+      if (x > 0) {
+        x -= gridSize;
+      }
+      if (y > 0) {
+        y -= gridSize;
+      }
 
       renderer.getZone().getGrid().setOffset(x, y);
 

@@ -71,17 +71,27 @@ public class VerticalLabel extends JLabel {
   protected void paintComponent(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
 
-    if (isRotated()) g2d.rotate(Math.toRadians(90 * rotation));
-    if (rotation == ROTATE_RIGHT) g2d.translate(0, -this.getWidth());
-    else if (rotation == ROTATE_LEFT) g2d.translate(-this.getHeight(), 0);
+    if (isRotated()) {
+      g2d.rotate(Math.toRadians(90 * rotation));
+    }
+    if (rotation == ROTATE_RIGHT) {
+      g2d.translate(0, -this.getWidth());
+    } else if (rotation == ROTATE_LEFT) {
+      g2d.translate(-this.getHeight(), 0);
+    }
     painting = true;
 
     super.paintComponent(g2d);
 
     painting = false;
-    if (isRotated()) g2d.rotate(-Math.toRadians(90 * rotation));
-    if (rotation == ROTATE_RIGHT) g2d.translate(-this.getWidth(), 0);
-    else if (rotation == ROTATE_LEFT) g2d.translate(0, -this.getHeight());
+    if (isRotated()) {
+      g2d.rotate(-Math.toRadians(90 * rotation));
+    }
+    if (rotation == ROTATE_RIGHT) {
+      g2d.translate(-this.getWidth(), 0);
+    } else if (rotation == ROTATE_LEFT) {
+      g2d.translate(0, -this.getHeight());
+    }
   }
 
   public Insets getInsets(Insets insets) {
@@ -125,12 +135,16 @@ public class VerticalLabel extends JLabel {
   }
 
   public int getWidth() {
-    if ((painting) && (isRotated())) return super.getHeight();
+    if ((painting) && (isRotated())) {
+      return super.getHeight();
+    }
     return super.getWidth();
   }
 
   public int getHeight() {
-    if ((painting) && (isRotated())) return super.getWidth();
+    if ((painting) && (isRotated())) {
+      return super.getWidth();
+    }
     return super.getHeight();
   }
 

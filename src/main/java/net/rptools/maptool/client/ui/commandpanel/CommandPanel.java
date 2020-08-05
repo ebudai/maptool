@@ -415,8 +415,11 @@ public class CommandPanel extends JPanel
     /** @return a string representing the identity. */
     public String getIdentity() {
       if (identityName == null) {
-        if (identityGUID == null) return MapTool.getPlayer().getName();
-        else return identityGUID.toString();
+        if (identityGUID == null) {
+          return MapTool.getPlayer().getName();
+        } else {
+          return identityGUID.toString();
+        }
       }
       return identityName;
     }
@@ -507,12 +510,16 @@ public class CommandPanel extends JPanel
 
             public void itemStateChanged(ItemEvent e) {
               if (e.getStateChange() == ItemEvent.SELECTED) {
-                if (ours != null) commandTextArea.removeKeyListener(ours);
+                if (ours != null) {
+                  commandTextArea.removeKeyListener(ours);
+                }
                 ours = null;
                 // Go ahead and turn off the chat panel right away.
                 MapTool.getFrame().getChatTypingPanel().setVisible(false);
               } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                if (ours == null) ours = new ChatTypingListener();
+                if (ours == null) {
+                  ours = new ChatTypingListener();
+                }
                 commandTextArea.addKeyListener(ours);
               }
             }

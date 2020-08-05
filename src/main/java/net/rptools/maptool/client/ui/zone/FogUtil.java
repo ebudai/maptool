@@ -173,7 +173,9 @@ public class FogUtil {
       }
 
       if (zone.getWaypointExposureToggle() && !exposeCurrentOnly) {
-        if (token.getLastPath() == null) return;
+        if (token.getLastPath() == null) {
+          return;
+        }
 
         List<CellPoint> wayPointList = (List<CellPoint>) token.getLastPath().getWayPointList();
 
@@ -310,7 +312,9 @@ public class FogUtil {
     // Jamz: Possibly pass a variable to override buttons? Also, maybe add a return a list of ID's
     List<Token> tokList = renderer.getZone().getOwnedTokensWithSight(MapTool.getPlayer());
 
-    for (Token token : tokList) tokenSet.add(token.getId());
+    for (Token token : tokList) {
+      tokenSet.add(token.getId());
+    }
 
     // System.out.println("tokList: " + tokList.toString());
 
@@ -359,7 +363,9 @@ public class FogUtil {
       @SuppressWarnings("unchecked")
       Path<CellPoint> lastPath = (Path<CellPoint>) token.getLastPath();
 
-      if (lastPath == null) return;
+      if (lastPath == null) {
+        return;
+      }
 
       Map<GUID, ExposedAreaMetaData> fullMeta = zone.getExposedAreaMetaData();
       GUID exposedGUID = token.getExposedAreaGUID();

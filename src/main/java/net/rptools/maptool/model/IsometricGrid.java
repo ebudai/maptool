@@ -122,7 +122,9 @@ public class IsometricGrid extends Grid {
       double v1 = Math.sin(Math.toRadians(newFacing)) * 2;
       double v2 = Math.cos(Math.toRadians(newFacing));
       double v3 = Math.toDegrees(Math.atan(v1 / v2));
-      if (facing > 90 || facing < -90) v3 = 180 + v3;
+      if (facing > 90 || facing < -90) {
+        v3 = 180 + v3;
+      }
       newFacing = Math.floor(v3);
     }
     return newFacing;

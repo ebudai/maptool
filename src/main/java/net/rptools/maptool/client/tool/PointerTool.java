@@ -281,9 +281,13 @@ public class PointerTool extends DefaultTool {
         if (token == null) {
           continue;
         }
-        if (ownerReveal && token.isOwner(name)) exposeSet.add(tokenGUID);
-        else if (hasOwnerReveal && token.hasOwners()) exposeSet.add(tokenGUID);
-        else if (noOwnerReveal && !token.hasOwners()) exposeSet.add(tokenGUID);
+        if (ownerReveal && token.isOwner(name)) {
+          exposeSet.add(tokenGUID);
+        } else if (hasOwnerReveal && token.hasOwners()) {
+          exposeSet.add(tokenGUID);
+        } else if (noOwnerReveal && !token.hasOwners()) {
+          exposeSet.add(tokenGUID);
+        }
       }
 
       if (p != null) {
@@ -702,11 +706,14 @@ public class PointerTool extends DefaultTool {
       }
       ZonePoint zp = new ScreenPoint(mouseX, mouseY).convertToZone(renderer);
       ZonePoint last;
-      if (tokenUnderMouse == null) last = zp;
-      else {
+      if (tokenUnderMouse == null) {
+        last = zp;
+      } else {
         last = renderer.getLastWaypoint(tokenUnderMouse.getId());
         // XXX This shouldn't be possible, but it happens?!
-        if (last == null) last = zp;
+        if (last == null) {
+          last = zp;
+        }
       }
       handleDragToken(zp, zp.x - last.x, zp.y - last.y);
       return;
@@ -840,7 +847,9 @@ public class PointerTool extends DefaultTool {
         }
         startTokenDrag(tokenUnderMouse);
         isDraggingToken = true;
-        if (AppPreferences.getHideMousePointerWhileDragging()) SwingUtil.hidePointer(renderer);
+        if (AppPreferences.getHideMousePointerWhileDragging()) {
+          SwingUtil.hidePointer(renderer);
+        }
       }
       return;
     }
@@ -878,10 +887,11 @@ public class PointerTool extends DefaultTool {
     }
     // Make sure it's a valid move
     boolean isValid;
-    if (grid.getSize() >= 9)
+    if (grid.getSize() >= 9) {
       isValid = validateMove(tokenBeingDragged, renderer.getSelectedTokenSet(), zonePoint, dx, dy);
-    else
+    } else {
       isValid = validateMove_legacy(tokenBeingDragged, renderer.getSelectedTokenSet(), zonePoint);
+    }
 
     if (!isValid) {
       return false;
@@ -906,7 +916,9 @@ public class PointerTool extends DefaultTool {
     if (zone.hasFog()) {
       // Check that the new position for each token is within the exposed area
       Area zoneFog = zone.getExposedArea();
-      if (zoneFog == null) zoneFog = new Area();
+      if (zoneFog == null) {
+        zoneFog = new Area();
+      }
       boolean useTokenExposedArea =
           MapTool.getServerPolicy().isUseIndividualFOW() && zone.getVisionType() != VisionType.OFF;
       int deltaX = point.x - leadToken.getX();

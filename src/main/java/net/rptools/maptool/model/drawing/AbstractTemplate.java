@@ -99,7 +99,9 @@ public abstract class AbstractTemplate extends AbstractDrawing {
       double dY = y1 - y2;
       double angle = Math.atan2(dY, dX);
       int value = (int) Math.floor(((angle / Math.PI + 1.0) / 2.0) * 16.0);
-      if (value >= 15) value = 0;
+      if (value >= 15) {
+        value = 0;
+      }
       return values()[((value + 1) / 2) + 1];
     }
   }
@@ -182,9 +184,13 @@ public abstract class AbstractTemplate extends AbstractDrawing {
    * @param area Paint the area?
    */
   protected void paint(Graphics2D g, boolean border, boolean area) {
-    if (radius == 0) return;
+    if (radius == 0) {
+      return;
+    }
     Zone zone = MapTool.getCampaign().getZone(zoneId);
-    if (zone == null) return;
+    if (zone == null) {
+      return;
+    }
 
     // Find the proper distance
     int gridSize = zone.getGrid().getSize();
@@ -196,8 +202,12 @@ public abstract class AbstractTemplate extends AbstractDrawing {
         int yOff = y * gridSize;
 
         // Template specific painting
-        if (border) paintBorder(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
-        if (area) paintArea(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
+        if (border) {
+          paintBorder(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
+        }
+        if (area) {
+          paintArea(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
+        }
       } // endfor
     } // endfor
   }
@@ -313,7 +323,9 @@ public abstract class AbstractTemplate extends AbstractDrawing {
    * @return Number of cells to the passed coordinate.
    */
   public int getDistance(int x, int y) {
-    if (x > y) return x + (y / 2) + 1 + (y & 1);
+    if (x > y) {
+      return x + (y / 2) + 1 + (y & 1);
+    }
     return y + (x / 2) + 1 + (x & 1);
   }
 
@@ -333,8 +345,9 @@ public abstract class AbstractTemplate extends AbstractDrawing {
 
     // Adjust alpha automatically
     Composite old = g.getComposite();
-    if (old != AlphaComposite.Clear)
+    if (old != AlphaComposite.Clear) {
       g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, DEFAULT_BG_ALPHA));
+    }
     paint(g, false, true);
     g.setComposite(old);
   }

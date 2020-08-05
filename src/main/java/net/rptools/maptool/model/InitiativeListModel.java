@@ -51,14 +51,19 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
    *     token. May be different for GM and Player
    */
   public TokenInitiative getCurrentTokenInitiative() {
-    if (list.getCurrent() < 0) return null;
-    if (MapTool.getFrame().getInitiativePanel().hasGMPermission())
+    if (list.getCurrent() < 0) {
+      return null;
+    }
+    if (MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
       return list.getTokenInitiative(list.getCurrent());
+    }
     TokenInitiative visible = null;
     for (int i = 0; i <= list.getCurrent(); i++) {
       TokenInitiative ti = list.getTokenInitiative(i);
       Token token = ti.getToken();
-      if (token != null && isTokenVisible(ti.getToken(), list.isHideNPC())) visible = ti;
+      if (token != null && isTokenVisible(ti.getToken(), list.isHideNPC())) {
+        visible = ti;
+      }
     } // endfor
     return visible;
   }
@@ -70,11 +75,18 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
    * @return The index in the display model or -1 if the item is not displayed.
    */
   public int getDisplayIndex(int index) {
-    if (index < 0 || MapTool.getFrame().getInitiativePanel().hasGMPermission()) return index;
-    if (!isTokenVisible(list.getToken(index), list.isHideNPC())) return -1;
+    if (index < 0 || MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
+      return index;
+    }
+    if (!isTokenVisible(list.getToken(index), list.isHideNPC())) {
+      return -1;
+    }
     int found = -1;
-    for (int i = 0; i <= index; i++)
-      if (isTokenVisible(list.getToken(i), list.isHideNPC())) found += 1;
+    for (int i = 0; i <= index; i++) {
+      if (isTokenVisible(list.getToken(i), list.isHideNPC())) {
+        found += 1;
+      }
+    }
     return found;
   }
 
@@ -125,11 +137,21 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
    * @return The value <code>true</code> if this token is shown to the user.
    */
   public static boolean isTokenVisible(Token token, boolean hideNPC) {
-    if (token == null) return false;
-    if (MapTool.getFrame().getInitiativePanel().hasGMPermission()) return true;
-    if (!token.isVisible() || token.getLayer() == Zone.Layer.GM) return false;
-    if (token.isVisibleOnlyToOwner() && !AppUtil.playerOwns(token)) return false;
-    if (hideNPC && token.getType() == Type.NPC) return false;
+    if (token == null) {
+      return false;
+    }
+    if (MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
+      return true;
+    }
+    if (!token.isVisible() || token.getLayer() == Zone.Layer.GM) {
+      return false;
+    }
+    if (token.isVisibleOnlyToOwner() && !AppUtil.playerOwns(token)) {
+      return false;
+    }
+    if (hideNPC && token.getType() == Type.NPC) {
+      return false;
+    }
     return true;
   }
 
@@ -148,8 +170,12 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
       int oldIndex = getDisplayIndex((Integer) evt.getOldValue());
       int newIndex = getDisplayIndex((Integer) evt.getNewValue());
       if (oldIndex != newIndex) {
-        if (oldIndex != -1) fireContentsChanged(InitiativeListModel.this, oldIndex, oldIndex);
-        if (newIndex != -1) fireContentsChanged(InitiativeListModel.this, newIndex, newIndex);
+        if (oldIndex != -1) {
+          fireContentsChanged(InitiativeListModel.this, oldIndex, oldIndex);
+        }
+        if (newIndex != -1) {
+          fireContentsChanged(InitiativeListModel.this, newIndex, newIndex);
+        }
       } // endif
     } else if (evt.getPropertyName().equals(InitiativeList.TOKENS_PROP)) {
       if (evt instanceof IndexedPropertyChangeEvent) {
@@ -215,12 +241,18 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
    * @return The number of visible tokens.
    */
   private int getSize(List<TokenInitiative> tokens, boolean hideNPC) {
-    if (tokens == null || tokens.isEmpty()) return 0;
+    if (tokens == null || tokens.isEmpty()) {
+      return 0;
+    }
     int size = 0;
     if (MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
       size = tokens.size();
     } else {
-      for (TokenInitiative ti : tokens) if (isTokenVisible(ti.getToken(), hideNPC)) size += 1;
+      for (TokenInitiative ti : tokens) {
+        if (isTokenVisible(ti.getToken(), hideNPC)) {
+          size += 1;
+        }
+      }
     }
     return size;
   }
@@ -236,14 +268,17 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
    */
   @Override
   public TokenInitiative getElementAt(int index) {
-    if (MapTool.getFrame().getInitiativePanel().hasGMPermission())
+    if (MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
       return list.getTokenInitiative(index);
+    }
     int found = index;
     for (int i = 0; i < list.getSize(); i++) {
       TokenInitiative ti = list.getTokenInitiative(i);
       if (isTokenVisible(ti.getToken(), list.isHideNPC())) {
         found -= 1;
-        if (found == -1) return ti;
+        if (found == -1) {
+          return ti;
+        }
       }
     }
     return null;
@@ -260,12 +295,15 @@ public class InitiativeListModel extends AbstractListModel<TokenInitiative>
       return 0;
     }
 
-    if (MapTool.getFrame() == null || MapTool.getFrame().getInitiativePanel().hasGMPermission())
+    if (MapTool.getFrame() == null || MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
       return list.getSize();
+    }
     int size = 0;
     for (int i = 0; i < list.getSize(); i++) {
       TokenInitiative ti = list.getTokenInitiative(i);
-      if (isTokenVisible(ti.getToken(), list.isHideNPC())) size += 1;
+      if (isTokenVisible(ti.getToken(), list.isHideNPC())) {
+        size += 1;
+      }
     } // endfor
     return size;
   }

@@ -327,7 +327,9 @@ public class TokenStatesController
         if (imageFile == null
             || imageFile.isDirectory()
             || !imageFile.exists()
-            || !imageFile.canRead()) return;
+            || !imageFile.canRead()) {
+          return;
+        }
         formPanel.setText(IMAGE, imageFile.getPath());
         AppPreferences.setLoadDir(imageFile.getParentFile());
       } // endif
@@ -340,7 +342,9 @@ public class TokenStatesController
     } else if (UPDATE.equals(name)) {
       BooleanTokenOverlay selectedOverlay = (BooleanTokenOverlay) formPanel.getSelectedItem(STATES);
       BooleanTokenOverlay overlay = createTokenOverlay(selectedOverlay);
-      if (overlay != null) model.set(selected, overlay);
+      if (overlay != null) {
+        model.set(selected, overlay);
+      }
 
       // Move an item up one row
     } else if (MOVE_UP.equals(name)) {
@@ -368,9 +372,13 @@ public class TokenStatesController
     if (INDEX.equals(name) && selected != -1) {
       int value = (int) ((JSpinner) e.getSource()).getValue();
       if (selected != value) {
-        if (value < 0) value = 0;
+        if (value < 0) {
+          value = 0;
+        }
 
-        if (value >= model.getSize()) value = model.getSize() - 1;
+        if (value >= model.getSize()) {
+          value = model.getSize() - 1;
+        }
 
         Object element = model.remove(selected);
         model.insertElementAt(element, value);
@@ -387,10 +395,11 @@ public class TokenStatesController
       formPanel
           .getComponentByName(DATA_ENTRY_COMPONENTS[i])
           .setEnabled(NEEDED_COMPONENTS[selected][i]);
-      if (i < DATA_ENTRY_COMPONENT_LABELS.length)
+      if (i < DATA_ENTRY_COMPONENT_LABELS.length) {
         formPanel
             .getComponentByName(DATA_ENTRY_COMPONENT_LABELS[i])
             .setEnabled(NEEDED_COMPONENTS[selected][i]);
+      }
     } // endfor
   }
 
@@ -463,7 +472,9 @@ public class TokenStatesController
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting()) return;
+    if (e.getValueIsAdjusting()) {
+      return;
+    }
     int selected = formPanel.getList(STATES).getSelectedIndex();
     formPanel.getButton(DELETE).setEnabled(selected >= 0);
     changedUpdate(null); // Makes sure update is selected
@@ -726,8 +737,9 @@ public class TokenStatesController
       if (updatedOverlay == null || fName != null) {
         assetId = loadAsssetFile(fName, formPanel);
       } else {
-        if (updatedOverlay instanceof ImageTokenOverlay)
+        if (updatedOverlay instanceof ImageTokenOverlay) {
           assetId = ((ImageTokenOverlay) updatedOverlay).getAssetId();
+        }
       } // endif
 
       // Create all of the image overlays
@@ -804,7 +816,9 @@ public class TokenStatesController
    * @return The asset id if found or <code>null</code> if it could not be found.
    */
   public static MD5Key loadAsssetFile(String fName, FormPanel formPanel) {
-    if (StringUtil.isEmpty(fName)) return null;
+    if (StringUtil.isEmpty(fName)) {
+      return null;
+    }
     File file = new File(fName);
     String message = null;
     if (!file.exists()) {

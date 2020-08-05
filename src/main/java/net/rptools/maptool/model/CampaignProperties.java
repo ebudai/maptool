@@ -384,7 +384,9 @@ public class CampaignProperties {
 
     // States have images as well
     for (AbstractTokenOverlay overlay : getTokenStatesMap().values()) {
-      if (overlay instanceof ImageTokenOverlay) set.add(((ImageTokenOverlay) overlay).getAssetId());
+      if (overlay instanceof ImageTokenOverlay) {
+        set.add(((ImageTokenOverlay) overlay).getAssetId());
+      }
     }
 
     // Bars
@@ -428,7 +430,9 @@ public class CampaignProperties {
    * @return a Map of the characterSheets
    */
   public Map<String, String> getCharacterSheets() {
-    if (characterSheets == null) initCharacterSheetsMap();
+    if (characterSheets == null) {
+      initCharacterSheetsMap();
+    }
     return characterSheets;
   }
 

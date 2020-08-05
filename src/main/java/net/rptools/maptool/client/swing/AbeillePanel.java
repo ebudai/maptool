@@ -70,7 +70,9 @@ public class AbeillePanel<T> extends JPanel {
             // System.out.println("Name:" + name);
             name = name.substring(1).trim(); // cut the "@"
             int point = name.indexOf('.');
-            if (point >= 0) name = name.substring(0, point).trim();
+            if (point >= 0) {
+              name = name.substring(0, point).trim();
+            }
             return new BindingInfo(name);
           }
 

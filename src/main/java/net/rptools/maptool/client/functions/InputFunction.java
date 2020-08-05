@@ -187,7 +187,9 @@ public class InputFunction extends AbstractFunction {
      */
     public static InputType inputTypeFromName(String strName) {
       for (InputType it : InputType.values()) {
-        if (strName.equalsIgnoreCase(it.name())) return it;
+        if (strName.equalsIgnoreCase(it.name())) {
+          return it;
+        }
       }
       return null;
     }
@@ -218,7 +220,9 @@ public class InputFunction extends AbstractFunction {
       while (matcher.find()) {
         String key = matcher.group(1);
         String value = matcher.group(2);
-        if (ret.get(key) == null) throw new OptionException(this, key, value);
+        if (ret.get(key) == null) {
+          throw new OptionException(this, key, value);
+        }
         if (ret.getNumeric(key, -9998) != -9998) { // minor hack to detect if the option is numeric
           boolean valueIsNumeric;
           try {
@@ -227,7 +231,9 @@ public class InputFunction extends AbstractFunction {
           } catch (Exception e) {
             valueIsNumeric = false;
           }
-          if (!valueIsNumeric) throw new OptionException(this, key, value);
+          if (!valueIsNumeric) {
+            throw new OptionException(this, key, value);
+          }
         }
         ret.put(key, value);
       }
@@ -296,7 +302,9 @@ public class InputFunction extends AbstractFunction {
        * @return are the values equal
        */
       public boolean optionEquals(String key, String value) {
-        if (get(key) == null) return false;
+        if (get(key) == null) {
+          return false;
+        }
         return get(key).equalsIgnoreCase(value);
       }
     } ////////////////////////// end of OptionMap class
@@ -336,15 +344,20 @@ public class InputFunction extends AbstractFunction {
       InputType inputType;
 
       name = (numparts > 0) ? parts[0].trim() : "";
-      if (StringUtils.isEmpty(name))
+      if (StringUtils.isEmpty(name)) {
         throw new SpecifierException(
             I18N.getText("macro.function.input.invalidSpecifier", specifier));
+      }
 
       value = (numparts > 1) ? parts[1].trim() : "";
-      if (StringUtils.isEmpty(value)) value = "0"; // Avoids having a default value of ""
+      if (StringUtils.isEmpty(value)) {
+        value = "0"; // Avoids having a default value of ""
+      }
 
       prompt = (numparts > 2) ? parts[2].trim() : "";
-      if (StringUtils.isEmpty(prompt)) prompt = name;
+      if (StringUtils.isEmpty(prompt)) {
+        prompt = name;
+      }
 
       String inputTypeStr = (numparts > 3) ? parts[3].trim() : "";
       inputType = InputType.inputTypeFromName(inputTypeStr);
@@ -369,10 +382,13 @@ public class InputFunction extends AbstractFunction {
       this.value = value;
       this.prompt = prompt;
       this.inputType = inputType;
-      if (inputType != null) this.optionValues = inputType.parseOptionString(options);
+      if (inputType != null) {
+        this.optionValues = inputType.parseOptionString(options);
+      }
 
-      if (inputType != null && inputType.isValueComposite)
+      if (inputType != null && inputType.isValueComposite) {
         this.valueList = parseStringList(this.value, this.optionValues.get("DELIMITER"));
+      }
     }
 
     /**
@@ -467,7 +483,9 @@ public class InputFunction extends AbstractFunction {
      * controls whether the VarSpec is added to the local listing.
      */
     protected void addVariable(VarSpec vs, boolean addToVarList) {
-      if (addToVarList) varSpecs.add(vs);
+      if (addToVarList) {
+        varSpecs.add(vs);
+      }
 
       gbc.gridy = componentCount;
       gbc.gridwidth = 1;
@@ -537,7 +555,9 @@ public class InputFunction extends AbstractFunction {
         onShowFocus.requestFocusInWindow();
       } else {
         JComponent first = findFirstFocusable();
-        if (first != null) first.requestFocusInWindow();
+        if (first != null) {
+          first.requestFocusInWindow();
+        }
       }
     }
 
@@ -552,7 +572,9 @@ public class InputFunction extends AbstractFunction {
             public void focusGained(FocusEvent fe) {
               JComponent src = (JComponent) fe.getSource();
               lastFocus = src;
-              if (src instanceof JTextField) ((JTextField) src).selectAll();
+              if (src instanceof JTextField) {
+                ((JTextField) src).selectAll();
+              }
               // // debugging
               // String s = (src instanceof JTextField) ?
               // " (" + ((JTextField)src).getText() + ")" : "";
@@ -587,8 +609,11 @@ public class InputFunction extends AbstractFunction {
           // But the resulting behavior is so much nicer with this fix in place, that I'm keeping it
           // in.
           Component list[] = c.getComponents();
-          for (Component component : list)
-            if (component instanceof TinyComboBoxButton) component.setFocusable(false); // HACK!
+          for (Component component : list) {
+            if (component instanceof TinyComboBoxButton) {
+              component.setFocusable(false); // HACK!
+            }
+          }
           // } else if (c instanceof JTextField) {
           // // Select all text when the text field gains focus
           // final JTextField textFieldFinal = (JTextField) c;
@@ -605,7 +630,9 @@ public class InputFunction extends AbstractFunction {
           cp.runtimeFixup();
         }
       }
-      if (lastFocus != null) scrollRectToVisible(lastFocus.getBounds());
+      if (lastFocus != null) {
+        scrollRectToVisible(lastFocus.getBounds());
+      }
     }
 
     /** Creates the appropriate type of input control. */
@@ -644,7 +671,9 @@ public class InputFunction extends AbstractFunction {
       boolean showText = vs.optionValues.optionEquals("TEXT", "TRUE");
       boolean showIcons = vs.optionValues.optionEquals("ICON", "TRUE");
       int iconSize = vs.optionValues.getNumeric("ICONSIZE", 0);
-      if (iconSize <= 0) showIcons = false;
+      if (iconSize <= 0) {
+        showIcons = false;
+      }
 
       // Build the combo box
       for (int j = 0; j < vs.valueList.size(); j++) {
@@ -661,8 +690,9 @@ public class InputFunction extends AbstractFunction {
         // A workaround found on the web is to use this alternate string class (defined below)
         // which never reports two items as being equal.
         NoEqualString[] nesValues = new NoEqualString[vs.valueList.size()];
-        for (int i = 0; i < nesValues.length; i++)
+        for (int i = 0; i < nesValues.length; i++) {
           nesValues[i] = new NoEqualString(vs.valueList.get(i));
+        }
         combo = new JComboBox(nesValues);
       } else {
         combo = new JComboBox();
@@ -687,13 +717,19 @@ public class InputFunction extends AbstractFunction {
           UpdatingLabel label = new UpdatingLabel();
           icon = getIcon(assetID, iconSize, label);
           label.setOpaque(true); // needed to make selection highlighting show up
-          if (showText) label.setText(valueText);
-          if (icon != null) label.setIcon(icon);
+          if (showText) {
+            label.setText(valueText);
+          }
+          if (icon != null) {
+            label.setIcon(icon);
+          }
           combo.addItem(label);
         }
       }
       int listIndex = vs.optionValues.getNumeric("SELECT");
-      if (listIndex < 0 || listIndex >= vs.valueList.size()) listIndex = 0;
+      if (listIndex < 0 || listIndex >= vs.valueList.size()) {
+        listIndex = 0;
+      }
       combo.setSelectedIndex(listIndex);
       combo.setMaximumRowCount(20);
       return combo;
@@ -703,14 +739,18 @@ public class InputFunction extends AbstractFunction {
     public JComponent createCheckControl(VarSpec vs) {
       JCheckBox check = new JCheckBox();
       check.setText("    "); // so a focus indicator will appear
-      if (vs.value.compareTo("0") != 0) check.setSelected(true);
+      if (vs.value.compareTo("0") != 0) {
+        check.setSelected(true);
+      }
       return check;
     }
 
     /** Creates a group of radio buttons. */
     public JComponent createRadioControl(VarSpec vs) {
       int listIndex = vs.optionValues.getNumeric("SELECT");
-      if (listIndex < 0 || listIndex >= vs.valueList.size()) listIndex = 0;
+      if (listIndex < 0 || listIndex >= vs.valueList.size()) {
+        listIndex = 0;
+      }
       ButtonGroup bg = new ButtonGroup();
       Box box =
           (vs.optionValues.optionEquals("ORIENT", "H"))
@@ -719,7 +759,9 @@ public class InputFunction extends AbstractFunction {
 
       // If the prompt is suppressed by SPAN=TRUE, use it as the border title
       String title = "";
-      if (vs.optionValues.optionEquals("SPAN", "TRUE")) title = vs.prompt;
+      if (vs.optionValues.optionEquals("SPAN", "TRUE")) {
+        title = vs.prompt;
+      }
       box.setBorder(new TitledBorder(new EtchedBorder(), title));
 
       int radioCount = 0;
@@ -727,7 +769,9 @@ public class InputFunction extends AbstractFunction {
         JRadioButton radio = new JRadioButton(value, false);
         bg.add(radio);
         box.add(radio);
-        if (listIndex == radioCount) radio.setSelected(true);
+        if (listIndex == radioCount) {
+          radio.setSelected(true);
+        }
         radioCount++;
       }
       return box;
@@ -750,7 +794,9 @@ public class InputFunction extends AbstractFunction {
       UpdatingLabel label = new UpdatingLabel();
 
       int iconSize = vs.optionValues.getNumeric("ICONSIZE", 0);
-      if (iconSize <= 0) hasIcon = false;
+      if (iconSize <= 0) {
+        hasIcon = false;
+      }
       String valueText = "", assetID = "";
       Icon icon = null;
 
@@ -767,12 +813,18 @@ public class InputFunction extends AbstractFunction {
       // Try to get the icon
       if (hasIcon) {
         icon = getIcon(assetID, iconSize, label);
-        if (icon == null) hasIcon = false;
+        if (icon == null) {
+          hasIcon = false;
+        }
       }
 
       // Assemble the label
-      if (hasText) label.setText(valueText);
-      if (hasIcon) label.setIcon(icon);
+      if (hasText) {
+        label.setText(valueText);
+      }
+      if (hasIcon) {
+        label.setIcon(icon);
+      }
 
       return label;
     }
@@ -821,7 +873,9 @@ public class InputFunction extends AbstractFunction {
 
       // If the prompt is suppressed by SPAN=TRUE, use it as the border title
       String title = "";
-      if (vs.optionValues.optionEquals("SPAN", "TRUE")) title = vs.prompt;
+      if (vs.optionValues.optionEquals("SPAN", "TRUE")) {
+        title = vs.prompt;
+      }
       cp.setBorder(new TitledBorder(new EtchedBorder(), title));
 
       return cp;
@@ -896,7 +950,9 @@ public class InputFunction extends AbstractFunction {
 
       public int getScrollableBlockIncrement(Rectangle visRect, int orientation, int direction) {
         int retval = visRect.height - 10;
-        if (retval < 0) retval = 10;
+        if (retval < 0) {
+          retval = 10;
+        }
         return retval;
       }
 
@@ -985,7 +1041,9 @@ public class InputFunction extends AbstractFunction {
 
       // Start the focus in the first input field, so the user can type immediately
       JComponent compFirst = findFirstFocusable();
-      if (compFirst != null) compFirst.requestFocusInWindow();
+      if (compFirst != null) {
+        compFirst.requestFocusInWindow();
+      }
 
       // When tab changes, save the last field that had the focus.
       // (The first field in the panel will gain focus before the panel is shown,
@@ -1054,8 +1112,9 @@ public class InputFunction extends AbstractFunction {
     }
 
     // Check if any variables were defined
-    if (varSpecs.isEmpty())
+    if (varSpecs.isEmpty()) {
       return BigDecimal.ONE; // No work to do, so treat it as a successful invocation.
+    }
 
     // UI step 1 - First, see if a token is in context.
     VariableResolver varRes = resolver;
@@ -1069,8 +1128,11 @@ public class InputFunction extends AbstractFunction {
       boolean isGM = MapTool.getPlayer().isGM();
       String extra = "";
 
-      if (isGM && gm_name != null && gm_name.compareTo("") != 0) extra = " for " + gm_name;
-      else if (name != null && name.compareTo("") != 0) extra = " for " + name;
+      if (isGM && gm_name != null && gm_name.compareTo("") != 0) {
+        extra = " for " + gm_name;
+      } else if (name != null && name.compareTo("") != 0) {
+        extra = " for " + name;
+      }
 
       dialogTitle = dialogTitle + extra;
     }
@@ -1104,8 +1166,9 @@ public class InputFunction extends AbstractFunction {
     }
     dlg.dispose();
 
-    if (dlgResult == JOptionPane.CANCEL_OPTION || dlgResult == JOptionPane.CLOSED_OPTION)
+    if (dlgResult == JOptionPane.CANCEL_OPTION || dlgResult == JOptionPane.CLOSED_OPTION) {
       return BigDecimal.ZERO;
+    }
 
     // Finally, assign values from the dialog box to the variables
     for (ColumnPanel cp : ip.columnPanels) {
@@ -1151,7 +1214,9 @@ public class InputFunction extends AbstractFunction {
               for (Component c : comps) {
                 if (c instanceof JRadioButton) {
                   JRadioButton radio = (JRadioButton) c;
-                  if (radio.isSelected()) index = componentCount;
+                  if (radio.isSelected()) {
+                    index = componentCount;
+                  }
                 }
                 componentCount++;
               }
@@ -1177,10 +1242,15 @@ public class InputFunction extends AbstractFunction {
               StringBuilder sb = new StringBuilder();
               jsonObject = new JsonObject();
               int setVars = 0; // "NONE", no assignments made
-              if (vs.optionValues.optionEquals("SETVARS", "SUFFIXED")) setVars = 1;
-              if (vs.optionValues.optionEquals("SETVARS", "UNSUFFIXED")) setVars = 2;
-              if (vs.optionValues.optionEquals("SETVARS", "TRUE"))
+              if (vs.optionValues.optionEquals("SETVARS", "SUFFIXED")) {
+                setVars = 1;
+              }
+              if (vs.optionValues.optionEquals("SETVARS", "UNSUFFIXED")) {
+                setVars = 2;
+              }
+              if (vs.optionValues.optionEquals("SETVARS", "TRUE")) {
                 setVars = 2; // for backward compatibility
+              }
               for (int compCount = 0; compCount < comps.length; compCount += 2) {
                 String key =
                     ((JLabel) comps[compCount]).getText().split("\\:")[0]; // strip trailing colon
@@ -1259,19 +1329,22 @@ public class InputFunction extends AbstractFunction {
     super.checkParameters(functionName, parameters);
 
     for (Object param : parameters) {
-      if (!(param instanceof String))
+      if (!(param instanceof String)) {
         throw new ParameterException(
             I18N.getText(
                 "macro.function.input.illegalArgumentType",
                 param.getClass().getName(),
                 String.class.getName()));
+      }
     }
   }
 
   /** Gets icon from the asset manager. Code copied and modified from EditTokenDialog.java */
   private ImageIcon getIcon(String id, int size, ImageObserver io) {
     // Extract the MD5Key from the URL
-    if (id == null) return null;
+    if (id == null) {
+      return null;
+    }
     MD5Key assetID = new MD5Key(id);
 
     // Get the base image && find the new size for the icon
@@ -1307,7 +1380,9 @@ public class InputFunction extends AbstractFunction {
 
       // Are we receiving the final image data?
       int flags = ImageObserver.ALLBITS | ImageObserver.FRAMEBITS;
-      if ((infoflags & flags) == 0) return true;
+      if ((infoflags & flags) == 0) {
+        return true;
+      }
 
       // Resize
       Dimension dim = new Dimension(curWidth, curHeight);

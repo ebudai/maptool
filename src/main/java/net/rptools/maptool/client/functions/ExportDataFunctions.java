@@ -54,18 +54,21 @@ public class ExportDataFunctions extends AbstractFunction {
   public Object childEvaluate(
       Parser parser, VariableResolver resolver, String functionName, List<Object> parameters)
       throws ParserException {
-    if (!MapTool.getParser().isMacroTrusted())
+    if (!MapTool.getParser().isMacroTrusted()) {
       throw new ParserException(I18N.getText("macro.function.general.noPerm", functionName));
+    }
 
-    if (!AppPreferences.getAllowExternalMacroAccess())
+    if (!AppPreferences.getAllowExternalMacroAccess()) {
       throw new ParserException(I18N.getText("macro.function.general.accessDenied", functionName));
+    }
 
     // New function to save data to an external file.
     if (functionName.equals("exportData")) {
-      if (parameters.size() != 3)
+      if (parameters.size() != 3) {
         throw new ParserException(
             I18N.getText(
                 "macro.function.general.wrongNumParam", functionName, 1, parameters.size()));
+      }
 
       File file = new File(parameters.get(0).toString());
       String data = parameters.get(1).toString();
@@ -97,10 +100,11 @@ public class ExportDataFunctions extends AbstractFunction {
     }
 
     if (functionName.equals("getEnvironmentVariable")) {
-      if (parameters.size() != 1)
+      if (parameters.size() != 1) {
         throw new ParserException(
             I18N.getText(
                 "macro.function.general.wrongNumParam", functionName, 1, parameters.size()));
+      }
 
       String envName = parameters.get(0).toString();
       String value = System.getenv(envName);

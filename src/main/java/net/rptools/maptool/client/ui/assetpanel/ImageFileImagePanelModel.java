@@ -109,7 +109,9 @@ public class ImageFileImagePanelModel implements ImagePanelModel {
   }
 
   public void setFilter(String filter) {
-    if (dir == null) return;
+    if (dir == null) {
+      return;
+    }
 
     ImageFileImagePanelModel.filter = filter.toUpperCase();
     if (dir.isPDF()) {
@@ -215,7 +217,9 @@ public class ImageFileImagePanelModel implements ImagePanelModel {
    */
   public static Dimension getImageDimension(File imgFile) throws IOException {
     int pos = imgFile.getName().lastIndexOf(".");
-    if (pos == -1) throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
+    if (pos == -1) {
+      throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
+    }
 
     String suffix = imgFile.getName().substring(pos + 1);
     Iterator<ImageReader> iter = ImageIO.getImageReadersBySuffix(suffix);
@@ -608,7 +612,9 @@ public class ImageFileImagePanelModel implements ImagePanelModel {
         // cancelled
         // Lets truncate the results and do it synchronized so we don't invoke concurrent
         // modification errors.
-        if (fileList.size() > 1000) fileList = fileList.subList(0, 1000);
+        if (fileList.size() > 1000) {
+          fileList = fileList.subList(0, 1000);
+        }
       }
 
       // Jamz: Causes cursor to flicker due to multiple threads running. Needs a supervisior thread
@@ -635,20 +641,27 @@ public class ImageFileImagePanelModel implements ImagePanelModel {
       File[] folders = folderPath.listFiles((dir, name) -> new File(dir, name).isDirectory());
 
       for (final File fileEntry : files) {
-        if (fileEntry.getName().toUpperCase().contains(filter) && !assetPanel.isLimitReached())
+        if (fileEntry.getName().toUpperCase().contains(filter) && !assetPanel.isLimitReached()) {
           fileList.add(fileEntry);
-        if (limitReached()) break;
+        }
+        if (limitReached()) {
+          break;
+        }
       }
 
       for (final File fileEntry : folders) {
-        if (limitReached()) break;
+        if (limitReached()) {
+          break;
+        }
         ListFilesSwingWorker workerThread = new ListFilesSwingWorker(fileEntry, assetPanel);
         workerThread.execute();
       }
     }
 
     private boolean limitReached() {
-      if (fileList.size() > AppConstants.ASSET_SEARCH_LIMIT) assetPanel.setLimitReached(true);
+      if (fileList.size() > AppConstants.ASSET_SEARCH_LIMIT) {
+        assetPanel.setLimitReached(true);
+      }
       return assetPanel.isLimitReached();
     }
   }

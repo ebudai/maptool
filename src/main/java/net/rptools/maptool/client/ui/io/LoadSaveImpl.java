@@ -96,9 +96,11 @@ public class LoadSaveImpl {
 
     for (MacroButtonProperties macro : macros) {
       String loc = macro.getSaveLocation();
-      if (loc.equals("GlobalPanel")) global.put(macro.getLabel(), macro);
-      else if (loc.equals("CampaignPanel")) campaign.put(macro.getLabel(), macro);
-      else {
+      if (loc.equals("GlobalPanel")) {
+        global.put(macro.getLabel(), macro);
+      } else if (loc.equals("CampaignPanel")) {
+        campaign.put(macro.getLabel(), macro);
+      } else {
         log.debug("Ignoring " + loc + " macro button property");
         other.put(loc, macro);
       }

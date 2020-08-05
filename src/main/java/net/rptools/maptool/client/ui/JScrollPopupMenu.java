@@ -155,7 +155,9 @@ public class JScrollPopupMenu extends JPopupMenu {
   }
 
   public void scrollComponentToVisible(Component c) {
-    if (c == null || popupScrollBar.getParent() == null) return;
+    if (c == null || popupScrollBar.getParent() == null) {
+      return;
+    }
     popupScrollBar.setValue(c.getY());
   }
 

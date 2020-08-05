@@ -74,9 +74,10 @@ public class TriangleTokenOverlay extends XTokenOverlay {
     Stroke tempStroke = g.getStroke();
     g.setStroke(getStroke());
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     g.draw(new Line2D.Double(0, vc, bounds.width, vc));
     g.draw(new Line2D.Double(bounds.width, vc, hc, 0));
     g.draw(new Line2D.Double(hc, 0, 0, vc));

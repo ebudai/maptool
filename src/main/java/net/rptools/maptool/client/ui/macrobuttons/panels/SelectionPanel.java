@@ -64,7 +64,9 @@ public class SelectionPanel extends AbstractMacroPanel {
   public void init() {
     MapToolFrame f = MapTool.getFrame();
     ZoneRenderer zr = f.getCurrentZoneRenderer();
-    if (zr != null) init(zr.getSelectedTokensList());
+    if (zr != null) {
+      init(zr.getSelectedTokensList());
+    }
   }
 
   public void init(List<Token> selectedTokenList) {
@@ -72,10 +74,11 @@ public class SelectionPanel extends AbstractMacroPanel {
 
     if (MapTool.getFrame() != null) {
       DockableFrame selectionPanel = MapTool.getFrame().getDockingManager().getFrame("SELECTION");
-      if (selectionPanel != null)
+      if (selectionPanel != null) {
         panelVisible =
             (selectionPanel.isVisible() && !selectionPanel.isAutohide())
                 || selectionPanel.isAutohideShowing();
+      }
     }
     // Set up a code timer to get some performance data
     timer = new CodeTimer("selectionpanel");
@@ -113,7 +116,9 @@ public class SelectionPanel extends AbstractMacroPanel {
     if (AppState.isCollectProfilingData() || log.isDebugEnabled()) {
       String results = timer.toString();
       MapTool.getProfilingNoteFrame().addText(results);
-      if (log.isDebugEnabled()) log.debug(results);
+      if (log.isDebugEnabled()) {
+        log.debug(results);
+      }
     }
     MapTool.getEventDispatcher().addListener(this, MapTool.ZoneEvent.Activated);
   }

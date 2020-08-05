@@ -640,12 +640,24 @@ public abstract class HexGrid extends Grid {
     public int getDirection(int dirx, int diry) {
       int direction = -1;
       // @formatter:off
-      if (dirx > 0 && diry > 0) direction = NW;
-      if (dirx > 0 && diry < 0) direction = SW;
-      if (dirx < 0 && diry > 0) direction = NE;
-      if (dirx < 0 && diry < 0) direction = SE;
-      if (dirx == 0 && diry > 0) direction = N;
-      if (dirx == 0 && diry < 0) direction = S;
+      if (dirx > 0 && diry > 0) {
+        direction = NW;
+      }
+      if (dirx > 0 && diry < 0) {
+        direction = SW;
+      }
+      if (dirx < 0 && diry > 0) {
+        direction = NE;
+      }
+      if (dirx < 0 && diry < 0) {
+        direction = SE;
+      }
+      if (dirx == 0 && diry > 0) {
+        direction = N;
+      }
+      if (dirx == 0 && diry < 0) {
+        direction = S;
+      }
       // @formatter:on
       return direction;
     }

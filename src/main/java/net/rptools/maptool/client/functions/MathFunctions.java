@@ -208,19 +208,22 @@ public class MathFunctions extends AbstractFunction {
       throws ParserException {
     int pCount = param == null ? 0 : param.size();
     if (minParameters == maxParameters) {
-      if (pCount != maxParameters)
+      if (pCount != maxParameters) {
         throw new ParameterException(
             I18N.getText(
                 "macro.function.general.wrongNumParam", functionName, minParameters, pCount));
+      }
     } else {
-      if (pCount < minParameters)
+      if (pCount < minParameters) {
         throw new ParameterException(
             I18N.getText(
                 "macro.function.general.notEnoughParam", functionName, minParameters, pCount));
-      if (maxParameters != UNLIMITED_PARAMETERS && pCount > maxParameters)
+      }
+      if (maxParameters != UNLIMITED_PARAMETERS && pCount > maxParameters) {
         throw new ParameterException(
             I18N.getText(
                 "macro.function.general.tooManyParam", functionName, maxParameters, pCount));
+      }
     }
   }
 

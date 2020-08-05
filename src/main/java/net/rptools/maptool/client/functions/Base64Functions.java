@@ -53,14 +53,16 @@ public class Base64Functions extends AbstractFunction {
 
     checkParameters(functionName, parameters, 1, 1);
 
-    if (functionName.equalsIgnoreCase("base64.encode"))
+    if (functionName.equalsIgnoreCase("base64.encode")) {
       return base64Encode(functionName, parameters);
+    }
 
-    if (functionName.equalsIgnoreCase("base64.decode"))
+    if (functionName.equalsIgnoreCase("base64.decode")) {
       return base64Decode(functionName, parameters);
-    else
+    } else {
       throw new ParserException(
           I18N.getText("macro.function.general.unknownFunction", functionName));
+    }
   }
 
   /**
@@ -100,21 +102,24 @@ public class Base64Functions extends AbstractFunction {
       throws ParserException {
 
     if (min == max) {
-      if (parameters.size() != max)
+      if (parameters.size() != max) {
         throw new ParserException(
             I18N.getText(
                 "macro.function.general.wrongNumParam", functionName, max, parameters.size()));
+      }
 
     } else {
-      if (parameters.size() < min)
+      if (parameters.size() < min) {
         throw new ParserException(
             I18N.getText(
                 "macro.function.general.notEnoughParam", functionName, min, parameters.size()));
+      }
 
-      if (parameters.size() > max)
+      if (parameters.size() > max) {
         throw new ParserException(
             I18N.getText(
                 "macro.function.general.tooManyParam", functionName, max, parameters.size()));
+      }
     }
   }
 }

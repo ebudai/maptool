@@ -50,15 +50,17 @@ public class CurrentInitiativeFunction extends AbstractFunction {
       Parser parser, VariableResolver resolver, String functionName, List<Object> args)
       throws ParserException {
     if (!MapTool.getParser().isMacroTrusted()) {
-      if (!MapTool.getFrame().getInitiativePanel().hasGMPermission())
+      if (!MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
         throw new ParserException(I18N.getText("macro.function.initiative.mustBeGM", functionName));
+      }
     }
 
     if (functionName.equals("getCurrentInitiative")) {
       return getCurrentInitiative();
     } else if (functionName.equals("setCurrentInitiative")) {
-      if (args.size() != 1)
+      if (args.size() != 1) {
         throw new ParserException(I18N.getText("macro.function.initiative.oneParam", functionName));
+      }
       setCurrentInitiative(args.get(0));
       return args.get(0);
     } else if (functionName.equalsIgnoreCase("getInitiativeToken")) {

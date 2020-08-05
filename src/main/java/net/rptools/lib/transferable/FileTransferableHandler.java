@@ -33,7 +33,9 @@ public class FileTransferableHandler extends TransferableHandler {
       @SuppressWarnings("unchecked")
       List<File> files = (List<File>) transferable.getTransferData(fileList);
       List<URL> urls = new ArrayList<URL>(files.size());
-      for (File file : files) urls.add(file.toURI().toURL());
+      for (File file : files) {
+        urls.add(file.toURI().toURL());
+      }
       return urls;
     }
     throw new UnsupportedFlavorException(null);

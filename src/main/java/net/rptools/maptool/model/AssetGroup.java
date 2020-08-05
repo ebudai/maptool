@@ -240,7 +240,9 @@ public class AssetGroup {
     groupsLoaded = false;
     filesLoaded = false;
 
-    for (AssetGroup group : assetGroupList) group.updateGroup();
+    for (AssetGroup group : assetGroupList) {
+      group.updateGroup();
+    }
   }
 
   private static class AssetTS {

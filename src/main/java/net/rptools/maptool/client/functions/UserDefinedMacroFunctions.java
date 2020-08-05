@@ -316,7 +316,9 @@ public class UserDefinedMacroFunctions implements Function, AdditionalFunctionDe
       List<String> lines = new ArrayList<>();
       for (String name : aliases) {
         StringBuilder line = new StringBuilder(name);
-        if (showFullLocations) line.append(" - ").append(getFunctionLocation(name));
+        if (showFullLocations) {
+          line.append(" - ").append(getFunctionLocation(name));
+        }
         String tooltip = getFunctionTooltip(name);
         if (tooltip != null && !tooltip.isEmpty()) {
           tooltip = StringFunctions.getInstance().replace(tooltip, "<", "&lt;");
@@ -332,7 +334,9 @@ public class UserDefinedMacroFunctions implements Function, AdditionalFunctionDe
       for (String name : aliases) {
         JsonObject fDef = new JsonObject();
         fDef.addProperty("name", name);
-        if (showFullLocations) fDef.addProperty("source", getFunctionLocation(name));
+        if (showFullLocations) {
+          fDef.addProperty("source", getFunctionLocation(name));
+        }
         String tooltip = getFunctionTooltip(name);
         if (tooltip != null && !tooltip.isEmpty()) {
           tooltip = StringFunctions.getInstance().replace(tooltip, "<", "&lt;");
@@ -346,7 +350,9 @@ public class UserDefinedMacroFunctions implements Function, AdditionalFunctionDe
       List<String> strings = new ArrayList<>();
       for (String name : aliases) {
         strings.add(name);
-        if (showFullLocations) strings.add(getFunctionLocation(name));
+        if (showFullLocations) {
+          strings.add(getFunctionLocation(name));
+        }
         strings.add(getFunctionTooltip(name));
       }
       return StringUtils.join(strings, delim);
@@ -437,7 +443,9 @@ public class UserDefinedMacroFunctions implements Function, AdditionalFunctionDe
     FunctionDefinition theDef = userDefinedFunctions.get(functionName);
     if (theDef != null) {
       String[] macroParts = theDef.macroName.split("@", 2);
-      if (macroParts.length != 2) return null;
+      if (macroParts.length != 2) {
+        return null;
+      }
       String macroName = macroParts[0];
       String macroLocation = macroParts[1];
       try {

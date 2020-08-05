@@ -137,7 +137,9 @@ public class JSONMacroFunctionsOld extends AbstractFunction {
       String path = parameters.get(1).toString();
       Object value = parameters.get(2);
       Object json = convertToJSON(value.toString());
-      if (json != null) value = json; // to prevent quotes getting turned into \" and \"
+      if (json != null) {
+        value = json; // to prevent quotes getting turned into \" and \"
+      }
 
       try {
         return JsonPath.parse(jsonStr).add(path, value).jsonString(); // add element to array
@@ -153,7 +155,9 @@ public class JSONMacroFunctionsOld extends AbstractFunction {
       String path = parameters.get(1).toString();
       Object value = parameters.get(2);
       Object json = convertToJSON(value.toString());
-      if (json != null) value = json;
+      if (json != null) {
+        value = json;
+      }
 
       try {
         return JsonPath.parse(jsonStr).set(path, value).jsonString(); // set element in array/object
@@ -170,7 +174,9 @@ public class JSONMacroFunctionsOld extends AbstractFunction {
       String key = parameters.get(2).toString();
       Object value = parameters.get(3);
       Object json = convertToJSON(value.toString());
-      if (json != null) value = json;
+      if (json != null) {
+        value = json;
+      }
 
       try {
         return JsonPath.parse(jsonStr).put(path, key, value).jsonString(); // add value in object
@@ -338,13 +344,15 @@ public class JSONMacroFunctionsOld extends AbstractFunction {
       if (parameters.size() > 2) {
         List<String> fields = new ArrayList<String>(parameters.size() - 2);
         for (Object o : parameters.subList(2, parameters.size())) {
-          if (o instanceof String) fields.add((String) o);
-          else
+          if (o instanceof String) {
+            fields.add((String) o);
+          } else {
             throw new ParserException(
                 I18N.getText(
                     "macro.function.json.unknownType",
                     o == null ? "NULL" : o.toString(),
                     functionName));
+          }
         }
         return JSONSort(asJSON(parameters.get(0)), parameters.get(1).toString(), fields);
       } else {
@@ -1534,15 +1542,18 @@ public class JSONMacroFunctionsOld extends AbstractFunction {
     String[] stringArray = list.split(delim);
 
     // Empty list should generate empty JSON array
-    if (stringArray.length == 1 && stringArray[0].length() == 0) return new JSONArray();
+    if (stringArray.length == 1 && stringArray[0].length() == 0) {
+      return new JSONArray();
+    }
 
     Object[] array = new Object[stringArray.length];
     // Try to convert it to a number and if that works we store it that way
     for (int i = 0; i < stringArray.length; i++) {
       String value = stringArray[i].trim();
       // Empty list element generates an empty string in the JSON array
-      if (value.length() == 0) array[i] = "";
-      else {
+      if (value.length() == 0) {
+        array[i] = "";
+      } else {
         try {
           BigDecimal bd = new BigDecimal(value);
           array[i] = bd;

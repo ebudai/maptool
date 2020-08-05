@@ -145,7 +145,9 @@ public class HTMLFrameFactory {
         }
       }
     }
-    if (tabTitle == null) tabTitle = title; // if tabTitle not set, make it same as title
+    if (tabTitle == null) {
+      tabTitle = title; // if tabTitle not set, make it same as title
+    }
     if (frameType == FrameType.FRAME) {
       HTMLFrame.showFrame(
           name, title, tabTitle, width, height, temporary, scrollReset, isHTML5, frameValue, html);
@@ -206,7 +208,9 @@ public class HTMLFrameFactory {
         List<Token> tokens; // could be receiving a list from putTokens()
         if (event.getArg() instanceof Token) {
           tokens = Collections.singletonList((Token) event.getArg());
-        } else tokens = (List<Token>) event.getArg();
+        } else {
+          tokens = (List<Token>) event.getArg();
+        }
         Set<GUID> selectedTokens =
             MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokenSet();
         boolean selectedChange = false;

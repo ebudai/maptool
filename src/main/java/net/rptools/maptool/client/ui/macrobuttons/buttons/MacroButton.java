@@ -137,8 +137,11 @@ public class MacroButton extends JButton implements MouseListener {
     String buttonLabel;
     String label = properties.getLabel();
     Matcher m = MACRO_LABEL.matcher(label);
-    if (m.matches()) buttonLabel = m.group(2);
-    else buttonLabel = label;
+    if (m.matches()) {
+      buttonLabel = m.group(2);
+    } else {
+      buttonLabel = label;
+    }
 
     String div = "<div style='font-size: " + properties.getFontSize() + "; text-align: center'>";
     String formatButtonLabel =
@@ -153,11 +156,12 @@ public class MacroButton extends JButton implements MouseListener {
     // if there is no hotkey (HOTKEY[0]) then no need to add hint
     String hotKey = properties.getHotKey();
     String result = null;
-    if (hotKey.equals(MacroButtonHotKeyManager.HOTKEYS[0]) || !properties.getDisplayHotKey())
+    if (hotKey.equals(MacroButtonHotKeyManager.HOTKEYS[0]) || !properties.getDisplayHotKey()) {
       result = "<html>" + div + formatButtonLabel;
-    else
+    } else {
       result =
           "<html>" + div + formatButtonLabel + "<font style='font-size:0.8em'> (" + hotKey + ")";
+    }
     return result;
   }
 

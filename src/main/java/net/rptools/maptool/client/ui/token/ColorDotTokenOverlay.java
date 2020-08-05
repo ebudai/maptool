@@ -50,7 +50,9 @@ public class ColorDotTokenOverlay extends XTokenOverlay {
    */
   public ColorDotTokenOverlay(String aName, Color aColor, Quadrant aCorner) {
     super(aName, aColor, 0);
-    if (aCorner != null) corner = aCorner;
+    if (aCorner != null) {
+      corner = aCorner;
+    }
   }
 
   /** @see net.rptools.maptool.client.ui.token.BooleanTokenOverlay#clone() */
@@ -98,9 +100,10 @@ public class ColorDotTokenOverlay extends XTokenOverlay {
           break;
       } // endswitch
       Shape s = new Ellipse2D.Double(x, y, size, size);
-      if (getOpacity() != 100)
+      if (getOpacity() != 100) {
         g.setComposite(
             AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+      }
       g.fill(s);
     } finally {
       g.setColor(tempColor);

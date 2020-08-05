@@ -33,7 +33,9 @@ public class MemoryStatusBar extends JProgressBar {
   private static FontMetrics fm = null;
 
   public static MemoryStatusBar getInstance() {
-    if (msb == null) msb = new MemoryStatusBar();
+    if (msb == null) {
+      msb = new MemoryStatusBar();
+    }
     return msb;
   }
 
@@ -104,7 +106,9 @@ public class MemoryStatusBar extends JProgressBar {
     long freeMemory = Runtime.getRuntime().freeMemory();
     long maxMemory = Runtime.getRuntime().maxMemory();
 
-    if (totalMemory > largestMemoryUsed) largestMemoryUsed = totalMemory;
+    if (totalMemory > largestMemoryUsed) {
+      largestMemoryUsed = totalMemory;
+    }
 
     setMaximum((int) (totalMemory / (1024 * 1024)));
     setValue((int) ((totalMemory - freeMemory) / (1024 * 1024)));

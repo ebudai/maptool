@@ -205,7 +205,9 @@ public class ConnectToServerDialog extends AbeillePanel<ConnectToServerDialogPre
                   JTable rem = getRemoteServerTable();
                   getServerNameTextField()
                       .setText(rem.getModel().getValueAt(rem.getSelectedRow(), 0).toString());
-                  if (e.getClickCount() == 2) handleOK();
+                  if (e.getClickCount() == 2) {
+                    handleOK();
+                  }
                 }
               };
             });
@@ -340,7 +342,9 @@ public class ConnectToServerDialog extends AbeillePanel<ConnectToServerDialogPre
                 "ConnectToServerDialog.warning.doNotUseExternalAddress",
                 I18N.getString("menu.file"),
                 I18N.getString("action.showConnectionInfo"));
-        if (!yes) return;
+        if (!yes) {
+          return;
+        }
       }
     } catch (UnknownHostException e) {
       // If an exception occurs, don't bother doing the comparison. But otherwise it's not an error.

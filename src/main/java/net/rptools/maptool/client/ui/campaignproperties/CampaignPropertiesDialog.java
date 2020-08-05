@@ -239,50 +239,57 @@ public class CampaignPropertiesDialog extends JDialog {
       switch (sight.getShape()) {
         case SQUARE:
           builder.append("square ");
-          if (sight.getDistance() != 0)
+          if (sight.getDistance() != 0) {
             builder
                 .append("distance=")
                 .append(StringUtil.formatDecimal(sight.getDistance()))
                 .append(' ');
+          }
           break;
         case CIRCLE:
           builder.append("circle ");
-          if (sight.getDistance() != 0)
+          if (sight.getDistance() != 0) {
             builder
                 .append("distance=")
                 .append(StringUtil.formatDecimal(sight.getDistance()))
                 .append(' ');
+          }
           break;
         case GRID:
           builder.append("grid ");
-          if (sight.getDistance() != 0)
+          if (sight.getDistance() != 0) {
             builder
                 .append("distance=")
                 .append(StringUtil.formatDecimal(sight.getDistance()))
                 .append(' ');
+          }
           break;
         case HEX:
           builder.append("hex ");
-          if (sight.getDistance() != 0)
+          if (sight.getDistance() != 0) {
             builder
                 .append("distance=")
                 .append(StringUtil.formatDecimal(sight.getDistance()))
                 .append(' ');
+          }
           break;
         case CONE:
           builder.append("cone ");
-          if (sight.getArc() != 0)
+          if (sight.getArc() != 0) {
             builder.append("arc=").append(StringUtil.formatDecimal(sight.getArc())).append(' ');
-          if (sight.getOffset() != 0)
+          }
+          if (sight.getOffset() != 0) {
             builder
                 .append("offset=")
                 .append(StringUtil.formatDecimal(sight.getOffset()))
                 .append(' ');
-          if (sight.getDistance() != 0)
+          }
+          if (sight.getDistance() != 0) {
             builder
                 .append("distance=")
                 .append(StringUtil.formatDecimal(sight.getDistance()))
                 .append(' ');
+          }
           break;
         default:
           throw new IllegalArgumentException("Invalid shape?!");
@@ -348,8 +355,12 @@ public class CampaignPropertiesDialog extends JDialog {
           // TODO: This HAS to change, the lights need to be auto describing, this hard wiring sucks
           if (lightSource.getType() == LightSource.Type.AURA) {
             // Currently these are mutually exclusive but perhaps not in the future?
-            if (light.isGM() && light.isGM() != lastGM) builder.append(" GM");
-            if (light.isOwnerOnly() && light.isOwnerOnly() != lastOwner) builder.append(" OWNER");
+            if (light.isGM() && light.isGM() != lastGM) {
+              builder.append(" GM");
+            }
+            if (light.isOwnerOnly() && light.isOwnerOnly() != lastOwner) {
+              builder.append(" OWNER");
+            }
             lastGM = light.isGM();
             lastOwner = light.isOwnerOnly();
           }
@@ -367,15 +378,18 @@ public class CampaignPropertiesDialog extends JDialog {
                 {
                   lastArc = light.getArcAngle();
                   shape = "cone arc=" + StringUtil.formatDecimal(lastArc);
-                  if (light.getFacingOffset() != 0)
+                  if (light.getFacingOffset() != 0) {
                     builder
                         .append(" offset=")
                         .append(StringUtil.formatDecimal(light.getFacingOffset()))
                         .append(' ');
+                  }
                 }
                 break;
             }
-            if (!lastShape.equals(shape)) builder.append(' ').append(shape);
+            if (!lastShape.equals(shape)) {
+              builder.append(' ').append(shape);
+            }
             lastShape = shape;
           }
           builder.append(' ').append(StringUtil.formatDecimal(light.getRadius()));
@@ -834,7 +848,9 @@ public class CampaignPropertiesDialog extends JDialog {
             e -> {
               JFileChooser chooser = MapTool.getFrame().getLoadPropsFileChooser();
 
-              if (chooser.showOpenDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) return;
+              if (chooser.showOpenDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) {
+                return;
+              }
 
               final File selectedFile = chooser.getSelectedFile();
               EventQueue.invokeLater(
@@ -860,7 +876,9 @@ public class CampaignPropertiesDialog extends JDialog {
               // END HACK
 
               JFileChooser chooser = MapTool.getFrame().getSavePropsFileChooser();
-              if (chooser.showSaveDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) return;
+              if (chooser.showSaveDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) {
+                return;
+              }
 
               File selectedFile = chooser.getSelectedFile();
               if (selectedFile.exists()) {

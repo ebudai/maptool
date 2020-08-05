@@ -320,16 +320,22 @@ public abstract class DefaultTool extends Tool
    * For touch screens, swap the events, easier to move map/draw by default
    */
   public boolean isLeftMouseButton(MouseEvent event) {
-    if (isTouchScreen) return SwingUtilities.isRightMouseButton(event);
-    else return SwingUtilities.isLeftMouseButton(event);
+    if (isTouchScreen) {
+      return SwingUtilities.isRightMouseButton(event);
+    } else {
+      return SwingUtilities.isLeftMouseButton(event);
+    }
   }
 
   /*
    * For touch screens, swap the events, easier to move map/draw by default
    */
   public boolean isRightMouseButton(MouseEvent event) {
-    if (isTouchScreen) return SwingUtilities.isLeftMouseButton(event);
-    else return SwingUtilities.isRightMouseButton(event);
+    if (isTouchScreen) {
+      return SwingUtilities.isLeftMouseButton(event);
+    } else {
+      return SwingUtilities.isRightMouseButton(event);
+    }
   }
 
   /*

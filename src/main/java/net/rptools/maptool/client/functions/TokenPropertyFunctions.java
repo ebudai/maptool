@@ -669,7 +669,9 @@ public class TokenPropertyFunctions extends AbstractFunction {
      */
     if (functionName.equals("setOwnedByAll")) {
       // If not trusted, do nothing and return -1 result
-      if (!MapTool.getParser().isMacroTrusted()) return -1;
+      if (!MapTool.getParser().isMacroTrusted()) {
+        return -1;
+      }
 
       FunctionUtil.checkNumberParam(functionName, parameters, 1, 3);
       Token token = FunctionUtil.getTokenFromParam(resolver, functionName, parameters, 1, 2);

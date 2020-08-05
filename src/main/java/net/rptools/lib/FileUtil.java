@@ -179,7 +179,9 @@ public class FileUtil {
    */
   @Deprecated
   public static String getString(InputStream is) throws IOException {
-    if (is == null) throw new IllegalArgumentException("InputStream cannot be null");
+    if (is == null) {
+      throw new IllegalArgumentException("InputStream cannot be null");
+    }
     return IOUtils.toString(is, StandardCharsets.UTF_8);
   }
 
@@ -210,7 +212,9 @@ public class FileUtil {
     String type = "";
     try {
       type = URLConnection.guessContentTypeFromStream(in);
-      if (log.isDebugEnabled()) log.debug("result from guessContentTypeFromStream() is " + type);
+      if (log.isDebugEnabled()) {
+        log.debug("result from guessContentTypeFromStream() is " + type);
+      }
     } catch (IOException e) {
     }
     return type;
@@ -226,8 +230,9 @@ public class FileUtil {
   public static String getContentType(URL url) {
     String type = "";
     type = URLConnection.guessContentTypeFromName(url.getPath());
-    if (log.isDebugEnabled())
+    if (log.isDebugEnabled()) {
       log.debug("result from guessContentTypeFromName(" + url.getPath() + ") is " + type);
+    }
     return type;
   }
 
@@ -362,7 +367,9 @@ public class FileUtil {
    * @throws IOException in case of an I/O error
    */
   public static void unzip(URL url, File destDir) throws IOException {
-    if (url == null) throw new IOException("URL cannot be null");
+    if (url == null) {
+      throw new IOException("URL cannot be null");
+    }
 
     InputStream is = url.openStream();
     try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is))) {
@@ -371,7 +378,9 @@ public class FileUtil {
   }
 
   public static void unzip(ZipInputStream in, File destDir) throws IOException {
-    if (in == null) throw new IOException("input stream cannot be null");
+    if (in == null) {
+      throw new IOException("input stream cannot be null");
+    }
 
     // Prepare destination
     destDir.mkdirs();
@@ -380,7 +389,9 @@ public class FileUtil {
     // Pull out the files
     ZipEntry entry = null;
     while ((entry = in.getNextEntry()) != null) {
-      if (entry.isDirectory()) continue;
+      if (entry.isDirectory()) {
+        continue;
+      }
 
       // Prepare file destination
       File entryFile = new File(absDestDir, entry.getName());
@@ -394,14 +405,18 @@ public class FileUtil {
   }
 
   public static void unzipFile(File sourceFile, File destDir) throws IOException {
-    if (!sourceFile.exists()) throw new IOException("source file does not exist: " + sourceFile);
+    if (!sourceFile.exists()) {
+      throw new IOException("source file does not exist: " + sourceFile);
+    }
 
     try (ZipFile zipFile = new ZipFile(sourceFile)) {
       Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
       while (entries.hasMoreElements()) {
         ZipEntry entry = entries.nextElement();
-        if (entry.isDirectory()) continue;
+        if (entry.isDirectory()) {
+          continue;
+        }
 
         File file = new File(destDir, entry.getName());
         String path = file.getAbsolutePath();
@@ -466,11 +481,15 @@ public class FileUtil {
     if (file.isDirectory()) {
       // Wipe the contents first
       for (File currfile : file.listFiles()) {
-        if (".".equals(currfile.getName()) || "..".equals(currfile.getName())) continue;
+        if (".".equals(currfile.getName()) || "..".equals(currfile.getName())) {
+          continue;
+        }
         delete(currfile, daysOld);
       }
     }
-    if (shouldDelete) file.delete();
+    if (shouldDelete) {
+      file.delete();
+    }
   }
 
   /**

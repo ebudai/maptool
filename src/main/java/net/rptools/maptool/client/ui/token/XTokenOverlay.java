@@ -53,9 +53,13 @@ public class XTokenOverlay extends BooleanTokenOverlay {
    */
   public XTokenOverlay(String aName, Color aColor, int aWidth) {
     super(aName);
-    if (aColor == null) aColor = Color.RED;
+    if (aColor == null) {
+      aColor = Color.RED;
+    }
     color = aColor;
-    if (aWidth <= 0) aWidth = 3;
+    if (aWidth <= 0) {
+      aWidth = 3;
+    }
     stroke = new BasicStroke(aWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
   }
 
@@ -70,9 +74,10 @@ public class XTokenOverlay extends BooleanTokenOverlay {
     Stroke tempStroke = g.getStroke();
     g.setStroke(stroke);
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     g.draw(new Line2D.Double(0, 0, bounds.width, bounds.height));
     g.draw(new Line2D.Double(0, bounds.height, bounds.width, 0));
     g.setColor(tempColor);
@@ -136,7 +141,9 @@ public class XTokenOverlay extends BooleanTokenOverlay {
    * @param aWidth The width to set.
    */
   public void setWidth(int aWidth) {
-    if (aWidth <= 0) aWidth = 3;
+    if (aWidth <= 0) {
+      aWidth = 3;
+    }
     stroke = new BasicStroke(aWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
   }
 }

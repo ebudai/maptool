@@ -568,7 +568,9 @@ public class MessagePanelImageView extends View {
         }
       }
       return i;
-    } else return deflt;
+    } else {
+      return deflt;
+    }
   }
 
   /** Makes sure the necessary properties and image is loaded. */

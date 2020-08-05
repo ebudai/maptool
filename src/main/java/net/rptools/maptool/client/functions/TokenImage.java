@@ -90,8 +90,9 @@ public class TokenImage extends AbstractFunction {
     Token token;
 
     if (functionName.equals("setTokenOpacity")) {
-      if (!MapTool.getParser().isMacroTrusted())
+      if (!MapTool.getParser().isMacroTrusted()) {
         throw new ParserException(I18N.getText("macro.function.general.noPerm", functionName));
+      }
 
       FunctionUtil.checkNumberParam(functionName, args, 1, 3);
       String strOpacity = args.get(0).toString();
@@ -103,8 +104,9 @@ public class TokenImage extends AbstractFunction {
     }
 
     if (functionName.equals("getTokenOpacity")) {
-      if (!MapTool.getParser().isMacroTrusted())
+      if (!MapTool.getParser().isMacroTrusted()) {
         throw new ParserException(I18N.getText("macro.function.general.noPerm", functionName));
+      }
 
       FunctionUtil.checkNumberParam(functionName, args, 0, 2);
       token = FunctionUtil.getTokenFromParam(resolver, functionName, args, 0, 1);
@@ -161,7 +163,9 @@ public class TokenImage extends AbstractFunction {
       token = findImageToken(args.get(0).toString(), "getImage");
 
       // Lee: people want a blank instead of an error
-      if (token == null) return "";
+      if (token == null) {
+        return "";
+      }
 
       if (args.size() > 1) {
         indexSize = 1;

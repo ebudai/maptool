@@ -56,7 +56,9 @@ public class ReturnFunction extends AbstractFunction implements DefinesSpecialVa
         returnException.setResult(parameters.get(1));
       }
       throw returnException;
-    } else return new BigDecimal(value.intValue());
+    } else {
+      return new BigDecimal(value.intValue());
+    }
   }
 
   @Override

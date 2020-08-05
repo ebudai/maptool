@@ -38,7 +38,9 @@ public class AppSetup {
   public static void install() {
     try {
       // Only init once
-      if (!new File(AppConstants.UNZIP_DIR, "README").exists()) installDefaultTokens();
+      if (!new File(AppConstants.UNZIP_DIR, "README").exists()) {
+        installDefaultTokens();
+      }
     } catch (IOException ioe) {
       log.error(ioe);
     }
@@ -63,7 +65,9 @@ public class AppSetup {
   }
 
   private static void installUsingReflection(String source, File dir, String name) {
-    if (isNotEmpty(dir)) return;
+    if (isNotEmpty(dir)) {
+      return;
+    }
 
     Reflections reflections = new Reflections(source, new ResourcesScanner());
     Set<String> resourcePathSet = reflections.getResources(Pattern.compile(".*"));

@@ -223,8 +223,9 @@ public class GraphicsUtil {
    *     light colors from getting bleached out.
    */
   public static Color lighter(Color c) {
-    if (c == null) return null;
-    else {
+    if (c == null) {
+      return null;
+    } else {
       int r = c.getRed();
       int g = c.getGreen();
       int b = c.getBlue();

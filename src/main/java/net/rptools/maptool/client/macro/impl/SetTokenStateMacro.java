@@ -167,7 +167,9 @@ public class SetTokenStateMacro implements Macro {
    *     name could be found.
    */
   public String getState(String state) {
-    if (MapTool.getCampaign().getTokenStatesMap().get(state) != null) return state;
+    if (MapTool.getCampaign().getTokenStatesMap().get(state) != null) {
+      return state;
+    }
     String newState = null;
     for (String name : MapTool.getCampaign().getTokenStatesMap().keySet()) {
       if (name.equalsIgnoreCase(state)) {

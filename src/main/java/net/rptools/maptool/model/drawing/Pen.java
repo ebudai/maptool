@@ -131,13 +131,19 @@ public class Pen {
   }
 
   public int getStrokeCap() {
-    if (squareCap) return BasicStroke.CAP_SQUARE;
-    else return BasicStroke.CAP_ROUND;
+    if (squareCap) {
+      return BasicStroke.CAP_SQUARE;
+    } else {
+      return BasicStroke.CAP_ROUND;
+    }
   }
 
   public int getStrokeJoin() {
-    if (squareCap) return BasicStroke.JOIN_MITER;
-    else return BasicStroke.JOIN_ROUND;
+    if (squareCap) {
+      return BasicStroke.JOIN_MITER;
+    } else {
+      return BasicStroke.JOIN_ROUND;
+    }
   }
 
   // ***** Legacy support, these supports drawables from 1.1

@@ -165,7 +165,9 @@ public class InitiativeListCellRenderer extends JPanel
 
     // Set the background by type
     Token token = null;
-    if (ti != null) token = ti.getToken();
+    if (ti != null) {
+      token = ti.getToken();
+    }
     if (token == null) { // Can happen when deleting a token before all events have propagated
       currentIndicator.setIcon(null);
       name.setText(null);
@@ -192,10 +194,15 @@ public class InitiativeListCellRenderer extends JPanel
     String sName = (initStateSecondLine ? "<html>" : "") + ti.getToken().getName();
     if (MapTool.getFrame().getInitiativePanel().hasGMPermission()
         && token.getGMName() != null
-        && token.getGMName().trim().length() != 0) sName += " (" + token.getGMName().trim() + ")";
-    if (panel.isShowInitState() && ti.getState() != null)
+        && token.getGMName().trim().length() != 0) {
+      sName += " (" + token.getGMName().trim() + ")";
+    }
+    if (panel.isShowInitState() && ti.getState() != null) {
       sName += (initStateSecondLine ? "<br>" : " = ") + ti.getState();
-    if (initStateSecondLine) sName += "</html>";
+    }
+    if (initStateSecondLine) {
+      sName += "</html>";
+    }
     Icon icon = null;
     if (panel.isShowTokens()) {
       icon = ti.getDisplayIcon();
@@ -254,7 +261,9 @@ public class InitiativeListCellRenderer extends JPanel
       Dimension s = super.getPreferredSize();
       int th = textHeight * (initStateSecondLine ? 2 : 1);
       Insets insets = getInsets();
-      if (getIcon() != null) th = Math.max(th, getIcon().getIconHeight());
+      if (getIcon() != null) {
+        th = Math.max(th, getIcon().getIconHeight());
+      }
       s.height = th + insets.top + insets.bottom - 4;
       return s;
     }
@@ -359,14 +368,20 @@ public class InitiativeListCellRenderer extends JPanel
 
       // Paint the icon, is that all that's needed?
       if (panel.isShowTokenStates() && getImage() != stateTokenImage) {
-        if (stateTokenImage == null) stateTokenImage = scaleImage();
+        if (stateTokenImage == null) {
+          stateTokenImage = scaleImage();
+        }
         setImage(stateTokenImage);
       } else if (!panel.isShowTokenStates() && getImage() != textTokenImage) {
-        if (textTokenImage == null) textTokenImage = scaleImage();
+        if (textTokenImage == null) {
+          textTokenImage = scaleImage();
+        }
         setImage(textTokenImage);
       } // endif
       super.paintIcon(c, g, x, y);
-      if (!panel.isShowTokenStates()) return;
+      if (!panel.isShowTokenStates()) {
+        return;
+      }
 
       // Paint all the states
       g.translate(x, y);
@@ -378,13 +393,17 @@ public class InitiativeListCellRenderer extends JPanel
         if (stateSet instanceof AbstractTokenOverlay
             || overlay == null
             || !overlay.showPlayer(token, MapTool.getPlayer())
-            || overlay.isMouseover()) continue;
+            || overlay.isMouseover()) {
+          continue;
+        }
         overlay.paintOverlay((Graphics2D) g, token, bounds, stateSet);
       } // endfor
       for (String bar : MapTool.getCampaign().getTokenBarsMap().keySet()) {
         Object barSet = token.getState(bar);
         BarTokenOverlay overlay = MapTool.getCampaign().getTokenBarsMap().get(bar);
-        if (overlay == null || !overlay.showPlayer(token, MapTool.getPlayer())) continue;
+        if (overlay == null || !overlay.showPlayer(token, MapTool.getPlayer())) {
+          continue;
+        }
         overlay.paintOverlay((Graphics2D) g, token, bounds, barSet);
       } // endfor
       g.setClip(old);

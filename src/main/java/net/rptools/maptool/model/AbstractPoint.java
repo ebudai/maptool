@@ -39,7 +39,9 @@ public abstract class AbstractPoint implements Cloneable {
   }
 
   public boolean equals(Object o) {
-    if (!(o instanceof AbstractPoint)) return false;
+    if (!(o instanceof AbstractPoint)) {
+      return false;
+    }
     AbstractPoint p = (AbstractPoint) o;
 
     return p.x == x && p.y == y;

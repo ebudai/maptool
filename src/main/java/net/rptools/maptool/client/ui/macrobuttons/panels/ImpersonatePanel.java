@@ -45,10 +45,11 @@ public class ImpersonatePanel extends AbstractMacroPanel {
     // Get the current visibility / autohide state of the Impersonate panel
     if (mtf != null) {
       DockableFrame impersonatePanel = mtf.getDockingManager().getFrame("IMPERSONATED");
-      if (impersonatePanel != null)
+      if (impersonatePanel != null) {
         panelVisible =
             (impersonatePanel.isVisible() && !impersonatePanel.isAutohide())
                 || impersonatePanel.isAutohideShowing();
+      }
     }
     // Only repaint the panel if its visible
     if (panelVisible && mtf != null && mtf.getCurrentZoneRenderer() != null) {

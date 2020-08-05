@@ -83,7 +83,9 @@ public class TokenOverlayFlow {
     gridSize = aGrid;
     size = 1.0D / gridSize;
     offsets = new double[gridSize];
-    for (int i = 0; i < offsets.length; i++) offsets[i] = i * size;
+    for (int i = 0; i < offsets.length; i++) {
+      offsets[i] = i * size;
+    }
   }
 
   /*---------------------------------------------------------------------------------------------
@@ -118,10 +120,14 @@ public class TokenOverlayFlow {
           i.remove();
         } else if (stateValue instanceof Boolean) {
           Boolean b = (Boolean) stateValue;
-          if (b == false) i.remove();
+          if (b == false) {
+            i.remove();
+          }
         } else if (stateValue instanceof BigDecimal) {
           BigDecimal bd = (BigDecimal) stateValue;
-          if (bd.compareTo(BigDecimal.ZERO) == 0) i.remove();
+          if (bd.compareTo(BigDecimal.ZERO) == 0) {
+            i.remove();
+          }
         }
       } // endif
     } // endwhile

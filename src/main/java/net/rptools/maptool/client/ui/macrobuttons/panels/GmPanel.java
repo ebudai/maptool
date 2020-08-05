@@ -37,8 +37,9 @@ public class GmPanel extends AbstractMacroPanel {
   }
 
   private void init() {
-    if (MapTool.getPlayer() == null || MapTool.getPlayer().isGM())
+    if (MapTool.getPlayer() == null || MapTool.getPlayer().isGM()) {
       addArea(getGmMacroButtonArray(), "");
+    }
   }
 
   public void reset() {

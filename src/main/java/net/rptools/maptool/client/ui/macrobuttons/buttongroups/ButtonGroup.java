@@ -76,8 +76,9 @@ public class ButtonGroup extends AbstractButtonGroup {
         if (panelClass.equals("GlobalPanel") || panelClass.equals("CampaignPanel")) {
           add(new MacroButton(prop, this));
         } else if (panelClass.equals("GmPanel")) {
-          if (MapTool.getPlayer() == null || MapTool.getPlayer().isGM())
+          if (MapTool.getPlayer() == null || MapTool.getPlayer().isGM()) {
             add(new MacroButton(prop, this));
+          }
         } else if (panelClass.equals("ImpersonatePanel") || panelClass.equals("SelectionPanel")) {
           add(new MacroButton(prop, this, getToken()));
         }

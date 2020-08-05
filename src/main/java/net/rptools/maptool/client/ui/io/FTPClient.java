@@ -96,7 +96,9 @@ public class FTPClient {
   }
 
   public synchronized List<ChangeListener> getChangeListeners() {
-    if (changeListeners == null) changeListeners = new LinkedList<ChangeListener>();
+    if (changeListeners == null) {
+      changeListeners = new LinkedList<ChangeListener>();
+    }
     return changeListeners;
   }
 
@@ -107,8 +109,11 @@ public class FTPClient {
    * @param data the data thet have changed
    */
   protected void fireStateChanged(final Object data) {
-    if (SwingUtilities.isEventDispatchThread()) postAllChangeEvents(data);
-    else SwingUtilities.invokeLater(() -> postAllChangeEvents(data));
+    if (SwingUtilities.isEventDispatchThread()) {
+      postAllChangeEvents(data);
+    } else {
+      SwingUtilities.invokeLater(() -> postAllChangeEvents(data));
+    }
   }
 
   private void postAllChangeEvents(Object fto) {
@@ -127,7 +132,9 @@ public class FTPClient {
   }
 
   public void setNumberOfThreads(int num) {
-    if (num > 0) numThreads = num;
+    if (num > 0) {
+      numThreads = num;
+    }
   }
 
   public int getNumberOfThreads() {
@@ -145,9 +152,13 @@ public class FTPClient {
      */
     boolean startAnother = false;
     synchronized (transferringMap) {
-      if (transferringMap.size() < numThreads) startAnother = true;
+      if (transferringMap.size() < numThreads) {
+        startAnother = true;
+      }
     }
-    if (startAnother) startNextTransfer();
+    if (startAnother) {
+      startNextTransfer();
+    }
   }
 
   public void removeFromQueue(Object local) {
@@ -183,7 +194,9 @@ public class FTPClient {
     FTPTransferObject data;
     Object local;
     synchronized (todoMap) {
-      if (!running || fifoQueue.isEmpty()) return;
+      if (!running || fifoQueue.isEmpty()) {
+        return;
+      }
       local = fifoQueue.remove(0);
       data = todoMap.remove(local);
     }
@@ -207,10 +220,15 @@ public class FTPClient {
       transferringMap.remove(data.local);
       // TODO Should delete the remote file for uploading, or remove the local
       // file for downloading.
-      if (fifoQueue.isEmpty() == false && transferringMap.size() < numThreads) startAnother = true;
+      if (fifoQueue.isEmpty() == false && transferringMap.size() < numThreads) {
+        startAnother = true;
+      }
     }
-    if (startAnother) startNextTransfer();
-    else if (fifoQueue.isEmpty()) fireStateChanged(this);
+    if (startAnother) {
+      startNextTransfer();
+    } else if (fifoQueue.isEmpty()) {
+      fireStateChanged(this);
+    }
   }
 
   private static final int BLOCKSIZE = 4 * 1024;
@@ -268,7 +286,9 @@ public class FTPClient {
       if (data.remoteDir != null) {
         cconn.mkdir(data.remoteDir.getPath());
         os = cconn.openUploadStream(data.remoteDir.getPath(), data.remote);
-      } else os = cconn.openUploadStream(data.remote);
+      } else {
+        os = cconn.openUploadStream(data.remote);
+      }
       // } catch (IOException e) {
       // File file = new File(data.remoteDir, data.remote);
       // log.error("Attempting to FTP_PUT local asset " + file.getPath());
@@ -309,7 +329,9 @@ public class FTPClient {
       int c = 1;
       while (c > 0) {
         c = is.read(buf);
-        if (c > 0) os.write(buf, 0, c);
+        if (c > 0) {
+          os.write(buf, 0, c);
+        }
         data.incrCurrentPosition();
         fireStateChanged(data);
       }

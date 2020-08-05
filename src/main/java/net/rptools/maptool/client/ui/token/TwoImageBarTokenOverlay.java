@@ -100,9 +100,10 @@ public class TwoImageBarTokenOverlay extends BarTokenOverlay {
     }
 
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
 
     int width =
         (getSide() == Side.TOP || getSide() == Side.BOTTOM)

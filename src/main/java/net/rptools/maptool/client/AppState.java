@@ -198,7 +198,9 @@ public class AppState {
   public static void acquireBackgroundTaskLock(int waitSeconds)
       throws FailedToAcquireLockException {
     try {
-      if (backgroundTaskLock.tryLock(waitSeconds, TimeUnit.SECONDS)) return;
+      if (backgroundTaskLock.tryLock(waitSeconds, TimeUnit.SECONDS)) {
+        return;
+      }
     } catch (InterruptedException ie) {
     }
     throw new FailedToAcquireLockException();

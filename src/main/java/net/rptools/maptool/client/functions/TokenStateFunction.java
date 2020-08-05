@@ -181,7 +181,9 @@ public class TokenStateFunction extends AbstractFunction {
       stateNames = new HashSet<String>();
       for (BooleanTokenOverlay bto : states.values()) {
         // return states of the group that matches
-        if (group.equals(bto.getGroup())) stateNames.add(bto.getName());
+        if (group.equals(bto.getGroup())) {
+          stateNames.add(bto.getName());
+        }
       }
     }
 

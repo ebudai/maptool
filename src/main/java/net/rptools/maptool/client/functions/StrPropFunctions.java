@@ -157,26 +157,27 @@ public class StrPropFunctions extends AbstractFunction {
     ArrayList<String> oldKeys = new ArrayList<String>();
     ArrayList<String> oldKeysNormalized = new ArrayList<String>();
 
-    if ("getStrProp".equalsIgnoreCase(functionName))
+    if ("getStrProp".equalsIgnoreCase(functionName)) {
       retval = getStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
-    else if ("setStrProp".equalsIgnoreCase(functionName))
+    } else if ("setStrProp".equalsIgnoreCase(functionName)) {
       retval = setStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
-    else if ("deleteStrProp".equalsIgnoreCase(functionName))
+    } else if ("deleteStrProp".equalsIgnoreCase(functionName)) {
       retval = deleteStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
-    else if ("varsFromStrProp".equalsIgnoreCase(functionName))
+    } else if ("varsFromStrProp".equalsIgnoreCase(functionName)) {
       retval =
           varsFromStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized, resolver);
-    else if ("strPropFromVars".equalsIgnoreCase(functionName))
+    } else if ("strPropFromVars".equalsIgnoreCase(functionName)) {
       retval =
           strPropFromVars(parameters, lastParam, props, map, oldKeys, oldKeysNormalized, resolver);
-    else if ("countStrProp".equalsIgnoreCase(functionName))
+    } else if ("countStrProp".equalsIgnoreCase(functionName)) {
       retval = countStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
-    else if ("indexKeyStrProp".equalsIgnoreCase(functionName))
+    } else if ("indexKeyStrProp".equalsIgnoreCase(functionName)) {
       retval = indexKeyStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
-    else if ("indexValueStrProp".equalsIgnoreCase(functionName))
+    } else if ("indexValueStrProp".equalsIgnoreCase(functionName)) {
       retval = indexValueStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
-    else if ("formatStrProp".equalsIgnoreCase(functionName))
+    } else if ("formatStrProp".equalsIgnoreCase(functionName)) {
       retval = formatStrProp(parameters, lastParam, props, map, oldKeys, oldKeysNormalized);
+    }
 
     return retval;
   }
@@ -217,7 +218,9 @@ public class StrPropFunctions extends AbstractFunction {
     if (parameters.size() >= 3) {
       retval = parameters.get(2); // this third parameter is returned if the key is not found
     }
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     userKey = parameters.get(1).toString(); // the key being passed in
@@ -262,7 +265,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, String.class, null, null, String.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     userKey = parameters.get(1).toString(); // the key being passed in
@@ -281,7 +286,9 @@ public class StrPropFunctions extends AbstractFunction {
       sb.append(k);
       sb.append("=");
       sb.append(v);
-      if (--size != 0) sb.append(delim);
+      if (--size != 0) {
+        sb.append(delim);
+      }
     }
     retval = sb.toString();
     return retval;
@@ -320,7 +327,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, String.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     userKey = parameters.get(1).toString(); // the key being passed in
@@ -329,12 +338,16 @@ public class StrPropFunctions extends AbstractFunction {
     int size = oldKeys.size();
     delim = " " + delim + " ";
     for (String k : oldKeys) {
-      if (k.compareToIgnoreCase(userKey) == 0) continue;
+      if (k.compareToIgnoreCase(userKey) == 0) {
+        continue;
+      }
       String v = map.get(k.toUpperCase());
       sb.append(k);
       sb.append("=");
       sb.append(v);
-      if (--size != 0) sb.append(delim);
+      if (--size != 0) {
+        sb.append(delim);
+      }
     }
     retval = sb.toString();
     return retval;
@@ -397,7 +410,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, String.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
 
     if (parameters.size() == 1) {
       option = 2; // default to unsuffixed to match old behavior pre 1.3b48
@@ -485,7 +500,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, String.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     String varStyleString = parameters.size() > 1 ? parameters.get(1).toString() : "UNSUFFIXED";
 
     int varStyle;
@@ -543,7 +560,9 @@ public class StrPropFunctions extends AbstractFunction {
     int maxParams = minParams + 1;
     checkVaryingParameters(
         "countStrProp()", minParams, maxParams, parameters, new Class[] {String.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     retval = new BigDecimal(oldKeys.size());
@@ -582,7 +601,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, BigDecimal.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     int index = ((BigDecimal) parameters.get(1)).intValue();
@@ -628,7 +649,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, BigDecimal.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     int index = ((BigDecimal) parameters.get(1)).intValue();
@@ -682,7 +705,9 @@ public class StrPropFunctions extends AbstractFunction {
         maxParams,
         parameters,
         new Class[] {String.class, String.class, String.class, String.class, String.class});
-    if (parameters.size() == maxParams) delim = lastParam;
+    if (parameters.size() == maxParams) {
+      delim = lastParam;
+    }
     parse(props, map, oldKeys, oldKeysNormalized, delim);
 
     String listFormat = parameters.get(1).toString();
@@ -761,10 +786,12 @@ public class StrPropFunctions extends AbstractFunction {
     }
 
     int numToCheck = expected.length;
-    if (numToCheck > parameters.size()) numToCheck = parameters.size();
+    if (numToCheck > parameters.size()) {
+      numToCheck = parameters.size();
+    }
 
     for (int i = 0; i < numToCheck; i++) {
-      if (expected[i] != null && !(expected[i].isInstance(parameters.get(i))))
+      if (expected[i] != null && !(expected[i].isInstance(parameters.get(i)))) {
         throw new ParameterException(
             I18N.getText(
                 "macro.function.strLst.incorrectParamType",
@@ -773,6 +800,7 @@ public class StrPropFunctions extends AbstractFunction {
                 expected[i].getSimpleName(),
                 parameters.get(i),
                 parameters.get(i).getClass().getSimpleName()));
+      }
     }
   }
 }

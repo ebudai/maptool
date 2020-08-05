@@ -95,7 +95,9 @@ public class DrawnTextTool extends AbstractDrawingTool implements MouseMotionLis
    */
   @Override
   public void paintOverlay(ZoneRenderer aRenderer, Graphics2D aG) {
-    if (!anchorSet) return;
+    if (!anchorSet) {
+      return;
+    }
     aG.setColor(Color.BLACK);
     aG.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
   }
@@ -116,7 +118,9 @@ public class DrawnTextTool extends AbstractDrawingTool implements MouseMotionLis
   @Override
   protected void resetTool() {
     anchorSet = false;
-    if (textPane != null) renderer.remove(textPane);
+    if (textPane != null) {
+      renderer.remove(textPane);
+    }
     textPane = null;
     renderer.repaint();
   }
@@ -183,8 +187,12 @@ public class DrawnTextTool extends AbstractDrawingTool implements MouseMotionLis
 
   /** @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent) */
   public void mouseMoved(MouseEvent event) {
-    if (!anchorSet) return;
-    if (textPane != null) return;
+    if (!anchorSet) {
+      return;
+    }
+    if (textPane != null) {
+      return;
+    }
     setBounds(event);
     renderer.repaint();
   }

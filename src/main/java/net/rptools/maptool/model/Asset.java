@@ -105,7 +105,9 @@ public class Asset {
           }
           // We can store more than images, eg HeroLabData in the form of a HashMap, assume this if
           // an image type can not be established
-          if (extension.isEmpty()) extension = DATA_EXTENSION;
+          if (extension.isEmpty()) {
+            extension = DATA_EXTENSION;
+          }
         }
       } catch (IOException e) {
         MapTool.showError("IOException?!", e); // Can this happen??

@@ -562,7 +562,9 @@ public class ClientMethodHandler extends AbstractMethodHandler {
               Boolean ownerPermission = (Boolean) parameters[1];
               if (list != null) {
                 zone = list.getZone();
-                if (zone == null) return;
+                if (zone == null) {
+                  return;
+                }
                 zone.setInitiativeList(list);
               }
               if (ownerPermission != null) {
@@ -582,7 +584,9 @@ public class ClientMethodHandler extends AbstractMethodHandler {
                 List<Integer> tokenIndex = list.indexOf(token);
 
                 // If token in list more than one time, punt
-                if (tokenIndex.size() != 1) return;
+                if (tokenIndex.size() != 1) {
+                  return;
+                }
                 ti = list.getTokenInitiative(tokenIndex.get(0));
               } // endif
               ti.update((Boolean) parameters[2], (String) parameters[3]);

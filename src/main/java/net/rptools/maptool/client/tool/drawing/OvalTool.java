@@ -103,9 +103,13 @@ public class OvalTool extends AbstractDrawingTool implements MouseMotionListener
 
         // Draw from center if ALT is held down
         if (e.isAltDown()) {
-          if (zp.x > originPoint.x) oval.x -= oval.width;
+          if (zp.x > originPoint.x) {
+            oval.x -= oval.width;
+          }
 
-          if (zp.y > originPoint.y) oval.y -= oval.height;
+          if (zp.y > originPoint.y) {
+            oval.y -= oval.height;
+          }
 
           oval.width *= 2;
           oval.height *= 2;
@@ -147,9 +151,13 @@ public class OvalTool extends AbstractDrawingTool implements MouseMotionListener
 
       // Draw from center if ALT is held down
       if (e.isAltDown()) {
-        if (sp.x > originPoint.x) oval.x -= oval.width;
+        if (sp.x > originPoint.x) {
+          oval.x -= oval.width;
+        }
 
-        if (sp.y > originPoint.y) oval.y -= oval.height;
+        if (sp.y > originPoint.y) {
+          oval.y -= oval.height;
+        }
 
         oval.width *= 2;
         oval.height *= 2;

@@ -188,15 +188,22 @@ public class MessagePanel extends JPanel {
               if (m.group(1) != null) {
                 options.addAll(Arrays.asList(m.group(1).split(",")));
 
-                if (!options.contains("w") && !options.contains("g") && !options.contains("s"))
-                  ; // visible for everyone
-                else if (options.contains("w:" + MapTool.getPlayer().getName().toLowerCase()))
-                  ; // visible for this player
-                else if (options.contains("g") && MapTool.getPlayer().isGM()) ; // visible for GMs
-                else if (options.contains("s")
-                    && message.getSource().equals(MapTool.getPlayer().getName()))
-                  ; // visible to the player who sent it
-                else {
+                if (!options.contains("w")
+                    && !options.contains("g")
+                    && !options.contains("s")) {; // visible for everyone
+                } else if (options.contains(
+                    "w:"
+                        + MapTool.getPlayer()
+                            .getName()
+                            .toLowerCase())) {; // visible for this player
+                } else if (options.contains("g")
+                    && MapTool.getPlayer().isGM()) {; // visible for GMs
+                } else if (options.contains("s")
+                    && message
+                        .getSource()
+                        .equals(
+                            MapTool.getPlayer().getName())) {; // visible to the player who sent it
+                } else {
                   m.appendReplacement(text, ""); // not visible for this player
                   continue;
                 }
@@ -206,14 +213,19 @@ public class MessagePanel extends JPanel {
                 if (!options.contains("st") && !options.contains("gt")
                     || options.contains("st")
                         && message.getSource().equals(MapTool.getPlayer().getName())
-                    || options.contains("gt") && MapTool.getPlayer().isGM())
+                    || options.contains("gt") && MapTool.getPlayer().isGM()) {
                   replacement = "<span class='roll' title='&#171; $2 &#187;'>$3</span>";
-                else replacement = "$3";
-              } else if (options.contains("u")) replacement = "&#171; $2 &#187;";
-              else if (options.contains("r")) replacement = "$2";
-              else
+                } else {
+                  replacement = "$3";
+                }
+              } else if (options.contains("u")) {
+                replacement = "&#171; $2 &#187;";
+              } else if (options.contains("r")) {
+                replacement = "$2";
+              } else {
                 replacement =
                     "&#171;<span class='roll' style='color:blue'>&nbsp;$2&nbsp;</span>&#187;";
+              }
               m.appendReplacement(text, replacement);
             }
             m.appendTail(text);

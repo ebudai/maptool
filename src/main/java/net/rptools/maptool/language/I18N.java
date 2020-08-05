@@ -123,7 +123,9 @@ public class I18N {
    */
   public static int getMnemonic(String key) {
     String value = getString(key);
-    if (value == null || value.length() < 2) return -1;
+    if (value == null || value.length() < 2) {
+      return -1;
+    }
 
     int index = value.indexOf('&');
     if (index != -1 && index + 1 < value.length()) {
@@ -241,7 +243,9 @@ public class I18N {
   public static void setAction(String key, Action action, boolean addMenuShortcut) {
     action.putValue(Action.NAME, getText(key));
     int mnemonic = getMnemonic(key);
-    if (mnemonic != -1) action.putValue(Action.MNEMONIC_KEY, mnemonic);
+    if (mnemonic != -1) {
+      action.putValue(Action.MNEMONIC_KEY, mnemonic);
+    }
     String accel = getAccelerator(key);
     if (accel != null) {
       KeyStroke k = KeyStroke.getKeyStroke(accel);
@@ -249,14 +253,19 @@ public class I18N {
         log.error("Bad accelerator '" + accel + "' for " + key);
       } else if (addMenuShortcut) {
         int modifiers = k.getModifiers() | AppActions.menuShortcut;
-        if (k.getKeyCode() != 0) k = KeyStroke.getKeyStroke(k.getKeyCode(), modifiers);
-        else k = KeyStroke.getKeyStroke(k.getKeyChar(), modifiers);
+        if (k.getKeyCode() != 0) {
+          k = KeyStroke.getKeyStroke(k.getKeyCode(), modifiers);
+        } else {
+          k = KeyStroke.getKeyStroke(k.getKeyChar(), modifiers);
+        }
       }
       action.putValue(Action.ACCELERATOR_KEY, k);
       // System.err.println("I18N.setAction(\"" + key + "\") = " + k);
     }
     String description = getDescription(key);
-    if (description != null) action.putValue(Action.SHORT_DESCRIPTION, description);
+    if (description != null) {
+      action.putValue(Action.SHORT_DESCRIPTION, description);
+    }
   }
 
   public static KeyStroke getKeystroke(String key) {
@@ -268,8 +277,11 @@ public class I18N {
         log.error("Bad accelerator '" + accel + "' for " + key);
       } else {
         int modifiers = k.getModifiers() | AppActions.menuShortcut;
-        if (k.getKeyCode() != 0) k = KeyStroke.getKeyStroke(k.getKeyCode(), modifiers);
-        else k = KeyStroke.getKeyStroke(k.getKeyChar(), modifiers);
+        if (k.getKeyCode() != 0) {
+          k = KeyStroke.getKeyStroke(k.getKeyCode(), modifiers);
+        } else {
+          k = KeyStroke.getKeyStroke(k.getKeyChar(), modifiers);
+        }
       }
       // System.err.println("I18N.getKeystroke(\"" + key + "\") = " + k);
     }

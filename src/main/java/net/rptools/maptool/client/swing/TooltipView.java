@@ -65,7 +65,9 @@ public class TooltipView extends InlineView {
     }
 
     attSet = (AttributeSet) getElement().getAttributes().getAttribute(HTML.Tag.SPAN);
-    if (attSet != null) return (String) attSet.getAttribute(HTML.Attribute.TITLE);
+    if (attSet != null) {
+      return (String) attSet.getAttribute(HTML.Attribute.TITLE);
+    }
 
     return null;
   }

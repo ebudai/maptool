@@ -202,7 +202,9 @@ public class ZoneView implements ModelChangeListener {
 
       if (visibleArea != null && lightSource.getType() == LightSource.Type.NORMAL) {
         double lumens = lightSource.getLumens();
-        if (lumens < 0) lumens = Math.abs(lumens) + .5;
+        if (lumens < 0) {
+          lumens = Math.abs(lumens) + .5;
+        }
 
         // Group all the light area's by lumens so there is only one area per lumen value
         if (lightSourceAreaMap.containsKey(lumens)) {
@@ -371,7 +373,9 @@ public class ZoneView implements ModelChangeListener {
     Area tokenVisibleArea = tokenVisionCache.get(token.getId());
     // System.out.println("tokenVisionCache size? " + tokenVisionCache.size());
 
-    if (tokenVisibleArea != null) return tokenVisibleArea;
+    if (tokenVisibleArea != null) {
+      return tokenVisibleArea;
+    }
 
     SightType sight = MapTool.getCampaign().getSightType(token.getSightType());
     // More sanity checks; maybe sight type removed from campaign after token set?
@@ -440,7 +444,9 @@ public class ZoneView implements ModelChangeListener {
           double lumens = sight.getPersonalLightSource().getLumens();
           lumens = (lumens == 0) ? LUMEN_VISION : lumens;
           // maybe some kind of imposed blindness?  Anyway, make sure to handle personal darkness..
-          if (lumens < 0) lumens = Math.abs(lumens) + .5;
+          if (lumens < 0) {
+            lumens = Math.abs(lumens) + .5;
+          }
           if (allLightAreaMap.containsKey(lumens)) {
             allLightAreaMap.get(lumens).add(lightArea);
           } else {
@@ -457,7 +463,9 @@ public class ZoneView implements ModelChangeListener {
         // Jamz: negative lumens were converted to absolute value + .5 to sort lights
         // in tree map, so non-integers == darkness and lights are draw/removed in order
         // of lumens and darkness with equal lumens are drawn second due to the added .5
-        if (light.getKey().intValue() != light.getKey()) isDarkness = true;
+        if (light.getKey().intValue() != light.getKey()) {
+          isDarkness = true;
+        }
 
         if (origBounds.intersects(light.getValue().getBounds2D())) {
           Area intersection = new Area(tokenVisibleArea);
@@ -798,12 +806,16 @@ public class ZoneView implements ModelChangeListener {
           @SuppressWarnings("unchecked")
           List<Token> list = (List<Token>) (event.getArg());
           for (Token token : list) {
-            if (token.hasVBL()) tokenChangedVBL = true;
+            if (token.hasVBL()) {
+              tokenChangedVBL = true;
+            }
             flush(token);
           }
         } else {
           final Token token = (Token) event.getArg();
-          if (token.hasVBL()) tokenChangedVBL = true;
+          if (token.hasVBL()) {
+            tokenChangedVBL = true;
+          }
           flush(token);
         }
         // Ug, stupid hack here, can't find a bug where if a NPC token is moved before lights are
@@ -835,7 +847,9 @@ public class ZoneView implements ModelChangeListener {
         }
 
         for (Token token : tokens) {
-          if (token.hasVBL()) tokenChangedVBL = true;
+          if (token.hasVBL()) {
+            tokenChangedVBL = true;
+          }
           for (AttachedLightSource als : token.getLightSources()) {
             LightSource lightSource = MapTool.getCampaign().getLightSource(als.getLightSourceId());
             if (lightSource == null) {
@@ -884,7 +898,9 @@ public class ZoneView implements ModelChangeListener {
     for (Token token : tokens) {
       boolean hasLightSource =
           token.hasLightSources() && (token.isVisible() || MapTool.getPlayer().isEffectiveGM());
-      if (token.hasVBL()) hasVBL = true;
+      if (token.hasVBL()) {
+        hasVBL = true;
+      }
       for (AttachedLightSource als : token.getLightSources()) {
         LightSource lightSource = c.getLightSource(als.getLightSourceId());
         if (lightSource != null) {
@@ -895,13 +911,17 @@ public class ZoneView implements ModelChangeListener {
               lightSourceMap.put(lightSource.getType(), lightSet);
             }
             lightSet.add(token.getId());
-          } else if (lightSet != null) lightSet.remove(token.getId());
+          } else if (lightSet != null) {
+            lightSet.remove(token.getId());
+          }
         }
       }
       hasSight |= token.getHasSight();
     }
 
-    if (hasSight) visibleAreaMap.clear();
+    if (hasSight) {
+      visibleAreaMap.clear();
+    }
 
     return hasVBL;
   }

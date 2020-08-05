@@ -100,7 +100,9 @@ public class TokenLayoutPanel extends JPanel {
 
           @Override
           public void mouseExited(MouseEvent e) {
-            if (old != null) MapTool.getFrame().setStatusMessage(old);
+            if (old != null) {
+              MapTool.getFrame().setStatusMessage(old);
+            }
           }
 
           @Override

@@ -188,7 +188,9 @@ public class PersistenceUtil {
 
       // Sanity check
       String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-      if (!versionCheck(progVersion)) return null;
+      if (!versionCheck(progVersion)) {
+        return null;
+      }
 
       Object o = pakFile.getContent();
       if (o instanceof PersistedMap) {
@@ -261,7 +263,9 @@ public class PersistenceUtil {
     // won't be touched. Then once we're finished, replace the old with the new.
     File tmpDir = AppUtil.getTmpDir();
     File tmpFile = new File(tmpDir.getAbsolutePath(), campaignFile.getName());
-    if (tmpFile.exists()) tmpFile.delete();
+    if (tmpFile.exists()) {
+      tmpFile.delete();
+    }
 
     PackedFile pakFile = null;
     try {
@@ -329,7 +333,9 @@ public class PersistenceUtil {
     } finally {
       saveTimer.start("Close");
       try {
-        if (pakFile != null) pakFile.close();
+        if (pakFile != null) {
+          pakFile.close();
+        }
       } catch (Exception e) {
       }
       saveTimer.stop("Close");
@@ -356,7 +362,9 @@ public class PersistenceUtil {
     FileUtil.copyFile(tmpFile, campaignFile);
     tmpFile.delete();
     saveTimer.stop("Backup tmpFile");
-    if (bakFile.exists()) bakFile.delete();
+    if (bakFile.exists()) {
+      bakFile.delete();
+    }
     saveTimer.stop("Backup");
 
     // Save the campaign thumbnail
@@ -376,7 +384,9 @@ public class PersistenceUtil {
    */
   public static void saveCampaignThumbnail(String fileName) {
     BufferedImage screen = MapTool.takeMapScreenShot(new PlayerView(MapTool.getPlayer().getRole()));
-    if (screen == null) return;
+    if (screen == null) {
+      return;
+    }
 
     Dimension imgSize = new Dimension(screen.getWidth(null), screen.getHeight(null));
     SwingUtil.constrainTo(imgSize, 200, 200);
@@ -417,7 +427,9 @@ public class PersistenceUtil {
 
       // Sanity check
       String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-      if (!versionCheck(progVersion)) return null;
+      if (!versionCheck(progVersion)) {
+        return null;
+      }
 
       String campaignVersion = (String) pakFile.getProperty(PROP_CAMPAIGN_VERSION);
       // This is where the campaignVersion was added
@@ -463,12 +475,16 @@ public class PersistenceUtil {
       // The old legacy technique probably won't work, but we should at least try...
       MapTool.showError("PersistenceUtil.error.unknown", e);
     } finally {
-      if (pakFile != null) pakFile.close();
+      if (pakFile != null) {
+        pakFile.close();
+      }
     }
 
     log.warn("Could not load campaign in the current format...  trying the legacy format.");
     persistedCampaign = loadLegacyCampaign(campaignFile);
-    if (persistedCampaign == null) MapTool.showWarning("PersistenceUtil.warn.campaignNotLoaded");
+    if (persistedCampaign == null) {
+      MapTool.showWarning("PersistenceUtil.warn.campaignNotLoaded");
+    }
     return persistedCampaign;
   }
 
@@ -482,7 +498,9 @@ public class PersistenceUtil {
 
       for (MD5Key key : persistedCampaign.assetMap.keySet()) {
         Asset asset = persistedCampaign.assetMap.get(key);
-        if (!AssetManager.hasAsset(key)) AssetManager.putAsset(asset);
+        if (!AssetManager.hasAsset(key)) {
+          AssetManager.putAsset(asset);
+        }
         if (!MapTool.isHostingServer() && !MapTool.isPersonalServer()) {
           // If we are remotely installing this campaign, we'll need to
           // send the image data to the server
@@ -499,10 +517,14 @@ public class PersistenceUtil {
         campaign.putZone(zone);
       }
     } catch (FileNotFoundException fnfe) {
-      if (log.isInfoEnabled()) log.info("Campaign file not found -- this can't happen?!", fnfe);
+      if (log.isInfoEnabled()) {
+        log.info("Campaign file not found -- this can't happen?!", fnfe);
+      }
       persistedCampaign = null;
     } catch (IOException ioe) {
-      if (log.isInfoEnabled()) log.info("Campaign is not in legacy Hessian format either.", ioe);
+      if (log.isInfoEnabled()) {
+        log.info("Campaign is not in legacy Hessian format either.", ioe);
+      }
       persistedCampaign = null;
     } finally {
       try {
@@ -515,7 +537,9 @@ public class PersistenceUtil {
 
   private static String getThumbFilename(PackedFile pakFile) throws IOException {
     if ((MapTool.getThumbnailSize().width > 50 || MapTool.getThumbnailSize().height > 50)
-        && pakFile.hasFile(Token.FILE_THUMBNAIL_LARGE)) return Token.FILE_THUMBNAIL_LARGE;
+        && pakFile.hasFile(Token.FILE_THUMBNAIL_LARGE)) {
+      return Token.FILE_THUMBNAIL_LARGE;
+    }
     return Token.FILE_THUMBNAIL;
   }
 
@@ -542,8 +566,11 @@ public class PersistenceUtil {
   public static void saveToken(Token token, File file, boolean doWait) throws IOException {
     // Jamz: Added a "Large Thumbnail" to support larger image grid previews
     BufferedImage image = null;
-    if (doWait) image = ImageManager.getImageAndWait(token.getImageAssetId());
-    else image = ImageManager.getImage(token.getImageAssetId());
+    if (doWait) {
+      image = ImageManager.getImageAndWait(token.getImageAssetId());
+    } else {
+      image = ImageManager.getImage(token.getImageAssetId());
+    }
 
     Dimension sz = new Dimension(image.getWidth(), image.getHeight());
     SwingUtil.constrainTo(sz, 50);
@@ -588,7 +615,9 @@ public class PersistenceUtil {
 
       // Sanity check
       String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-      if (!versionCheck(progVersion)) return null;
+      if (!versionCheck(progVersion)) {
+        return null;
+      }
 
       token = (Token) pakFile.getContent(progVersion);
       loadAssets(token.getAllImageAssets(), pakFile);
@@ -623,7 +652,9 @@ public class PersistenceUtil {
     boolean fixRequired = "1.3.b64".equals(progVersion);
 
     for (MD5Key key : assetIds) {
-      if (key == null) continue;
+      if (key == null) {
+        continue;
+      }
 
       if (!AssetManager.hasAsset(key)) {
         String pathname = ASSET_DIR + key;
@@ -682,9 +713,10 @@ public class PersistenceUtil {
       // of the code is consistent with regard to client<->server operations...
       boolean server = !MapTool.isHostingServer() && !MapTool.isPersonalServer();
       if (server) {
-        if (MapTool.isDevelopment())
+        if (MapTool.isDevelopment()) {
           MapTool.showInformation(
               "Please report this:  (!isHostingServer() && !isPersonalServer()) == true");
+        }
         // If we are remotely installing this token, we'll need to send the image data to the
         // server.
         for (Asset asset : addToServer) {
@@ -702,7 +734,9 @@ public class PersistenceUtil {
     pakFile.getXStream().processAnnotations(Asset.class);
 
     for (MD5Key assetId : assetIds) {
-      if (assetId == null) continue;
+      if (assetId == null) {
+        continue;
+      }
 
       // And store the asset elsewhere
       // As of 1.3.b64, assets are written in binary to allow them to be readable
@@ -725,12 +759,16 @@ public class PersistenceUtil {
 
   private static void clearAssets(PackedFile pakFile) throws IOException {
     for (String path : pakFile.getPaths()) {
-      if (path.startsWith(ASSET_DIR) && !path.equals(ASSET_DIR)) pakFile.removeFile(path);
+      if (path.startsWith(ASSET_DIR) && !path.equals(ASSET_DIR)) {
+        pakFile.removeFile(path);
+      }
     }
   }
 
   public static CampaignProperties loadLegacyCampaignProperties(File file) throws IOException {
-    if (!file.exists()) throw new FileNotFoundException();
+    if (!file.exists()) {
+      throw new FileNotFoundException();
+    }
 
     try (FileInputStream in = new FileInputStream(file)) {
       return loadCampaignProperties(in);
@@ -778,7 +816,9 @@ public class PersistenceUtil {
     try {
       pakFile = new PackedFile(file);
       String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-      if (!versionCheck(progVersion)) return null;
+      if (!versionCheck(progVersion)) {
+        return null;
+      }
       CampaignProperties props = null;
       try {
         props = (CampaignProperties) pakFile.getContent();
@@ -796,8 +836,9 @@ public class PersistenceUtil {
       return props;
     } catch (IOException e) {
       try {
-        if (pakFile != null)
+        if (pakFile != null) {
           pakFile.close(); // first close PackedFile (if it was opened) 'cuz some stupid OSes won't
+        }
         // allow a file to be opened twice (ugh).
         pakFile = null;
         return loadLegacyCampaignProperties(file);
@@ -824,7 +865,9 @@ public class PersistenceUtil {
 
   // Macro import/export support
   public static MacroButtonProperties loadLegacyMacro(File file) throws IOException {
-    if (!file.exists()) throw new FileNotFoundException();
+    if (!file.exists()) {
+      throw new FileNotFoundException();
+    }
 
     try (FileInputStream in = new FileInputStream(file)) {
       return loadMacro(in);
@@ -849,7 +892,9 @@ public class PersistenceUtil {
     try (PackedFile pakFile = new PackedFile(file)) {
       // Sanity check
       String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-      if (!versionCheck(progVersion)) return null;
+      if (!versionCheck(progVersion)) {
+        return null;
+      }
 
       return asMacro(pakFile.getContent());
     } catch (IOException e) {
@@ -945,7 +990,9 @@ public class PersistenceUtil {
       try (PackedFile pakFile = new PackedFile(file)) {
         // Sanity check
         String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-        if (!versionCheck(progVersion)) return null;
+        if (!versionCheck(progVersion)) {
+          return null;
+        }
 
         macroButtonSet = asMacroSet(pakFile.getContent());
       } catch (ConversionException ce) {
@@ -975,7 +1022,9 @@ public class PersistenceUtil {
 
   // Table import/export support
   public static LookupTable loadLegacyTable(File file) throws IOException {
-    if (!file.exists()) throw new FileNotFoundException();
+    if (!file.exists()) {
+      throw new FileNotFoundException();
+    }
 
     try (FileInputStream in = new FileInputStream(file)) {
       return loadTable(in);
@@ -1001,7 +1050,9 @@ public class PersistenceUtil {
       try (PackedFile pakFile = new PackedFile(file)) {
         // Sanity check
         String progVersion = (String) pakFile.getProperty(PROP_VERSION);
-        if (!versionCheck(progVersion)) return null;
+        if (!versionCheck(progVersion)) {
+          return null;
+        }
 
         LookupTable lookupTable = (LookupTable) pakFile.getContent();
         loadAssets(lookupTable.getAllAssetIds(), pakFile);

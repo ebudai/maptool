@@ -49,10 +49,12 @@ public class AbortFunction extends AbstractNumberFunction implements DefinesSpec
       Parser parser, VariableResolver resolver, String functionName, List<Object> parameters)
       throws ParserException {
     BigDecimal value = (BigDecimal) parameters.get(0);
-    if (value.intValue() == 0)
+    if (value.intValue() == 0) {
       throw new AbortFunctionException(
           I18N.getText("macro.function.abortFunction.message", "Abort()"));
-    else return new BigDecimal(value.intValue());
+    } else {
+      return new BigDecimal(value.intValue());
+    }
   }
 
   /**

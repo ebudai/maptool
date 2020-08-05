@@ -83,7 +83,9 @@ public class DrawPanelPopupMenu extends JPopupMenu {
     addGMItem(createArrangeMenu());
     if (isDrawnElementGroup(elementUnderMouse)) {
       add(new UngroupDrawingsAction());
-    } else add(new GroupDrawingsAction());
+    } else {
+      add(new GroupDrawingsAction());
+    }
     add(new MergeDrawingsAction());
     addGMItem(new JSeparator());
     add(new DeleteDrawingAction());
@@ -269,12 +271,16 @@ public class DrawPanelPopupMenu extends JPopupMenu {
             renderer.getZone().removeDrawable(de.getDrawable().getId());
             MapTool.serverCommand().undoDraw(renderer.getZone().getId(), de.getDrawable().getId());
             de.getDrawable().setLayer(elementUnderMouse.getDrawable().getLayer());
-            if (!de.equals(elementUnderMouse)) a.add(de.getDrawable().getArea());
+            if (!de.equals(elementUnderMouse)) {
+              a.add(de.getDrawable().getArea());
+            }
           }
         }
         Shape s = a;
         Pen newPen = new Pen(elementUnderMouse.getPen());
-        if (elementUnderMouse.getDrawable() instanceof LineSegment) newPen = invertPen(newPen);
+        if (elementUnderMouse.getDrawable() instanceof LineSegment) {
+          newPen = invertPen(newPen);
+        }
         DrawnElement de = new DrawnElement(new ShapeDrawable(s), newPen);
         de.getDrawable().setLayer(elementUnderMouse.getDrawable().getLayer());
         MapTool.serverCommand().draw(renderer.getZone().getId(), newPen, de.getDrawable());
@@ -319,7 +325,9 @@ public class DrawPanelPopupMenu extends JPopupMenu {
 
     public void actionPerformed(ActionEvent e) {
       String drawType = "Drawing";
-      if (elementUnderMouse.getDrawable() instanceof DrawnElement) drawType = "Group";
+      if (elementUnderMouse.getDrawable() instanceof DrawnElement) {
+        drawType = "Group";
+      }
       AbstractDrawing group = (AbstractDrawing) elementUnderMouse.getDrawable();
       String groupName =
           (String)
@@ -419,7 +427,9 @@ public class DrawPanelPopupMenu extends JPopupMenu {
       if (de.getDrawable() instanceof DrawablesGroup) {
         DrawnElement result =
             findDrawnElement(((DrawablesGroup) de.getDrawable()).getDrawableList(), guid);
-        if (result != null) return result;
+        if (result != null) {
+          return result;
+        }
       }
     }
     return null;
@@ -438,7 +448,9 @@ public class DrawPanelPopupMenu extends JPopupMenu {
     if (separator == null) {
       return;
     }
-    if (MapTool.getPlayer().isGM()) add(separator);
+    if (MapTool.getPlayer().isGM()) {
+      add(separator);
+    }
   }
 
   private JMenu createArrangeMenu() {
@@ -502,7 +514,9 @@ public class DrawPanelPopupMenu extends JPopupMenu {
     List<DrawnElement> drawableList = renderer.getZone().getAllDrawnElements();
     for (GUID guid : selectedDrawSet) {
       DrawnElement de = findDrawnElement(drawableList, guid);
-      if (!hasPath(de)) return false;
+      if (!hasPath(de)) {
+        return false;
+      }
     }
     return true;
   }
@@ -514,8 +528,12 @@ public class DrawPanelPopupMenu extends JPopupMenu {
    * @return boolean
    */
   private boolean hasPath(DrawnElement drawnElement) {
-    if (drawnElement == null) return false;
-    if (drawnElement.getDrawable() instanceof LineSegment) return true;
+    if (drawnElement == null) {
+      return false;
+    }
+    if (drawnElement.getDrawable() instanceof LineSegment) {
+      return true;
+    }
     if (drawnElement.getDrawable() instanceof ShapeDrawable) {
       ShapeDrawable sd = (ShapeDrawable) drawnElement.getDrawable();
       return "Float".equalsIgnoreCase(sd.getShape().getClass().getSimpleName()) == false;
@@ -524,8 +542,9 @@ public class DrawPanelPopupMenu extends JPopupMenu {
   }
 
   private boolean isDrawnElementGroup(Object object) {
-    if (object instanceof DrawnElement)
+    if (object instanceof DrawnElement) {
       return ((DrawnElement) object).getDrawable() instanceof DrawablesGroup;
+    }
     return false;
   }
 

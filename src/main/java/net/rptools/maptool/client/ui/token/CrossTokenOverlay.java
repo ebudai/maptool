@@ -72,9 +72,10 @@ public class CrossTokenOverlay extends XTokenOverlay {
     Stroke tempStroke = g.getStroke();
     g.setStroke(getStroke());
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     g.draw(
         new Line2D.Double(0, (double) bounds.height / 2, bounds.width, (double) bounds.height / 2));
     g.draw(

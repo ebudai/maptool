@@ -102,18 +102,24 @@ public class MapToolScriptSyntax extends MapToolScriptTokenMaker {
     macroFunctionTokenMap = getMacroFunctionNames();
 
     // Add "Special Variables" as Data Type
-    for (String dataType : DATA_TYPES) macroFunctionTokenMap.put(dataType, Token.DATA_TYPE);
+    for (String dataType : DATA_TYPES) {
+      macroFunctionTokenMap.put(dataType, Token.DATA_TYPE);
+    }
 
     // Add "Roll Options" as Reserved word
-    for (String reservedWord : RESERVED_WORDS)
+    for (String reservedWord : RESERVED_WORDS) {
       macroFunctionTokenMap.put(reservedWord, Token.RESERVED_WORD);
+    }
 
     // Add "Events" as Reserved Word 2
-    for (String reservedWord2 : RESERVED_WORDS_2)
+    for (String reservedWord2 : RESERVED_WORDS_2) {
       macroFunctionTokenMap.put(reservedWord2, Token.RESERVED_WORD_2);
+    }
 
     // Add "Operators" as OPERATOR
-    for (String operators : OPERATORS) macroFunctionTokenMap.put(operators, Token.OPERATOR);
+    for (String operators : OPERATORS) {
+      macroFunctionTokenMap.put(operators, Token.OPERATOR);
+    }
 
     // Add "highlights defined by functions like Special Variables" as Data Type
     for (Function function : MapToolExpressionParser.getMacroFunctions()) {

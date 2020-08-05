@@ -99,9 +99,13 @@ public class RectangleTool extends AbstractDrawingTool implements MouseMotionLis
         }
         // Draw Rectangle with initial point as Center
         if (e.isAltDown()) {
-          if (zp.x > originPoint.x) rectangle.x -= rectangle.width;
+          if (zp.x > originPoint.x) {
+            rectangle.x -= rectangle.width;
+          }
 
-          if (zp.y > originPoint.y) rectangle.y -= rectangle.height;
+          if (zp.y > originPoint.y) {
+            rectangle.y -= rectangle.height;
+          }
 
           rectangle.width *= 2;
           rectangle.height *= 2;
@@ -132,9 +136,13 @@ public class RectangleTool extends AbstractDrawingTool implements MouseMotionLis
 
       // Draw Rectangle with initial point as Center
       if (e.isAltDown()) {
-        if (p.x > originPoint.x) rectangle.x -= rectangle.width;
+        if (p.x > originPoint.x) {
+          rectangle.x -= rectangle.width;
+        }
 
-        if (p.y > originPoint.y) rectangle.y -= rectangle.height;
+        if (p.y > originPoint.y) {
+          rectangle.y -= rectangle.height;
+        }
 
         rectangle.width *= 2;
         rectangle.height *= 2;

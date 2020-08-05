@@ -152,7 +152,9 @@ public class LineCellTemplateTool extends RadiusCellTemplateTool {
    */
   @Override
   public void mousePressed(MouseEvent aE) {
-    if (!painting) return;
+    if (!painting) {
+      return;
+    }
 
     if (SwingUtilities.isLeftMouseButton(aE)) {
 
@@ -208,7 +210,9 @@ public class LineCellTemplateTool extends RadiusCellTemplateTool {
         pathVertex = new ZonePoint(vertex.x, vertex.y);
         lt.setPathVertex(pathVertex);
       } // endif
-      if (setCellAtMouse(e, pathVertex)) lt.clearPath();
+      if (setCellAtMouse(e, pathVertex)) {
+        lt.clearPath();
+      }
 
       // Determine which of the extra squares are used on diagonals
       double dx = pathVertex.x - vertex.x;

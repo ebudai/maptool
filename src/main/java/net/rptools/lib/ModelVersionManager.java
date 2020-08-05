@@ -166,8 +166,12 @@ public class ModelVersionManager {
       val1 = (index < v1.length) ? NumberUtils.toInt(v1[index], 0) : 0;
       val2 = (index < v2.length) ? NumberUtils.toInt(v2[index], 0) : 0;
 
-      if (val1 < val2) return true;
-      if (val1 > val2) return false;
+      if (val1 < val2) {
+        return true;
+      }
+      if (val1 > val2) {
+        return false;
+      }
     }
     return false;
   }
@@ -180,7 +184,9 @@ public class ModelVersionManager {
    * @return the version with non-digits and periods stripped
    */
   public static String cleanVersionNumber(String version) {
-    if (version == null) return ModelVersionManager.DEFAULT_EMPTY_VERSION;
+    if (version == null) {
+      return ModelVersionManager.DEFAULT_EMPTY_VERSION;
+    }
     String cleaned = version.replaceAll("[^\\d.]", "");
     return (cleaned.length() > 0) ? cleaned : ModelVersionManager.DEFAULT_EMPTY_VERSION;
   }

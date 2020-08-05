@@ -88,23 +88,35 @@ public class LineTemplate extends AbstractTemplate {
     // that can be added to the path from any single intersection.
     boolean[] noPaint = new boolean[4];
     for (int i = pElement - 3; i < pElement + 3; i++) {
-      if (i < 0 || i >= path.size() || i == pElement) continue;
+      if (i < 0 || i >= path.size() || i == pElement) {
+        continue;
+      }
       CellPoint p = path.get(i);
 
       // Ignore diagonal cells and cells that are not adjacent
       int dx = p.x - x;
       int dy = p.y - y;
-      if (Math.abs(dx) == Math.abs(dy) || Math.abs(dx) > 1 || Math.abs(dy) > 1) continue;
+      if (Math.abs(dx) == Math.abs(dy) || Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+        continue;
+      }
 
       // Remove the border between the 2 points
       noPaint[dx != 0 ? (dx < 0 ? 0 : 2) : (dy < 0 ? 3 : 1)] = true;
     } // endif
 
     // Paint the borders as needed
-    if (!noPaint[0]) paintCloseVerticalBorder(g, xOff, yOff, gridSize, getQuadrant());
-    if (!noPaint[1]) paintFarHorizontalBorder(g, xOff, yOff, gridSize, getQuadrant());
-    if (!noPaint[2]) paintFarVerticalBorder(g, xOff, yOff, gridSize, getQuadrant());
-    if (!noPaint[3]) paintCloseHorizontalBorder(g, xOff, yOff, gridSize, getQuadrant());
+    if (!noPaint[0]) {
+      paintCloseVerticalBorder(g, xOff, yOff, gridSize, getQuadrant());
+    }
+    if (!noPaint[1]) {
+      paintFarHorizontalBorder(g, xOff, yOff, gridSize, getQuadrant());
+    }
+    if (!noPaint[2]) {
+      paintFarVerticalBorder(g, xOff, yOff, gridSize, getQuadrant());
+    }
+    if (!noPaint[3]) {
+      paintCloseHorizontalBorder(g, xOff, yOff, gridSize, getQuadrant());
+    }
   }
 
   /**
@@ -117,9 +129,15 @@ public class LineTemplate extends AbstractTemplate {
       return;
     }
     // Need to paint? We need a line and to translate the painting
-    if (pathVertex == null) return;
-    if (getRadius() == 0) return;
-    if (calcPath() == null) return;
+    if (pathVertex == null) {
+      return;
+    }
+    if (getRadius() == 0) {
+      return;
+    }
+    if (calcPath() == null) {
+      return;
+    }
 
     // Paint each element in the path
     int gridSize = MapTool.getCampaign().getZone(getZoneId()).getGrid().getSize();
@@ -150,7 +168,9 @@ public class LineTemplate extends AbstractTemplate {
   /** @see net.rptools.maptool.model.drawing.AbstractTemplate#setRadius(int) */
   @Override
   public void setRadius(int squares) {
-    if (squares == getRadius()) return;
+    if (squares == getRadius()) {
+      return;
+    }
     clearPath();
     super.setRadius(squares);
   }
@@ -165,13 +185,19 @@ public class LineTemplate extends AbstractTemplate {
    * @return The new path or <code>null</code> if there is no path.
    */
   protected List<CellPoint> calcPath() {
-    if (getRadius() == 0) return null;
-    if (pathVertex == null) return null;
+    if (getRadius() == 0) {
+      return null;
+    }
+    if (pathVertex == null) {
+      return null;
+    }
     int radius = getRadius();
 
     // Is there a slope?
     ZonePoint vertex = getVertex();
-    if (vertex.equals(pathVertex)) return null;
+    if (vertex.equals(pathVertex)) {
+      return null;
+    }
     int dx = pathVertex.x - vertex.x;
     int dy = pathVertex.y - vertex.y;
 
@@ -200,8 +226,12 @@ public class LineTemplate extends AbstractTemplate {
         double yValue = BigDecimal.valueOf(x + 1).multiply(m, mc).round(rmc).doubleValue();
         if (xValue == x + 1 && yValue == y + 1) {
           // Special case, right on the diagonal
-          if (doubleWide || !mouseSlopeGreater) path.add(getPointFromPool(x + 1, y));
-          if (doubleWide || mouseSlopeGreater) path.add(getPointFromPool(x, y + 1));
+          if (doubleWide || !mouseSlopeGreater) {
+            path.add(getPointFromPool(x + 1, y));
+          }
+          if (doubleWide || mouseSlopeGreater) {
+            path.add(getPointFromPool(x, y + 1));
+          }
           path.add(getPointFromPool(x + 1, y + 1));
         } else if (Math.floor(xValue) == x) {
           path.add(getPointFromPool(x, y + 1));
@@ -228,10 +258,14 @@ public class LineTemplate extends AbstractTemplate {
       int y = yInc;
       int xTouch = (dx != 0) ? 0 : -1;
       int yTouch = (dy != 0) ? 0 : -1;
-      if (doubleWide) path.add(getPointFromPool(xTouch, yTouch));
+      if (doubleWide) {
+        path.add(getPointFromPool(xTouch, yTouch));
+      }
       while (getDistance(x, y) <= radius) {
         path.add(getPointFromPool(x, y));
-        if (doubleWide) path.add(getPointFromPool(x + xTouch, y + yTouch));
+        if (doubleWide) {
+          path.add(getPointFromPool(x + xTouch, y + yTouch));
+        }
         x += xInc;
         y += yInc;
       } // endwhile
@@ -250,7 +284,9 @@ public class LineTemplate extends AbstractTemplate {
     CellPoint p = null;
     if (pool != null) {
       p = pool.remove(pool.size() - 1);
-      if (pool.isEmpty()) pool = null;
+      if (pool.isEmpty()) {
+        pool = null;
+      }
     } // endif
     if (p == null) {
       p = new CellPoint(0, 0);
@@ -266,7 +302,9 @@ public class LineTemplate extends AbstractTemplate {
    * @param p Add this point back
    */
   public void addPointToPool(CellPoint p) {
-    if (pool != null) pool.add(p);
+    if (pool != null) {
+      pool.add(p);
+    }
   }
 
   /**
@@ -284,14 +322,18 @@ public class LineTemplate extends AbstractTemplate {
    * @param pathVertex The pathVertex to set.
    */
   public void setPathVertex(ZonePoint pathVertex) {
-    if (pathVertex.equals(this.pathVertex)) return;
+    if (pathVertex.equals(this.pathVertex)) {
+      return;
+    }
     clearPath();
     this.pathVertex = pathVertex;
   }
 
   /** Clear the current path. This will cause it to be recalculated during the next draw. */
   public void clearPath() {
-    if (path != null) pool = path;
+    if (path != null) {
+      pool = path;
+    }
     path = null;
   }
 
@@ -301,7 +343,9 @@ public class LineTemplate extends AbstractTemplate {
    * @return Returns the current value of quadrant.
    */
   public Quadrant getQuadrant() {
-    if (quadrant != null) return Quadrant.valueOf(quadrant);
+    if (quadrant != null) {
+      return Quadrant.valueOf(quadrant);
+    }
     return null;
   }
 
@@ -311,8 +355,11 @@ public class LineTemplate extends AbstractTemplate {
    * @param quadrant The quadrant to set.
    */
   public void setQuadrant(Quadrant quadrant) {
-    if (quadrant != null) this.quadrant = quadrant.name();
-    else this.quadrant = null;
+    if (quadrant != null) {
+      this.quadrant = quadrant.name();
+    } else {
+      this.quadrant = null;
+    }
   }
 
   /**

@@ -329,41 +329,78 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
             ? Integer.parseInt(props.get("index"))
             : token.getMacroNextIndex());
     setTokenId(token);
-    if (props.containsKey("saveLocation")) setSaveLocation(props.get("saveLocation"));
-    if (props.containsKey("colorKey")) setColorKey(props.get("colorKey"));
-    if (props.containsKey("hotKey")) setHotKey(props.get("hotKey"));
-    if (props.containsKey("command")) setCommand(props.get("command"));
-    if (props.containsKey("label")) setLabel(props.get("label"));
-    if (props.containsKey("group")) setGroup(props.get("group"));
-    if (props.containsKey("sortby")) setSortby(props.get("sortby"));
-    if (props.containsKey("autoExecute"))
+    if (props.containsKey("saveLocation")) {
+      setSaveLocation(props.get("saveLocation"));
+    }
+    if (props.containsKey("colorKey")) {
+      setColorKey(props.get("colorKey"));
+    }
+    if (props.containsKey("hotKey")) {
+      setHotKey(props.get("hotKey"));
+    }
+    if (props.containsKey("command")) {
+      setCommand(props.get("command"));
+    }
+    if (props.containsKey("label")) {
+      setLabel(props.get("label"));
+    }
+    if (props.containsKey("group")) {
+      setGroup(props.get("group"));
+    }
+    if (props.containsKey("sortby")) {
+      setSortby(props.get("sortby"));
+    }
+    if (props.containsKey("autoExecute")) {
       setAutoExecute(Boolean.parseBoolean(props.get("autoExecute")));
-    if (props.containsKey("includeLabel"))
+    }
+    if (props.containsKey("includeLabel")) {
       setIncludeLabel(Boolean.parseBoolean(props.get("includeLabel")));
-    if (props.containsKey("applyToTokens"))
+    }
+    if (props.containsKey("applyToTokens")) {
       setApplyToTokens(Boolean.parseBoolean(props.get("applyToTokens")));
-    if (props.containsKey("fontColorKey")) setFontColorKey(props.get("fontColorKey"));
-    if (props.containsKey("fontSize")) setFontSize(props.get("fontSize"));
-    if (props.containsKey("minWidth")) setMinWidth(props.get("minWidth"));
-    if (props.containsKey("maxWidth")) setMaxWidth(props.get("maxWidth"));
-    if (props.containsKey("allowPlayerEdits"))
+    }
+    if (props.containsKey("fontColorKey")) {
+      setFontColorKey(props.get("fontColorKey"));
+    }
+    if (props.containsKey("fontSize")) {
+      setFontSize(props.get("fontSize"));
+    }
+    if (props.containsKey("minWidth")) {
+      setMinWidth(props.get("minWidth"));
+    }
+    if (props.containsKey("maxWidth")) {
+      setMaxWidth(props.get("maxWidth"));
+    }
+    if (props.containsKey("allowPlayerEdits")) {
       setAllowPlayerEdits(Boolean.valueOf(props.get("allowPlayerEdits")));
-    if (props.containsKey("displayHotKey"))
+    }
+    if (props.containsKey("displayHotKey")) {
       setAllowPlayerEdits(Boolean.valueOf(props.get("displayHotKey")));
-    if (props.containsKey("toolTip")) setToolTip(props.get("toolTip"));
-    if (props.containsKey("commonMacro")) setCommonMacro(Boolean.valueOf(props.get("commonMacro")));
-    if (props.containsKey("compareGroup"))
+    }
+    if (props.containsKey("toolTip")) {
+      setToolTip(props.get("toolTip"));
+    }
+    if (props.containsKey("commonMacro")) {
+      setCommonMacro(Boolean.valueOf(props.get("commonMacro")));
+    }
+    if (props.containsKey("compareGroup")) {
       setCompareGroup(Boolean.valueOf(props.get("compareGroup")));
-    if (props.containsKey("compareSortPrefix"))
+    }
+    if (props.containsKey("compareSortPrefix")) {
       setCompareSortPrefix(Boolean.valueOf(props.get("compareSortPrefix")));
-    if (props.containsKey("compareCommand"))
+    }
+    if (props.containsKey("compareCommand")) {
       setCompareCommand(Boolean.valueOf(props.get("compareCommand")));
-    if (props.containsKey("compareIncludeLabel"))
+    }
+    if (props.containsKey("compareIncludeLabel")) {
       setCompareIncludeLabel(Boolean.valueOf(props.get("compareIncludeLabel")));
-    if (props.containsKey("compareAutoExecute"))
+    }
+    if (props.containsKey("compareAutoExecute")) {
       setCompareAutoExecute(Boolean.valueOf(props.get("compareAutoExecute")));
-    if (props.containsKey("compareApplyToSelectedTokens"))
+    }
+    if (props.containsKey("compareApplyToSelectedTokens")) {
       setCompareApplyToSelectedTokens(Boolean.valueOf(props.get("compareApplyToSelectedTokens")));
+    }
   }
 
   public void save() {
@@ -566,7 +603,9 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
   }
 
   public void setColorKey(String colorKey) {
-    if (MapToolUtil.getColor(colorKey) != null) this.colorKey = colorKey;
+    if (MapToolUtil.getColor(colorKey) != null) {
+      this.colorKey = colorKey;
+    }
   }
 
   public String getHotKey() {
@@ -677,7 +716,9 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
   }
 
   public void setFontColorKey(String fontColorKey) {
-    if (MapToolUtil.getColor(fontColorKey) != null) this.fontColorKey = fontColorKey;
+    if (MapToolUtil.getColor(fontColorKey) != null) {
+      this.fontColorKey = fontColorKey;
+    }
   }
 
   public String getFontSize() {
@@ -713,7 +754,9 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
   }
 
   public Boolean getDisplayHotKey() {
-    if (displayHotKey == null) displayHotKey = true;
+    if (displayHotKey == null) {
+      displayHotKey = true;
+    }
 
     return displayHotKey;
   }
@@ -731,7 +774,9 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
   }
 
   public String getToolTip() {
-    if (toolTip == null) toolTip = "";
+    if (toolTip == null) {
+      toolTip = "";
+    }
     return toolTip;
   }
 
@@ -901,18 +946,30 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
   public int compareTo(@NotNull MacroButtonProperties b2) throws ClassCastException {
     if (b2 != this) {
       String b1group = getGroup();
-      if (b1group == null) b1group = "";
+      if (b1group == null) {
+        b1group = "";
+      }
       String b1sortby = getSortby();
-      if (b1sortby == null) b1sortby = "";
+      if (b1sortby == null) {
+        b1sortby = "";
+      }
       String b1label = getLabel();
-      if (b1label == null) b1label = "";
+      if (b1label == null) {
+        b1label = "";
+      }
 
       String b2group = b2.getGroup();
-      if (b2group == null) b2group = "";
+      if (b2group == null) {
+        b2group = "";
+      }
       String b2sortby = b2.getSortby();
-      if (b2sortby == null) b2sortby = "";
+      if (b2sortby == null) {
+        b2sortby = "";
+      }
       String b2label = b2.getLabel();
-      if (b2label == null) b2label = "";
+      if (b2label == null) {
+        b2label = "";
+      }
 
       // now parse the sort strings to help dice codes sort properly, use space as a separator
       String b1string = modifySortString(" " + b1group + " " + b1sortby + " " + b1label);
@@ -945,9 +1002,13 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
     if (n > 0 && n > strLength) {
       for (int i = 0; i <= n; i++) {
         if (paddingLeft) {
-          if (i < n - strLength) str.insert(0, c);
+          if (i < n - strLength) {
+            str.insert(0, c);
+          }
         } else {
-          if (i > strLength) str.append(c);
+          if (i > strLength) {
+            str.append(c);
+          }
         }
       }
     }
@@ -1054,20 +1115,38 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
   }
 
   public String getMacroUUID() {
-    if (macroUUID == null) macroUUID = UUID.randomUUID().toString();
+    if (macroUUID == null) {
+      macroUUID = UUID.randomUUID().toString();
+    }
 
     return macroUUID;
   }
 
   public Object readResolve() {
-    if (commonMacro == null) commonMacro = false;
-    if (compareGroup == null) compareGroup = true;
-    if (compareSortPrefix == null) compareSortPrefix = true;
-    if (compareCommand == null) compareCommand = true;
-    if (compareIncludeLabel == null) compareIncludeLabel = true;
-    if (compareAutoExecute == null) compareAutoExecute = true;
-    if (compareApplyToSelectedTokens == null) compareApplyToSelectedTokens = true;
-    if (allowPlayerEdits == null) allowPlayerEdits = true;
+    if (commonMacro == null) {
+      commonMacro = false;
+    }
+    if (compareGroup == null) {
+      compareGroup = true;
+    }
+    if (compareSortPrefix == null) {
+      compareSortPrefix = true;
+    }
+    if (compareCommand == null) {
+      compareCommand = true;
+    }
+    if (compareIncludeLabel == null) {
+      compareIncludeLabel = true;
+    }
+    if (compareAutoExecute == null) {
+      compareAutoExecute = true;
+    }
+    if (compareApplyToSelectedTokens == null) {
+      compareApplyToSelectedTokens = true;
+    }
+    if (allowPlayerEdits == null) {
+      allowPlayerEdits = true;
+    }
     return this;
   }
 }

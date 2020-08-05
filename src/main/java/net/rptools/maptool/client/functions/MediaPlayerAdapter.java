@@ -80,8 +80,9 @@ public class MediaPlayerAdapter {
         () -> {
           int curCount = player.getCurrentCount();
           int cycCount = player.getCycleCount();
-          if (cycCount != MediaPlayer.INDEFINITE && curCount >= cycCount)
+          if (cycCount != MediaPlayer.INDEFINITE && curCount >= cycCount) {
             player.stop(); // otherwise, status stuck on "PLAYING" at end
+          }
         });
   }
 
@@ -134,7 +135,9 @@ public class MediaPlayerAdapter {
     this.player.setCycleCount(newCycle);
     this.player.setVolume(this.volume * globalVolume);
     this.player.setStartTime(this.start);
-    if (this.stop != null) this.player.setStopTime(this.stop);
+    if (this.stop != null) {
+      this.player.setStopTime(this.stop);
+    }
 
     this.player.setMute(globalMute);
     if (stopPlay) {
@@ -167,8 +170,9 @@ public class MediaPlayerAdapter {
       if (mapStreams.containsKey(strUri)) {
         media = mapStreams.get(strUri).media;
       } else {
-        if (!SoundFunctions.uriExists(strUri))
+        if (!SoundFunctions.uriExists(strUri)) {
           return false; // leave without error message if uri ok but no file
+        }
         media = new Media(strUri);
       }
     } catch (Exception e) {
@@ -203,9 +207,14 @@ public class MediaPlayerAdapter {
           boolean play = (cycleCount == null || cycleCount != 0) && !preloadOnly;
           if (play) {
             player.seek(player.getStartTime()); // start playing from the start
-            if (old) player.play();
-            else player.setAutoPlay(true);
-          } else player.stop();
+            if (old) {
+              player.play();
+            } else {
+              player.setAutoPlay(true);
+            }
+          } else {
+            player.stop();
+          }
         });
     return true;
   }
@@ -221,11 +230,14 @@ public class MediaPlayerAdapter {
     Platform.runLater(
         () -> {
           if (strUri.equals("*")) {
-            for (HashMap.Entry mapElement : mapStreams.entrySet())
+            for (HashMap.Entry mapElement : mapStreams.entrySet()) {
               ((MediaPlayerAdapter) mapElement.getValue()).stopStream(remove, fadeout);
+            }
           } else {
             MediaPlayerAdapter adapter = mapStreams.get(strUri);
-            if (adapter != null) adapter.stopStream(remove, fadeout);
+            if (adapter != null) {
+              adapter.stopStream(remove, fadeout);
+            }
           }
         });
   }
@@ -239,7 +251,9 @@ public class MediaPlayerAdapter {
     if (remove) {
       player.dispose();
       mapStreams.remove(this.strUri);
-    } else player.stop();
+    } else {
+      player.stop();
+    }
   }
 
   /**
@@ -249,8 +263,9 @@ public class MediaPlayerAdapter {
    * @param fadeout time in seconds to fadeout (0: no fadeout)
    */
   private void stopStream(boolean remove, double fadeout) {
-    if (fadeout <= 0) stopStream(remove);
-    else {
+    if (fadeout <= 0) {
+      stopStream(remove);
+    } else {
       Timeline timeline =
           new Timeline(
               new KeyFrame(Duration.seconds(fadeout), new KeyValue(player.volumeProperty(), 0)));
@@ -276,12 +291,15 @@ public class MediaPlayerAdapter {
     Platform.runLater(
         () -> {
           if (strUri.equals("*")) {
-            for (HashMap.Entry mapElement : mapStreams.entrySet())
+            for (HashMap.Entry mapElement : mapStreams.entrySet()) {
               ((MediaPlayerAdapter) mapElement.getValue())
                   .editStream(cycleCount, volume, start, stop, false);
+            }
           } else {
             MediaPlayerAdapter adapter = mapStreams.get(strUri);
-            if (adapter != null) adapter.editStream(cycleCount, volume, start, stop, false);
+            if (adapter != null) {
+              adapter.editStream(cycleCount, volume, start, stop, false);
+            }
           }
         });
   }
@@ -298,7 +316,9 @@ public class MediaPlayerAdapter {
       JsonArray infoArray = new JsonArray();
       for (HashMap.Entry mapElement : mapStreams.entrySet()) {
         info = ((MediaPlayerAdapter) mapElement.getValue()).getInfo();
-        if (info != null) infoArray.add(info);
+        if (info != null) {
+          infoArray.add(info);
+        }
       }
       return infoArray;
     } else {
@@ -374,8 +394,9 @@ public class MediaPlayerAdapter {
 
     Platform.runLater(
         () -> {
-          for (HashMap.Entry mapElement : mapStreams.entrySet())
+          for (HashMap.Entry mapElement : mapStreams.entrySet()) {
             ((MediaPlayerAdapter) mapElement.getValue()).updateVolume();
+          }
         });
   }
 

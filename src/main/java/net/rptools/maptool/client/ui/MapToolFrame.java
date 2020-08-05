@@ -251,7 +251,9 @@ public class MapToolFrame extends DefaultDockableHolder
                   }
                 }
               }
-              if (selectedDrawSet.isEmpty()) return;
+              if (selectedDrawSet.isEmpty()) {
+                return;
+              }
               // check to see if this is the required action
               if (!MapTool.confirmDrawDelete()) {
                 return;
@@ -332,7 +334,9 @@ public class MapToolFrame extends DefaultDockableHolder
 
     public synchronized void removeChatTyper(final String playerName) {
       chatTypingNotificationTimers.remove(playerName);
-      if (chatTypingNotificationTimers.isEmpty()) turnOffUpdates();
+      if (chatTypingNotificationTimers.isEmpty()) {
+        turnOffUpdates();
+      }
       setChanged();
       notifyObservers();
     }
@@ -458,8 +462,11 @@ public class MapToolFrame extends DefaultDockableHolder
 
     glassPaneComposite.setVisible(true);
 
-    if (!AppUtil.MAC_OS_X) removeWindowsF10();
-    else registerForMacOSXEvents();
+    if (!AppUtil.MAC_OS_X) {
+      removeWindowsF10();
+    } else {
+      registerForMacOSXEvents();
+    }
 
     MapTool.getEventDispatcher().addListener(this, MapTool.ZoneEvent.Activated);
 
@@ -1117,7 +1124,9 @@ public class MapToolFrame extends DefaultDockableHolder
                     Set<GUID> selectedDrawSet = new HashSet<GUID>();
                     boolean topLevelOnly = true;
                     for (TreePath path1 : tree.getSelectionPaths()) {
-                      if (path1.getPathCount() != 3) topLevelOnly = false;
+                      if (path1.getPathCount() != 3) {
+                        topLevelOnly = false;
+                      }
                       if (path1.getLastPathComponent() instanceof DrawnElement) {
                         DrawnElement de = (DrawnElement) path1.getLastPathComponent();
                         if (firstElement == null) {
@@ -1482,7 +1491,9 @@ public class MapToolFrame extends DefaultDockableHolder
     Tool tool = MapTool.getFrame().getToolbox().getSelectedTool();
     if (tool instanceof PointerTool) {
       PointerTool pointer = (PointerTool) tool;
-      if (pointer.isDraggingToken()) pointer.stopTokenDrag();
+      if (pointer.isDraggingToken()) {
+        pointer.stopTokenDrag();
+      }
     }
   }
 
@@ -1654,7 +1665,9 @@ public class MapToolFrame extends DefaultDockableHolder
     }
     fullScreenFrame.setJMenuBar(menuBar);
     // Menu bar is visible anyways on MAC so leave menu items on it
-    if (!AppUtil.MAC_OS_X) menuBar.setVisible(false);
+    if (!AppUtil.MAC_OS_X) {
+      menuBar.setVisible(false);
+    }
 
     fullScreenFrame.setVisible(true);
     this.setVisible(false);
@@ -1789,11 +1802,12 @@ public class MapToolFrame extends DefaultDockableHolder
   private void removeWindowsF10() {
     InputMap imap = menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     Object action = imap.get(KeyStroke.getKeyStroke("F10"));
-    if (log.isInfoEnabled())
+    if (log.isInfoEnabled()) {
       log.info(
           "Removing the F10 key from the menuBar's InputMap; it did "
               + (action == null ? "not" : "")
               + " exist");
+    }
     ActionMap amap = menuBar.getActionMap();
     amap.getParent().remove(action);
   }
@@ -1857,8 +1871,9 @@ public class MapToolFrame extends DefaultDockableHolder
         // We're looking for MacroButton here, but we're adding AbstractActions below... Is this
         // right? XXX
         if (o instanceof MacroButton) {
-          if (log.isDebugEnabled())
+          if (log.isDebugEnabled()) {
             log.debug("Removing MacroButton " + ((MacroButton) o).getButtonText());
+          }
           c.getActionMap().remove(o);
         }
       }

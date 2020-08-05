@@ -75,7 +75,9 @@ public class DrawablesPanel extends JComponent {
             DrawnElement de = zone.getDrawnElement(id);
             if (de != null) {
               drawableList.add(de);
-              if (!de.getPen().isEraser()) onlyCuts = false;
+              if (!de.getPen().isEraser()) {
+                onlyCuts = false;
+              }
             }
           }
           if (drawableList.size() > 0) {
@@ -83,8 +85,9 @@ public class DrawablesPanel extends JComponent {
             Rectangle bounds = getBounds(drawableList);
             double scale =
                 (double) Math.min(MAX_PANEL_SIZE, getSize().width) / (double) bounds.width;
-            if ((bounds.height * scale) > MAX_PANEL_SIZE)
+            if ((bounds.height * scale) > MAX_PANEL_SIZE) {
               scale = (double) Math.min(MAX_PANEL_SIZE, getSize().height) / (double) bounds.height;
+            }
             g.drawImage(drawDrawables(drawableList, bounds, scale, onlyCuts), 0, 0, null);
           }
         }
@@ -130,7 +133,9 @@ public class DrawablesPanel extends JComponent {
             viewport.x,
             viewport.y,
             null);
-      } else drawable.draw(g, pen);
+      } else {
+        drawable.draw(g, pen);
+      }
       g.setComposite(oldComposite);
     }
     g.dispose();
@@ -142,7 +147,9 @@ public class DrawablesPanel extends JComponent {
     for (DrawnElement element : drawableList) {
       // Empty drawables are created by right clicking during the draw process
       // and need to be skipped.
-      if (element.getDrawable().getBounds() == null) continue;
+      if (element.getDrawable().getBounds() == null) {
+        continue;
+      }
       Rectangle drawnBounds = new Rectangle(element.getDrawable().getBounds());
       // Handle pen size
       Pen pen = element.getPen();
@@ -152,8 +159,11 @@ public class DrawablesPanel extends JComponent {
           drawnBounds.getY() - penSize,
           drawnBounds.getWidth() + (penSize * 2),
           drawnBounds.getHeight() + (penSize * 2));
-      if (bounds == null) bounds = drawnBounds;
-      else bounds.add(drawnBounds);
+      if (bounds == null) {
+        bounds = drawnBounds;
+      } else {
+        bounds.add(drawnBounds);
+      }
     }
     // Fix for Sentry MAPTOOL-20
     if (bounds != null && bounds.getWidth() > 0 && bounds.getHeight() > 0) {

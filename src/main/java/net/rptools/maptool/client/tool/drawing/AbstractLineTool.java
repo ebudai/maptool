@@ -63,7 +63,9 @@ public abstract class AbstractLineTool extends AbstractDrawingTool {
     }
     ZonePoint zp = getPoint(e);
 
-    if (line == null) return null; // Escape has been pressed
+    if (line == null) {
+      return null; // Escape has been pressed
+    }
     Point ret = new Point(zp.x, zp.y);
 
     line.getPoints().add(ret);
@@ -75,7 +77,9 @@ public abstract class AbstractLineTool extends AbstractDrawingTool {
   }
 
   protected void removePoint(Point p) {
-    if (line == null) return; // Escape has been pressed
+    if (line == null) {
+      return; // Escape has been pressed
+    }
 
     // Remove most recently added
     // TODO: optimize this
@@ -85,7 +89,9 @@ public abstract class AbstractLineTool extends AbstractDrawingTool {
   }
 
   protected void stopLine(MouseEvent e) {
-    if (line == null) return; // Escape has been pressed
+    if (line == null) {
+      return; // Escape has been pressed
+    }
     addPoint(e);
 
     LineSegment trimLine = getTrimLine(line);
@@ -119,7 +125,9 @@ public abstract class AbstractLineTool extends AbstractDrawingTool {
     LineSegment newLine = new LineSegment(line.getWidth(), line.isSquareCap());
     Point lastPoint = null;
     for (Point point : line.getPoints()) {
-      if (!point.equals(lastPoint)) newLine.getPoints().add(point);
+      if (!point.equals(lastPoint)) {
+        newLine.getPoints().add(point);
+      }
       lastPoint = point;
     }
     return newLine;

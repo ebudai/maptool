@@ -87,7 +87,9 @@ public class WallTemplateTool extends BurstTemplateTool {
    */
   @Override
   public void mousePressed(MouseEvent e) {
-    if (!painting) return;
+    if (!painting) {
+      return;
+    }
 
     // Set up the path when the anchor is pressed.
     if (SwingUtilities.isLeftMouseButton(e) && !anchorSet) {

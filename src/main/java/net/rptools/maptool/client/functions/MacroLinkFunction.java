@@ -131,11 +131,13 @@ public class MacroLinkFunction extends AbstractFunction {
       String delim = args.size() > 3 ? args.get(3).toString() : ",";
 
       JsonArray jsonTargets;
-      if ("json".equals(delim) || strTargets.charAt(0) == '[')
+      if ("json".equals(delim) || strTargets.charAt(0) == '[') {
         jsonTargets = JSONMacroFunctions.getInstance().asJsonElement(strTargets).getAsJsonArray();
-      else {
+      } else {
         jsonTargets = new JsonArray();
-        for (String t : strTargets.split(delim)) jsonTargets.add(t.trim());
+        for (String t : strTargets.split(delim)) {
+          jsonTargets.add(t.trim());
+        }
       }
       if (jsonTargets.size() == 0) {
         return ""; // dont send to empty lists

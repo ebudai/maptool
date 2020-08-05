@@ -54,14 +54,19 @@ public class SaveTokenStatesMacro implements Macro {
       JFileChooser chooser = MapTool.getFrame().getSaveFileChooser();
       chooser.setDialogTitle(I18N.getText("savetokenstates.dialogTitle"));
       chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-      if (chooser.showOpenDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) return;
+      if (chooser.showOpenDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) {
+        return;
+      }
       aliasFile = chooser.getSelectedFile();
     } // endif
 
     // Make it an XML file if type isn't set, check for overwrite
-    if (!aliasFile.getName().contains("."))
+    if (!aliasFile.getName().contains(".")) {
       aliasFile = new File(aliasFile.getAbsolutePath() + "-tokenStates.xml");
-    if (aliasFile.exists() && !MapTool.confirm(I18N.getText("msg.confirm.fileExists"))) return;
+    }
+    if (aliasFile.exists() && !MapTool.confirm(I18N.getText("msg.confirm.fileExists"))) {
+      return;
+    }
 
     // Save the file using a decoder
     try {

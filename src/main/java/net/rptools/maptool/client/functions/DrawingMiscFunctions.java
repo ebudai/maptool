@@ -81,7 +81,9 @@ public class DrawingMiscFunctions extends DrawingFunctions {
           json.add(val);
         }
         return json;
-      } else return StringFunctions.getInstance().join(drawingList, delim);
+      } else {
+        return StringFunctions.getInstance().join(drawingList, delim);
+      }
     } else {
       FunctionUtil.checkNumberParam(functionName, parameters, 2, 2);
       GUID guid = getGUID(functionName, drawing);

@@ -303,11 +303,12 @@ public class TokenLocationFunctions extends AbstractFunction {
 
       distance = Double.MAX_VALUE;
       if (closedForm) {
-        if (wmetric == null && grid.useMetric())
+        if (wmetric == null && grid.useMetric()) {
           wmetric =
               MapTool.isPersonalServer()
                   ? AppPreferences.getMovementMetric()
                   : MapTool.getServerPolicy().getMovementMetric();
+        }
         // explicitly find difference without walkers
         double curDist;
         for (CellPoint scell : sourceCells) {
@@ -316,7 +317,9 @@ public class TokenLocationFunctions extends AbstractFunction {
             distance = Math.min(distance, curDist);
           }
         }
-        if (units) distance *= zone.getUnitsPerCell();
+        if (units) {
+          distance *= zone.getUnitsPerCell();
+        }
       } else {
         // walker approach, slow but could eventually take into account VBL & terrain
         ZoneWalker walker =
@@ -330,7 +333,9 @@ public class TokenLocationFunctions extends AbstractFunction {
             distance = Math.min(distance, walker.getDistance());
           }
         }
-        if (!units) distance /= zone.getUnitsPerCell();
+        if (!units) {
+          distance /= zone.getUnitsPerCell();
+        }
       }
     } else {
       // take distance between center of the two tokens
@@ -344,7 +349,9 @@ public class TokenLocationFunctions extends AbstractFunction {
       double a = (int) (sourceCenterX - targetCenterX);
       double b = (int) (sourceCenterY - targetCenterY);
       distance = Math.sqrt(a * a + b * b) / grid.getSize();
-      if (units) distance *= zone.getUnitsPerCell();
+      if (units) {
+        distance *= zone.getUnitsPerCell();
+      }
     }
     return distance;
   }
@@ -372,8 +379,11 @@ public class TokenLocationFunctions extends AbstractFunction {
       Set<CellPoint> sourceCells = source.getOccupiedCells(grid);
 
       CellPoint targetCell;
-      if (!pixels) targetCell = new CellPoint(x, y);
-      else targetCell = grid.convert(new ZonePoint(x, y));
+      if (!pixels) {
+        targetCell = new CellPoint(x, y);
+      } else {
+        targetCell = grid.convert(new ZonePoint(x, y));
+      }
 
       ZoneWalker walker;
       if (metric != null && grid.useMetric()) {
@@ -420,7 +430,9 @@ public class TokenLocationFunctions extends AbstractFunction {
       double a = (int) (sourceCenterX - targetX);
       double b = (int) (sourceCenterY - targetY);
       double h = Math.sqrt(a * a + b * b) / grid.getSize();
-      if (units) h *= zone.getUnitsPerCell();
+      if (units) {
+        h *= zone.getUnitsPerCell();
+      }
       return h;
     }
   }
@@ -444,13 +456,17 @@ public class TokenLocationFunctions extends AbstractFunction {
         cellx = cell.x;
         celly = cell.y;
         for (Point point : points) {
-          if (cellx == point.x && celly == point.y) return true;
+          if (cellx == point.x && celly == point.y) {
+            return true;
+          }
         }
       }
     } else {
       Rectangle bounds = token.getBounds(zone);
       for (Point point : points) {
-        if (bounds.contains(point)) return true;
+        if (bounds.contains(point)) {
+          return true;
+        }
       }
     }
     return false;
@@ -496,7 +512,9 @@ public class TokenLocationFunctions extends AbstractFunction {
     int y = FunctionUtil.paramAsInteger(fName, args, 1, false);
 
     boolean useDistancePerCell = true;
-    if (args.size() > 2) useDistancePerCell = FunctionUtil.paramAsBoolean(fName, args, 2, true);
+    if (args.size() > 2) {
+      useDistancePerCell = FunctionUtil.paramAsBoolean(fName, args, 2, true);
+    }
 
     Token source = FunctionUtil.getTokenFromParam(resolver, fName, args, 3, -1);
     String metric = args.size() > 4 ? args.get(4).toString() : null;

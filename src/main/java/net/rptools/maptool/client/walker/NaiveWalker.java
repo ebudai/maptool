@@ -43,10 +43,18 @@ public class NaiveWalker extends AbstractZoneWalker {
       if (x == end.x && y == end.y) {
         break;
       }
-      if (x < end.x) x++;
-      if (x > end.x) x--;
-      if (y < end.y) y++;
-      if (y > end.y) y--;
+      if (x < end.x) {
+        x++;
+      }
+      if (x > end.x) {
+        x--;
+      }
+      if (y < end.y) {
+        y++;
+      }
+      if (y > end.y) {
+        y--;
+      }
 
       count++;
     }

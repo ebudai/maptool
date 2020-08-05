@@ -46,27 +46,31 @@ public class MapToolScriptAutoComplete {
       };
 
   public MapToolScriptAutoComplete() {
-    for (String macro : MapTool.getParser().listAllMacroFunctions().keySet())
+    for (String macro : MapTool.getParser().listAllMacroFunctions().keySet()) {
       provider.addCompletion(
           new BasicCompletion(provider, macro, getShortDescription(macro), getSummary(macro)));
+    }
 
     // Add "Special Variables" as Data Type
-    for (String dataType : MapToolScriptSyntax.DATA_TYPES)
+    for (String dataType : MapToolScriptSyntax.DATA_TYPES) {
       provider.addCompletion(
           new BasicCompletion(
               provider, dataType, getShortDescription(dataType), getSummary(dataType)));
+    }
 
     // Add "Roll Options" as Reserved word
-    for (String reservedWord : MapToolScriptSyntax.RESERVED_WORDS)
+    for (String reservedWord : MapToolScriptSyntax.RESERVED_WORDS) {
       provider.addCompletion(
           new BasicCompletion(
               provider, reservedWord, getShortDescription(reservedWord), getSummary(reservedWord)));
+    }
 
     // Add "Events" as Reserved Word 2
-    for (String reservedWord : MapToolScriptSyntax.RESERVED_WORDS_2)
+    for (String reservedWord : MapToolScriptSyntax.RESERVED_WORDS_2) {
       provider.addCompletion(
           new BasicCompletion(
               provider, reservedWord, getShortDescription(reservedWord), getSummary(reservedWord)));
+    }
 
     for (Function function : MapToolExpressionParser.getMacroFunctions()) {
       if (function instanceof DefinesSpecialVariables) {
@@ -159,8 +163,11 @@ public class MapToolScriptAutoComplete {
       return null;
     }
 
-    if (shortDesc.equals(I18N_PLACEHOLDER_TEXT)) return null;
-    else return shortDesc;
+    if (shortDesc.equals(I18N_PLACEHOLDER_TEXT)) {
+      return null;
+    } else {
+      return shortDesc;
+    }
   }
 
   private String getSummary(String macro) {
@@ -182,8 +189,11 @@ public class MapToolScriptAutoComplete {
       return null;
     }
 
-    if (summary.equals(I18N_PLACEHOLDER_TEXT)) return null;
-    else return summary;
+    if (summary.equals(I18N_PLACEHOLDER_TEXT)) {
+      return null;
+    } else {
+      return summary;
+    }
   }
 
   public CompletionProvider get() {

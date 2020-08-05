@@ -436,7 +436,9 @@ public class AssetManager {
     File newFile = File.createTempFile("remote", null, null);
     try {
       FileUtils.copyURLToFile(url, newFile);
-      if (!newFile.exists() || newFile.length() < 20) return null;
+      if (!newFile.exists() || newFile.length() < 20) {
+        return null;
+      }
       Asset temp =
           new Asset(FileUtil.getNameWithoutExtension(url), FileUtils.readFileToByteArray(newFile));
       return temp;
@@ -762,7 +764,9 @@ public class AssetManager {
 
     for (var entry : assetMap.entrySet()) {
       if (aggregate.contains(entry.getKey()) == false) // Not in any repository so add it.
-      missing.put(entry.getKey(), entry.getValue());
+      {
+        missing.put(entry.getKey(), entry.getValue());
+      }
     }
     return missing;
   }

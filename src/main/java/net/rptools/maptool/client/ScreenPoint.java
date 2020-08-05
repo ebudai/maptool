@@ -152,7 +152,9 @@ public class ScreenPoint extends Point2D.Double {
   /** @see java.lang.Object#equals(java.lang.Object) */
   @Override
   public boolean equals(Object pt) {
-    if (!(pt instanceof ScreenPoint)) return false;
+    if (!(pt instanceof ScreenPoint)) {
+      return false;
+    }
     ScreenPoint spt = (ScreenPoint) pt;
     return spt.x == x && spt.y == y;
   }

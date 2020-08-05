@@ -190,8 +190,12 @@ public class HTMLOverlayManager extends HTMLWebViewManager implements HTMLPanelC
       return HTMLOverlayPanel.mousePassResult.BLOCK;
     } else {
       String pe = (String) element.eval(SCRIPT_GET_POINTERMAP);
-      if ("blockopaque".equals(pe)) return HTMLOverlayPanel.mousePassResult.CHECK_OPACITY;
-      if ("block".equals(pe)) return HTMLOverlayPanel.mousePassResult.BLOCK;
+      if ("blockopaque".equals(pe)) {
+        return HTMLOverlayPanel.mousePassResult.CHECK_OPACITY;
+      }
+      if ("block".equals(pe)) {
+        return HTMLOverlayPanel.mousePassResult.BLOCK;
+      }
       return HTMLOverlayPanel.mousePassResult.PASS;
     }
   }

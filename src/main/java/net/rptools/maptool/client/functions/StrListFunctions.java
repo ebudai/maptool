@@ -101,7 +101,9 @@ public class StrListFunctions extends AbstractFunction {
    */
   public static int parse(String listStr, String delim, ListVisitor visitor) {
 
-    if (StringUtils.isBlank(listStr)) return 0; // null strings have zero entries
+    if (StringUtils.isBlank(listStr)) {
+      return 0; // null strings have zero entries
+    }
 
     Pattern pattern;
     if (delim.isEmpty()) {
@@ -132,7 +134,9 @@ public class StrListFunctions extends AbstractFunction {
           // This flag will prevent that.
           lastItem = true;
         }
-        if (!visitor.visit(index++, from, to)) break;
+        if (!visitor.visit(index++, from, to)) {
+          break;
+        }
       }
     }
     return index;
@@ -164,25 +168,27 @@ public class StrListFunctions extends AbstractFunction {
     String listStr = parameters.get(0).toString().trim();
     String lastParam = parameters.get(parameters.size() - 1).toString();
 
-    if ("listGet".equalsIgnoreCase(functionName)) retval = listGet(parameters, listStr, lastParam);
-    else if ("listDelete".equalsIgnoreCase(functionName))
+    if ("listGet".equalsIgnoreCase(functionName)) {
+      retval = listGet(parameters, listStr, lastParam);
+    } else if ("listDelete".equalsIgnoreCase(functionName)) {
       retval = listDelete(parameters, listStr, lastParam);
-    else if ("listCount".equalsIgnoreCase(functionName))
+    } else if ("listCount".equalsIgnoreCase(functionName)) {
       retval = listCount(parameters, listStr, lastParam);
-    else if ("listFind".equalsIgnoreCase(functionName))
+    } else if ("listFind".equalsIgnoreCase(functionName)) {
       retval = listFind(parameters, listStr, lastParam);
-    else if ("listContains".equalsIgnoreCase(functionName))
+    } else if ("listContains".equalsIgnoreCase(functionName)) {
       retval = listContains(parameters, listStr, lastParam);
-    else if ("listAppend".equalsIgnoreCase(functionName))
+    } else if ("listAppend".equalsIgnoreCase(functionName)) {
       retval = listAppend(parameters, listStr, lastParam);
-    else if ("listInsert".equalsIgnoreCase(functionName))
+    } else if ("listInsert".equalsIgnoreCase(functionName)) {
       retval = listInsert(parameters, listStr, lastParam);
-    else if ("listReplace".equalsIgnoreCase(functionName))
+    } else if ("listReplace".equalsIgnoreCase(functionName)) {
       retval = listReplace(parameters, listStr, lastParam);
-    else if ("listSort".equalsIgnoreCase(functionName))
+    } else if ("listSort".equalsIgnoreCase(functionName)) {
       retval = listSort(parameters, listStr, lastParam);
-    else if ("listFormat".equalsIgnoreCase(functionName))
+    } else if ("listFormat".equalsIgnoreCase(functionName)) {
       retval = listFormat(parameters, listStr, lastParam);
+    }
 
     return retval;
   }
@@ -228,7 +234,9 @@ public class StrListFunctions extends AbstractFunction {
 
     if (retval.length() > 0) {
       Integer intval = strToInt(retval.toString());
-      if (intval != null) return new BigDecimal(intval);
+      if (intval != null) {
+        return new BigDecimal(intval);
+      }
     }
     return retval.toString();
   }
@@ -271,7 +279,9 @@ public class StrListFunctions extends AbstractFunction {
               sb.append(listStr, from, to);
               return true;
             }
-            if (pos == index) return true;
+            if (pos == index) {
+              return true;
+            }
             if (index > 0) {
               sb.append(delim);
             }
@@ -414,7 +424,9 @@ public class StrListFunctions extends AbstractFunction {
     String delim = parameters.size() == maxParams ? lastParam : ",";
     String target = parameters.get(1).toString().trim();
 
-    if (!StringUtils.isEmpty(listStr)) return listStr + delim + " " + target;
+    if (!StringUtils.isEmpty(listStr)) {
+      return listStr + delim + " " + target;
+    }
     return target;
   }
 
@@ -633,13 +645,19 @@ public class StrListFunctions extends AbstractFunction {
       so = 1; // default
       if (sortTypeStr.length() > 0) {
         String ch0 = sortTypeStr.substring(0, 1);
-        if (ch0.equalsIgnoreCase("A")) st = sortType.ALPHA;
-        else if (ch0.equalsIgnoreCase("N")) st = sortType.NUMERIC;
+        if (ch0.equalsIgnoreCase("A")) {
+          st = sortType.ALPHA;
+        } else if (ch0.equalsIgnoreCase("N")) {
+          st = sortType.NUMERIC;
+        }
       }
       if (sortTypeStr.length() > 1) {
         String ch1 = sortTypeStr.substring(1, 2);
-        if (ch1.equalsIgnoreCase("+")) so = +1;
-        else if (ch1.equalsIgnoreCase("-")) so = -1;
+        if (ch1.equalsIgnoreCase("+")) {
+          so = +1;
+        } else if (ch1.equalsIgnoreCase("-")) {
+          so = -1;
+        }
       }
     }
 
@@ -668,7 +686,9 @@ public class StrListFunctions extends AbstractFunction {
           break;
       }
 
-      if (so < 1) order = -order;
+      if (so < 1) {
+        order = -order;
+      }
       return order;
     }
 
@@ -742,10 +762,12 @@ public class StrListFunctions extends AbstractFunction {
       }
     }
     int numToCheck = expected.length;
-    if (numToCheck > parameters.size()) numToCheck = parameters.size();
+    if (numToCheck > parameters.size()) {
+      numToCheck = parameters.size();
+    }
 
     for (int i = 0; i < numToCheck; i++) {
-      if (expected[i] != null && !(expected[i].isInstance(parameters.get(i))))
+      if (expected[i] != null && !(expected[i].isInstance(parameters.get(i)))) {
         throw new ParameterException(
             I18N.getText(
                 "macro.function.strLst.incorrectParamType",
@@ -754,6 +776,7 @@ public class StrListFunctions extends AbstractFunction {
                 expected[i].getSimpleName(),
                 parameters.get(i),
                 parameters.get(i).getClass().getSimpleName()));
+      }
     }
   }
 }

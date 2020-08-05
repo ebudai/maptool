@@ -80,7 +80,9 @@ public class InitiativeTokenPopupMenu extends TokenPopupMenu {
       add(new JMenuItem(REMOVE_TOKEN_ACTION));
       REMOVE_TOKEN_ACTION.setEnabled(ip.hasOwnerPermission(tokenUnderMouse));
     } // endif
-    if (ip.hasGMPermission()) addSeparator();
+    if (ip.hasGMPermission()) {
+      addSeparator();
+    }
     I18N.setAction("initPanel.moveUp", MOVE_UP_ACTION);
     addGMItem(MOVE_UP_ACTION);
     I18N.setAction("initPanel.moveDown", MOVE_DOWN_ACTION);
@@ -97,10 +99,15 @@ public class InitiativeTokenPopupMenu extends TokenPopupMenu {
     // Do move up or move down need to be disabled
     InitiativeList list = getRenderer().getZone().getInitiativeList();
     int index = list.indexOf(tokenInitUnderMouse);
-    if (index == 0) MOVE_UP_ACTION.setEnabled(false);
-    if (index == list.getSize() - 1) MOVE_DOWN_ACTION.setEnabled(false);
-    if (tokenInitUnderMouse == list.getTokenInitiative(list.getCurrent()))
+    if (index == 0) {
+      MOVE_UP_ACTION.setEnabled(false);
+    }
+    if (index == list.getSize() - 1) {
+      MOVE_DOWN_ACTION.setEnabled(false);
+    }
+    if (tokenInitUnderMouse == list.getTokenInitiative(list.getCurrent())) {
       MAKE_CURRENT_ACTION.setEnabled(false);
+    }
   }
 
   /** This action will turn the selected token's initiative on and off. */
@@ -108,7 +115,9 @@ public class InitiativeTokenPopupMenu extends TokenPopupMenu {
       new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          for (TokenInitiative ti : selectedTokenInitiatives) ti.setHolding(!ti.isHolding());
+          for (TokenInitiative ti : selectedTokenInitiatives) {
+            ti.setHolding(!ti.isHolding());
+          }
         }
       };
 
@@ -134,15 +143,20 @@ public class InitiativeTokenPopupMenu extends TokenPopupMenu {
             String sName = ti.getToken().getName();
             if (MapTool.getPlayer().isGM()
                 && ti.getToken().getGMName() != null
-                && ti.getToken().getGMName().trim().length() != 0)
+                && ti.getToken().getGMName().trim().length() != 0) {
               sName += " (" + ti.getToken().getGMName().trim() + ")";
+            }
             message = I18N.getText("initPanel.enterState", sName);
             defaultValue = ti.getState();
           } // endif
           String input = JOptionPane.showInputDialog(message, defaultValue);
-          if (input == null) return;
+          if (input == null) {
+            return;
+          }
           input = input.trim();
-          for (TokenInitiative ti : selectedTokenInitiatives) ti.setState(input.trim());
+          for (TokenInitiative ti : selectedTokenInitiatives) {
+            ti.setState(input.trim());
+          }
         }
       };
 
@@ -151,7 +165,9 @@ public class InitiativeTokenPopupMenu extends TokenPopupMenu {
       new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-          for (TokenInitiative ti : selectedTokenInitiatives) ti.setState(null);
+          for (TokenInitiative ti : selectedTokenInitiatives) {
+            ti.setState(null);
+          }
         }
       };
 

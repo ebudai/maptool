@@ -127,8 +127,9 @@ public class Directory {
         return;
       }
       File[] listFiles = directory.listFiles(fileFilter);
-      if (listFiles == null)
+      if (listFiles == null) {
         throw new FileNotFoundException("Invalid directory name: '" + directory.getPath() + "'");
+      }
       files = List.of(listFiles);
       File[] subdirList = directory.listFiles(DIRECTORY_FILTER);
       subdirs = new ArrayList<Directory>();

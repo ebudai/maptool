@@ -70,8 +70,11 @@ public class InitiativeTransferHandler extends TransferHandler {
    */
   @Override
   public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
-    for (DataFlavor transferFlavor : transferFlavors)
-      if (InitiativeTransferable.INIT_TOKEN_FLAVOR.equals(transferFlavor)) return true;
+    for (DataFlavor transferFlavor : transferFlavors) {
+      if (InitiativeTransferable.INIT_TOKEN_FLAVOR.equals(transferFlavor)) {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -82,7 +85,9 @@ public class InitiativeTransferHandler extends TransferHandler {
   @Override
   public boolean importData(JComponent comp, Transferable t) {
     try {
-      if (!t.isDataFlavorSupported(InitiativeTransferable.INIT_TOKEN_FLAVOR)) return false;
+      if (!t.isDataFlavorSupported(InitiativeTransferable.INIT_TOKEN_FLAVOR)) {
+        return false;
+      }
 
       // Get the token and it's current position
       InitiativeList list = panel.getList();
@@ -90,8 +95,12 @@ public class InitiativeTransferHandler extends TransferHandler {
           (InitiativeTransferable) t.getTransferData(InitiativeTransferable.INIT_TOKEN_FLAVOR);
       JList displayList = (JList) comp;
       int newIndex = displayList.getSelectedIndex();
-      if (newIndex == -1) newIndex = list.getSize() - 1;
-      if (newIndex > data.getInititiave()) newIndex++;
+      if (newIndex == -1) {
+        newIndex = list.getSize() - 1;
+      }
+      if (newIndex > data.getInititiave()) {
+        newIndex++;
+      }
       list.moveToken(data.getInititiave(), newIndex);
       return true;
     } catch (UnsupportedFlavorException e) {
@@ -113,7 +122,9 @@ public class InitiativeTransferHandler extends TransferHandler {
   protected Transferable createTransferable(JComponent c) {
     JList displayList = (JList) c;
     TokenInitiative ti = (TokenInitiative) displayList.getSelectedValue();
-    if (ti == null || ti.getId() == null) return null;
+    if (ti == null || ti.getId() == null) {
+      return null;
+    }
     return new InitiativeTransferable(ti.getId(), panel.getList().indexOf(ti));
   }
 }

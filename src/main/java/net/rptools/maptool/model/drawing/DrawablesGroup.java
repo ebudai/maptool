@@ -47,10 +47,15 @@ public class DrawablesGroup extends AbstractDrawing {
           drawnBounds.getY() - penSize,
           drawnBounds.getWidth() + pen.getThickness(),
           drawnBounds.getHeight() + pen.getThickness());
-      if (bounds == null) bounds = drawnBounds;
-      else bounds.add(drawnBounds);
+      if (bounds == null) {
+        bounds = drawnBounds;
+      } else {
+        bounds.add(drawnBounds);
+      }
     }
-    if (bounds != null) return bounds;
+    if (bounds != null) {
+      return bounds;
+    }
     return new Rectangle(0, 0, -1, -1);
   }
 
@@ -60,7 +65,9 @@ public class DrawablesGroup extends AbstractDrawing {
     for (DrawnElement element : drawableList) {
       boolean isEraser = element.getPen().isEraser();
       if (area == null) {
-        if (!isEraser) area = new Area(element.getDrawable().getArea());
+        if (!isEraser) {
+          area = new Area(element.getDrawable().getArea());
+        }
       } else {
         if (isEraser) {
           area.subtract(element.getDrawable().getArea());

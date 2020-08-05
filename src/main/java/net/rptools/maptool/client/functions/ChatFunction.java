@@ -89,11 +89,13 @@ public class ChatFunction extends AbstractFunction {
         // FALLTHRU
       case 2:
         String temp = param.get(1).toString().trim();
-        if ("json".equals(delim) || temp.charAt(0) == '[')
+        if ("json".equals(delim) || temp.charAt(0) == '[') {
           jarray = JsonParser.parseString(temp).getAsJsonArray();
-        else {
+        } else {
           jarray = new JsonArray();
-          for (String t : temp.split(delim)) jarray.add(t.trim());
+          for (String t : temp.split(delim)) {
+            jarray.add(t.trim());
+          }
         }
         if (jarray.size() == 0) {
           return ""; // dont send to empty lists

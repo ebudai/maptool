@@ -151,7 +151,9 @@ public class MapToolExpressionParser extends ExpressionParser {
 
       // check user defined functions first
       UserDefinedMacroFunctions userFunctions = UserDefinedMacroFunctions.getInstance();
-      if (userFunctions.isFunctionDefined(functionName)) return userFunctions;
+      if (userFunctions.isFunctionDefined(functionName)) {
+        return userFunctions;
+      }
 
       // let parser do its thing
       return super.getFunction(functionName);

@@ -114,7 +114,9 @@ public class ProgressBarList extends JDialog implements ChangeListener {
       progressBars.removeAll();
       cancelButton.setEnabled(false);
       hideButton.setText("Close");
-      if (autohide.isSelected()) setVisible(false);
+      if (autohide.isSelected()) {
+        setVisible(false);
+      }
     } else {
       FTPTransferObject fto = (FTPTransferObject) e.getSource();
       JProgressBar bar;

@@ -99,7 +99,9 @@ public class UIBuilder extends JDialog {
     @SuppressWarnings({"unused"})
     public void addNode(String dir, MaptoolNode node, MutableTreeNode start) {
       MutableTreeNode firstChangedNode = null;
-      if (start == null) start = (MutableTreeNode) this.root;
+      if (start == null) {
+        start = (MutableTreeNode) this.root;
+      }
       // We'll use a cache to speed up the search...
       if (dir.equals(last_dir) && start == last_start) {
         start = last_root;
@@ -128,7 +130,9 @@ public class UIBuilder extends JDialog {
           // a folder, so create it that way.
           DefaultMutableTreeNode newchild = new DefaultMutableTreeNode(new MaptoolNode(elem));
           start.insert(newchild, start.getChildCount());
-          if (firstChangedNode == null) firstChangedNode = start;
+          if (firstChangedNode == null) {
+            firstChangedNode = start;
+          }
           start = newchild;
         } // OuterLoop
         last_root = start;
@@ -149,7 +153,9 @@ public class UIBuilder extends JDialog {
                 + ((DefaultMutableTreeNode) start).getUserObject()
                 + "'.");
       }
-      if (firstChangedNode != null) nodeStructureChanged(firstChangedNode);
+      if (firstChangedNode != null) {
+        nodeStructureChanged(firstChangedNode);
+      }
     }
 
     public void addNode(String dir, MaptoolNode node) {
@@ -177,17 +183,25 @@ public class UIBuilder extends JDialog {
     private DefaultMutableTreeNode last_search;
 
     public DefaultMutableTreeNode findNearestNode(String dir, MutableTreeNode start) {
-      if (start == null || dir.charAt(0) == '/') start = (MutableTreeNode) this.root;
+      if (start == null || dir.charAt(0) == '/') {
+        start = (MutableTreeNode) this.root;
+      }
       String[] elems = dir.split("/");
       OuterLoop:
       for (String elem : elems) {
         if (elem.length() == 0) // Skip empty elements, such as "//" or leading "/"
-        continue;
-        if (MapTool.isDevelopment()) _Searching(start);
+        {
+          continue;
+        }
+        if (MapTool.isDevelopment()) {
+          _Searching(start);
+        }
         Enumeration<?> children = start.children();
         while (children.hasMoreElements()) {
           DefaultMutableTreeNode next = (DefaultMutableTreeNode) children.nextElement();
-          if (MapTool.isDevelopment()) _Checking(next);
+          if (MapTool.isDevelopment()) {
+            _Checking(next);
+          }
           if (next.getUserObject().hashCode() == elem.hashCode()) {
             start = next;
             _Found(start);

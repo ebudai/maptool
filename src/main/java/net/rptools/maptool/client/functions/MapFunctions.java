@@ -113,8 +113,9 @@ public class MapFunctions extends AbstractFunction {
       Zone zone = getNamedMap(functionName, oldMapName).getZone();
       zone.setName(newMapName);
       MapTool.serverCommand().renameZone(zone.getId(), newMapName);
-      if (zone == MapTool.getFrame().getCurrentZoneRenderer().getZone())
+      if (zone == MapTool.getFrame().getCurrentZoneRenderer().getZone()) {
         MapTool.getFrame().setCurrentZoneRenderer(MapTool.getFrame().getCurrentZoneRenderer());
+      }
       return zone.getName();
 
     } else if ("copyMap".equalsIgnoreCase(functionName)) {
@@ -134,7 +135,9 @@ public class MapFunctions extends AbstractFunction {
       FunctionUtil.checkNumberParam(functionName, parameters, 0, 1);
       boolean allMaps = functionName.equalsIgnoreCase("getAllMapNames");
 
-      if (allMaps) checkTrusted(functionName);
+      if (allMaps) {
+        checkTrusted(functionName);
+      }
 
       List<String> mapNames = new LinkedList<String>();
       for (ZoneRenderer zr : MapTool.getFrame().getZoneRenderers()) {
@@ -166,7 +169,9 @@ public class MapFunctions extends AbstractFunction {
       throws ParserException {
     ZoneRenderer zr = MapTool.getFrame().getZoneRenderer(mapName);
 
-    if (zr != null) return zr;
+    if (zr != null) {
+      return zr;
+    }
 
     throw new ParserException(
         I18N.getText("macro.function.moveTokenMap.unknownMap", functionName, mapName));

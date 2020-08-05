@@ -62,8 +62,9 @@ public class MiscInitiativeFunction extends AbstractFunction {
             && (list.getCurrent() <= 0
                 || !ip.hasOwnerPermission(list.getTokenInitiative(list.getCurrent()).getToken()))) {
           String message = I18N.getText("macro.function.initiative.gmOnly", functionName);
-          if (ip.isOwnerPermissions())
+          if (ip.isOwnerPermissions()) {
             message = I18N.getText("macro.function.initiative.gmOrOwner", functionName);
+          }
           throw new ParserException(message);
         } // endif
       }
@@ -82,9 +83,12 @@ public class MiscInitiativeFunction extends AbstractFunction {
       boolean hideNPCs = list.isHideNPC();
       for (TokenInitiative ti : list.getTokens()) {
         if (!MapTool.getParser().isMacroTrusted()
-            && !InitiativeListModel.isTokenVisible(ti.getToken(), hideNPCs)) continue;
-        if (ti == list.getTokenInitiative(list.getCurrent()))
+            && !InitiativeListModel.isTokenVisible(ti.getToken(), hideNPCs)) {
+          continue;
+        }
+        if (ti == list.getTokenInitiative(list.getCurrent())) {
           current = tokens.size(); // Make sure the current number matches what the user can see
+        }
         JsonObject tiJSON = new JsonObject();
         tiJSON.addProperty("holding", ti.isHolding());
         tiJSON.addProperty("initiative", ti.getState());
@@ -95,8 +99,9 @@ public class MiscInitiativeFunction extends AbstractFunction {
       out.add("tokens", tokens);
       return out.toString();
     }
-    if (!MapTool.getParser().isMacroTrusted() && !ip.hasGMPermission())
+    if (!MapTool.getParser().isMacroTrusted() && !ip.hasGMPermission()) {
       throw new ParserException(I18N.getText("macro.function.general.onlyGM", functionName));
+    }
     if (functionName.equals("sortInitiative")) {
       list.sort();
       return new BigDecimal(list.getSize());

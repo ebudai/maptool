@@ -49,7 +49,9 @@ public class AppUpdate {
    */
   public static boolean gitHubReleases() {
     // AppPreferences.setSkipAutoUpdate(false); // For testing only
-    if (AppPreferences.getSkipAutoUpdate()) return false;
+    if (AppPreferences.getSkipAutoUpdate()) {
+      return false;
+    }
     String strURL = getProperty(GIT_HUB_RELEASES);
     String strRequest = strURL + getProperty(GIT_HUB_OAUTH_TOKEN);
 
@@ -60,8 +62,11 @@ public class AppUpdate {
     // Default for Linux?
     String DOWNLOAD_EXTENSION = ".deb";
 
-    if (AppUtil.WINDOWS) DOWNLOAD_EXTENSION = ".exe";
-    else if (AppUtil.MAC_OS_X) DOWNLOAD_EXTENSION = ".pkg"; // Better default than .dmg?
+    if (AppUtil.WINDOWS) {
+      DOWNLOAD_EXTENSION = ".exe";
+    } else if (AppUtil.MAC_OS_X) {
+      DOWNLOAD_EXTENSION = ".pkg"; // Better default than .dmg?
+    }
 
     // Get current commit from JAR Manifest
     jarCommit = getCommitSHA();
@@ -74,7 +79,9 @@ public class AppUpdate {
 
     String strReleases = getReleases();
     // If can't access the list of releases, we're done
-    if (strReleases == null) return false;
+    if (strReleases == null) {
+      return false;
+    }
 
     JsonObject release;
     try {
@@ -104,7 +111,9 @@ public class AppUpdate {
 
     // If the commits are the same or we were told to skip this update, we're done!
     if (jarCommit.equals(latestGitHubReleaseCommit)
-        || AppPreferences.getSkipAutoUpdateCommit().equals(latestGitHubReleaseCommit)) return false;
+        || AppPreferences.getSkipAutoUpdateCommit().equals(latestGitHubReleaseCommit)) {
+      return false;
+    }
 
     JsonArray releaseAssets = release.get("assets").getAsJsonArray();
     String assetDownloadURL = null;
@@ -128,7 +137,9 @@ public class AppUpdate {
             String tagName = latestGitHubReleaseTagName;
             SwingUtilities.invokeLater(
                 () -> {
-                  if (showMessage(commit, tagName)) downloadFile(url, assetDownloadSize);
+                  if (showMessage(commit, tagName)) {
+                    downloadFile(url, assetDownloadSize);
+                  }
                 });
           } catch (MalformedURLException e) {
             log.error("Error with URL " + assetDownloadURL, e);
@@ -153,7 +164,9 @@ public class AppUpdate {
     try {
       Request request = new Request.Builder().url(strRequest).build();
       Response response = new OkHttpClient().newCall(request).execute();
-      if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+      if (!response.isSuccessful()) {
+        throw new IOException("Unexpected code " + response);
+      }
 
       String responseBody = response.body().string();
       log.debug("GitHub API Response: " + responseBody);
@@ -213,9 +226,13 @@ public class AppUpdate {
             options[1]);
     boolean dontAsk = dontAskCheckbox.isSelected();
 
-    if (dontAsk) AppPreferences.setSkipAutoUpdate(true);
+    if (dontAsk) {
+      AppPreferences.setSkipAutoUpdate(true);
+    }
 
-    if (result == JOptionPane.CANCEL_OPTION) AppPreferences.setSkipAutoUpdateCommit(commit);
+    if (result == JOptionPane.CANCEL_OPTION) {
+      AppPreferences.setSkipAutoUpdateCommit(commit);
+    }
 
     return (result == JOptionPane.YES_OPTION);
   }

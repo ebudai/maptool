@@ -107,14 +107,18 @@ public class MacroManager {
 
   public static Macro getRegisteredMacro(String name) {
     Macro ret = MACROS.get(name);
-    if (ret == null) return UNDEFINED_MACRO;
+    if (ret == null) {
+      return UNDEFINED_MACRO;
+    }
     return ret;
   }
 
   public static void registerMacro(Macro macro) {
     MacroDefinition def = macro.getClass().getAnnotation(MacroDefinition.class);
 
-    if (def == null) return;
+    if (def == null) {
+      return;
+    }
 
     MACROS.put(def.name(), macro);
     for (String alias : def.aliases()) {
@@ -171,9 +175,11 @@ public class MacroManager {
           if (zr != null) {
             final MapToolFrame frame = MapTool.getFrame();
             final CommandPanel cpanel = frame.getCommandPanel();
-            if (cpanel.getIdentityGUID() != null)
+            if (cpanel.getIdentityGUID() != null) {
               tokenInContext = zr.getZone().getToken(cpanel.getIdentityGUID());
-            else tokenInContext = zr.getZone().resolveToken(cpanel.getIdentity());
+            } else {
+              tokenInContext = zr.getZone().resolveToken(cpanel.getIdentity());
+            }
           }
           details = MapTool.getParser().parseLine(tokenInContext, details, macroExecutionContext);
           trustedPath = MapTool.getParser().isMacroPathTrusted();

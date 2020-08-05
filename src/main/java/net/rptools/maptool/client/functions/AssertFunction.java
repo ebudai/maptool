@@ -53,10 +53,11 @@ public class AssertFunction extends AbstractFunction implements DefinesSpecialVa
   public Object childEvaluate(
       Parser parser, VariableResolver resolver, String functionName, List<Object> parameters)
       throws ParserException {
-    if (!(parameters.get(1) instanceof String))
+    if (!(parameters.get(1) instanceof String)) {
       throw new ParameterException(
           I18N.getText(
               "macro.function.assert.mustBeString", "assert", parameters.get(1).toString()));
+    }
 
     if (BigDecimal.ZERO.equals(parameters.get(0))) {
       if (parameters.size() > 2 && parameters.get(2).equals(BigDecimal.ZERO)) {

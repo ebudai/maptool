@@ -34,10 +34,13 @@ class FTPClientConn {
     user = _user;
     password = _password;
 
-    if (user == null) proto_user_pswd_host = PROTOCOL + host + "/";
-    else if (password == null)
+    if (user == null) {
+      proto_user_pswd_host = PROTOCOL + host + "/";
+    } else if (password == null) {
       proto_user_pswd_host = PROTOCOL + encodeUser(user) + "@" + host + "/";
-    else proto_user_pswd_host = PROTOCOL + encodeUser(user) + ":" + password + "@" + host + "/";
+    } else {
+      proto_user_pswd_host = PROTOCOL + encodeUser(user) + ":" + password + "@" + host + "/";
+    }
   }
 
   private static String encodeUser(String u) {

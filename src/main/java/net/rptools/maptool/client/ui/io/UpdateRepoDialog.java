@@ -116,7 +116,9 @@ public class UpdateRepoDialog extends JDialog {
         || directory == null
         || username == null
         || subdir == null
-        || password == null) log.error("Form does not match code: " + UPDATE_REPO_DIALOG);
+        || password == null) {
+      log.error("Form does not match code: " + UPDATE_REPO_DIALOG);
+    }
   }
 
   protected void initFTPLocation(Location loc) {

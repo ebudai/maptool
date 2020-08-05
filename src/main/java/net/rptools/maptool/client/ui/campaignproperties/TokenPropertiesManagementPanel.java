@@ -282,10 +282,12 @@ public class TokenPropertiesManagementPanel extends AbeillePanel<CampaignPropert
         if (old != null) {
           // Perhaps these properties should produce warnings at all, but what it someone
           // is actually <b>using them as property names!</b>
-          if (old.startsWith("---"))
+          if (old.startsWith("---")) {
             errlog.add(
                 I18N.getText("msg.error.mtprops.properties.duplicateComment", original, old));
-          else errlog.add(I18N.getText("msg.error.mtprops.properties.duplicate", original, old));
+          } else {
+            errlog.add(I18N.getText("msg.error.mtprops.properties.duplicate", original, old));
+          }
         } else {
           propertyList.add(property);
           caseCheck.put(line, original);

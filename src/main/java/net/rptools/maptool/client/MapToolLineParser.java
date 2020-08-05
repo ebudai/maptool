@@ -145,8 +145,9 @@ public class MapToolLineParser {
           //          log.info(alias + " : " + function.getClass().getName());
         }
       } else {
-        for (String alias : function.getAliases())
+        for (String alias : function.getAliases()) {
           functionList.put(alias, function.getClass().getName());
+        }
       }
     }
 
@@ -380,14 +381,18 @@ public class MapToolLineParser {
                   error = null;
                   try {
                     loopCount = option.getParsedIntParam(0, resolver, tokenInContext, this);
-                    if (loopCount < 0) error = I18N.getText("lineParser.countNonNeg", loopCount);
+                    if (loopCount < 0) {
+                      error = I18N.getText("lineParser.countNonNeg", loopCount);
+                    }
 
                   } catch (ParserException pe) {
                     error = I18N.getText("lineParser.errorProcessingOpt", "COUNT", pe.getMessage());
                   }
                   loopSep = option.getStringParam(1);
 
-                  if (error != null) throw doError(error, opts, roll);
+                  if (error != null) {
+                    throw doError(error, opts, roll);
+                  }
 
                   break;
 
@@ -408,7 +413,7 @@ public class MapToolLineParser {
                       throw new ParserException(msg);
                     }
                     loopSep = option.getStringParam(4);
-                    if (loopStep != 0)
+                    if (loopStep != 0) {
                       loopCount =
                           Math.max(
                               1,
@@ -416,18 +421,26 @@ public class MapToolLineParser {
                                   Math.ceil(
                                       Math.abs(
                                           (double) (loopEnd - loopStart) / (double) loopStep)));
+                    }
 
-                    if (loopVar.equalsIgnoreCase(""))
+                    if (loopVar.equalsIgnoreCase("")) {
                       error = I18N.getText("lineParser.forVarMissing");
-                    if (loopStep == 0) error = I18N.getText("lineParser.forNoZeroStep");
+                    }
+                    if (loopStep == 0) {
+                      error = I18N.getText("lineParser.forNoZeroStep");
+                    }
                     if ((loopEnd <= loopStart && loopStep > 0)
-                        || (loopEnd >= loopStart && loopStep < 0)) loopCount = 0;
+                        || (loopEnd >= loopStart && loopStep < 0)) {
+                      loopCount = 0;
+                    }
 
                   } catch (ParserException pe) {
                     error = I18N.getText("lineParser.errorProcessingOpt", "FOR", pe.getMessage());
                   }
 
-                  if (error != null) throw doError(error, opts, roll);
+                  if (error != null) {
+                    throw doError(error, opts, roll);
+                  }
 
                   break;
 
@@ -468,14 +481,17 @@ public class MapToolLineParser {
                     }
                     loopCount = foreachList.size();
 
-                    if (loopVar.equalsIgnoreCase(""))
+                    if (loopVar.equalsIgnoreCase("")) {
                       error = I18N.getText("lineParser.foreachVarMissing");
+                    }
                   } catch (ParserException pe) {
                     error =
                         I18N.getText("lineParser.errorProcessingOpt", "FOREACH", pe.getMessage());
                   }
 
-                  if (error != null) throw doError(error, opts, roll);
+                  if (error != null) {
+                    throw doError(error, opts, roll);
+                  }
 
                   break;
 
@@ -894,7 +910,9 @@ public class MapToolLineParser {
                   log.debug(e);
                   boolean catchAbort =
                       BigDecimal.ONE.equals(resolver.getVariable("macro.catchAbort"));
-                  if (!catchAbort) throw e;
+                  if (!catchAbort) {
+                    throw e;
+                  }
                   output_text = "";
                 } catch (AssertFunctionException assertEx) {
                   // required to catch assert that are not
@@ -903,7 +921,9 @@ public class MapToolLineParser {
                   log.debug(assertEx);
                   boolean catchAssert =
                       BigDecimal.ONE.equals(resolver.getVariable("macro.catchAssert"));
-                  if (!catchAssert) throw assertEx;
+                  if (!catchAssert) {
+                    throw assertEx;
+                  }
                   MapTool.addLocalMessage(assertEx.getMessage());
                   output_text = "";
                 } catch (ParserException e) {
@@ -1037,7 +1057,9 @@ public class MapToolLineParser {
     } catch (AbortFunctionException e) {
       log.debug(e);
       boolean catchAbort = BigDecimal.ONE.equals(resolver.getVariable("macro.catchAbort"));
-      if (!catchAbort) throw e;
+      if (!catchAbort) {
+        throw e;
+      }
 
       // return an empty result to not collide with tooltips
       // when catching an abort
@@ -1047,7 +1069,9 @@ public class MapToolLineParser {
     } catch (AssertFunctionException e) {
       log.debug(e);
       boolean catchAssert = BigDecimal.ONE.equals(resolver.getVariable("macro.catchAssert"));
-      if (!catchAssert) throw e;
+      if (!catchAssert) {
+        throw e;
+      }
       MapTool.addLocalMessage(e.getMessage());
 
       // return an empty result to not collide with tooltips
@@ -1137,7 +1161,9 @@ public class MapToolLineParser {
       macroLocation = macroParts[1];
     }
     // For convenience to macro authors, no error on a blank macro name
-    if (macroName.equalsIgnoreCase("")) return "";
+    if (macroName.equalsIgnoreCase("")) {
+      return "";
+    }
 
     // IF the macro is a @this, then we get the location of the current macro and use that.
     if (macroLocation != null && macroLocation.equalsIgnoreCase("this")) {

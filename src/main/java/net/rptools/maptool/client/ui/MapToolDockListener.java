@@ -121,6 +121,8 @@ public class MapToolDockListener implements DockableFrameListener {
    * @param dfeId the DockableFrameEvent to record
    */
   private void showEvent(String dfeId) {
-    if (log.isTraceEnabled()) log.trace(dfeId);
+    if (log.isTraceEnabled()) {
+      log.trace(dfeId);
+    }
   }
 }

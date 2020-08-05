@@ -102,12 +102,20 @@ public class MaptoolNode {
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
+    if (obj == this) {
+      return true;
+    }
     if (obj instanceof MaptoolNode) {
       MaptoolNode mtn = (MaptoolNode) obj;
-      if (!mtn.name.equals(this.name)) return false;
-      if (mtn.object == null && this.object == null) return true;
-      if (mtn.object != null && this.object != null && mtn.object.equals(this.object)) return true;
+      if (!mtn.name.equals(this.name)) {
+        return false;
+      }
+      if (mtn.object == null && this.object == null) {
+        return true;
+      }
+      if (mtn.object != null && this.object != null && mtn.object.equals(this.object)) {
+        return true;
+      }
     }
     return false;
   }

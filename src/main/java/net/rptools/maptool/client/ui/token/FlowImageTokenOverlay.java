@@ -56,7 +56,9 @@ public class FlowImageTokenOverlay extends ImageTokenOverlay {
    * @return Flow used to position the states
    */
   protected TokenOverlayFlow getFlow() {
-    if (flow == null && grid > 0) flow = TokenOverlayFlow.getInstance(grid);
+    if (flow == null && grid > 0) {
+      flow = TokenOverlayFlow.getInstance(grid);
+    }
     return flow;
   }
 

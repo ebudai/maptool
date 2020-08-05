@@ -136,7 +136,9 @@ public abstract class AbstractTokenOverlay implements Cloneable {
 
   /** @return Getter for opacity */
   public int getOpacity() {
-    if (opacity == 0) opacity = 100;
+    if (opacity == 0) {
+      opacity = 100;
+    }
     return opacity;
   }
 
@@ -147,7 +149,9 @@ public abstract class AbstractTokenOverlay implements Cloneable {
 
   /** @return Getter for showGM */
   public boolean isShowGM() {
-    if (!showGM && !showOwner && !showOthers) showGM = showOwner = showOthers = true;
+    if (!showGM && !showOwner && !showOthers) {
+      showGM = showOwner = showOthers = true;
+    }
     return showGM;
   }
 
@@ -158,7 +162,9 @@ public abstract class AbstractTokenOverlay implements Cloneable {
 
   /** @return Getter for showOwner */
   public boolean isShowOwner() {
-    if (!showGM && !showOwner && !showOthers) showGM = showOwner = showOthers = true;
+    if (!showGM && !showOwner && !showOthers) {
+      showGM = showOwner = showOthers = true;
+    }
     return showOwner;
   }
 
@@ -169,7 +175,9 @@ public abstract class AbstractTokenOverlay implements Cloneable {
 
   /** @return Getter for showOthers */
   public boolean isShowOthers() {
-    if (!showGM && !showOwner && !showOthers) showGM = showOwner = showOthers = true;
+    if (!showGM && !showOwner && !showOthers) {
+      showGM = showOwner = showOthers = true;
+    }
     return showOthers;
   }
 
@@ -186,10 +194,16 @@ public abstract class AbstractTokenOverlay implements Cloneable {
    * @return The value <code>true</code> if the passed player can see this overlay on the token.
    */
   public boolean showPlayer(Token token, Player player) {
-    if (isShowGM() && player.isGM()) return true;
+    if (isShowGM() && player.isGM()) {
+      return true;
+    }
     boolean owner = token.isOwner(player.getName());
-    if (isShowOwner() && owner) return true;
-    if (isShowOthers() && !player.isGM() && !owner) return true;
+    if (isShowOwner() && owner) {
+      return true;
+    }
+    if (isShowOthers() && !player.isGM() && !owner) {
+      return true;
+    }
     return false;
   }
 

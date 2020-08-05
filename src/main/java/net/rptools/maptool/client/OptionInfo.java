@@ -148,11 +148,14 @@ class OptionInfo {
 
     /** Returns a copy of the default params array for this option type. */
     public Object[] getDefaultParams() {
-      if (maxParams == -1) return null;
+      if (maxParams == -1) {
+        return null;
+      }
 
       Object[] retval = new Object[maxParams];
-      if (maxParams - minParams >= 0)
+      if (maxParams - minParams >= 0) {
         System.arraycopy(defaultParams, 0, retval, minParams, maxParams - minParams);
+      }
 
       return retval;
     }
@@ -167,9 +170,13 @@ class OptionInfo {
         } else {
           retval.append(", ");
         }
-        if (p == null) retval.append("null");
-        else if (p instanceof String) retval.append("\"").append(p).append("\"");
-        else retval.append(p.toString());
+        if (p == null) {
+          retval.append("null");
+        } else if (p instanceof String) {
+          retval.append("\"").append(p).append("\"");
+        } else {
+          retval.append(p.toString());
+        }
       }
       retval.append("]");
       return retval.toString();
@@ -216,11 +223,15 @@ class OptionInfo {
   static List<OptionInfo> getRollOptionList(String optionString) throws RollOptionException {
 
     // check for null
-    if (optionString == null) return null;
+    if (optionString == null) {
+      return null;
+    }
 
     // check if already parsed
     List<OptionInfo> list = OPTION_INFO_CACHE.getIfPresent(optionString);
-    if (list != null) return list;
+    if (list != null) {
+      return list;
+    }
 
     list = new ArrayList<>();
     optionString = optionString.trim();
@@ -336,7 +347,9 @@ class OptionInfo {
     }
 
     // Fill in the found parameters, converting to BigDecimal if possible.
-    if (params == null) params = new Object[numParamsFound];
+    if (params == null) {
+      params = new Object[numParamsFound];
+    }
 
     for (int i = 0; i < numParamsFound; i++) {
       params[i] = toNumIfPossible(paramList.get(i));
@@ -432,8 +445,9 @@ class OptionInfo {
       int index, MapToolVariableResolver res, Token tokenInContext, MapToolLineParser parser)
       throws ParserException {
     Object retval = getParsedParam(index, res, tokenInContext, parser);
-    if (!(retval instanceof BigDecimal))
+    if (!(retval instanceof BigDecimal)) {
       throw new ParserException(I18N.getText("lineParser.notValidNumber", retval.toString()));
+    }
     return ((BigDecimal) retval).intValue();
   }
 
@@ -447,9 +461,13 @@ class OptionInfo {
       } else {
         retval.append(", ");
       }
-      if (p == null) retval.append("null");
-      else if (p instanceof String) retval.append("\"").append(p).append("\"");
-      else retval.append(p.toString());
+      if (p == null) {
+        retval.append("null");
+      } else if (p instanceof String) {
+        retval.append("\"").append(p).append("\"");
+      } else {
+        retval.append(p.toString());
+      }
     }
     retval.append(")");
     return retval.toString();

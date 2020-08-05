@@ -568,7 +568,9 @@ public class HTMLWebViewManager {
       addToObject(jObj, button.getName(), button.getValue());
       formnovalidate = button.getAttribute("formnovalidate") != null;
     }
-    if (form == null) return;
+    if (form == null) {
+      return;
+    }
 
     // formAction can override action
     String formAction = target.getAttribute("formaction");
@@ -601,7 +603,9 @@ public class HTMLWebViewManager {
           if (element.getChecked()) {
             name = element.getName();
             value = element.getValue();
-          } else continue; // skip unchecked elements
+          } else {
+            continue; // skip unchecked elements
+          }
         } else if (type.equals("submit") || type.equals("image")) {
           continue; // skip input button/images that were not pressed
         } else {
@@ -629,7 +633,9 @@ public class HTMLWebViewManager {
         HTMLTextAreaElement element = (HTMLTextAreaElement) collection.item(i);
         name = element.getName();
         value = element.getValue();
-      } else continue; // skip elements not containing data
+      } else {
+        continue; // skip elements not containing data
+      }
       addToObject(jObj, name, value);
     }
 

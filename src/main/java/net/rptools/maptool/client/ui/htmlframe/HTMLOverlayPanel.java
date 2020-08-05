@@ -310,7 +310,9 @@ public class HTMLOverlayPanel extends JFXPanel {
    * @return true if alpha isn't 0, false if it is
    */
   private boolean isOpaque(int x, int y) {
-    if (!getBounds().contains(x, y)) return false; // no overlay outside the bounds
+    if (!getBounds().contains(x, y)) {
+      return false; // no overlay outside the bounds
+    }
     final BufferedImage bimg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     final Graphics2D g2d = bimg.createGraphics();
     g2d.translate(-x, -y); // pixel of interest is now at 0,0

@@ -152,9 +152,13 @@ public class RadiusCellTemplate extends AbstractTemplate {
     int radius = getRadius();
     GUID zoneId = getZoneId();
 
-    if (radius == 0) return;
+    if (radius == 0) {
+      return;
+    }
     Zone zone = MapTool.getCampaign().getZone(zoneId);
-    if (zone == null) return;
+    if (zone == null) {
+      return;
+    }
 
     // Find the proper distance
     int gridSize = zone.getGrid().getSize();
@@ -166,8 +170,12 @@ public class RadiusCellTemplate extends AbstractTemplate {
         int yOff = y * gridSize;
 
         // Template specific painting
-        if (border) paintBorder(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
-        if (area) paintArea(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
+        if (border) {
+          paintBorder(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
+        }
+        if (area) {
+          paintArea(g, x, y, xOff, yOff, gridSize, getDistance(x, y));
+        }
       } // endfor
     } // endfor
   }
@@ -235,7 +243,9 @@ public class RadiusCellTemplate extends AbstractTemplate {
    * the radius is an even number and still stay in the squares, that case isn't allowed.
    */
   private void adjustShape() {
-    if (getZoneId() == null) return;
+    if (getZoneId() == null) {
+      return;
+    }
     int gridSize = MapTool.getCampaign().getZone(getZoneId()).getGrid().getSize();
     Rectangle r = (Rectangle) vertexRenderer.getShape();
     r.setBounds(getVertex().x, getVertex().y, gridSize, gridSize);
@@ -263,8 +273,11 @@ public class RadiusCellTemplate extends AbstractTemplate {
   @Override
   public int getDistance(int x, int y) {
     int distance;
-    if (x > y) distance = x + (y / 2) + 1 + (y & 1);
-    else distance = y + (x / 2) + 1 + (x & 1);
+    if (x > y) {
+      distance = x + (y / 2) + 1 + (y & 1);
+    } else {
+      distance = y + (x / 2) + 1 + (x & 1);
+    }
     return distance;
   }
 

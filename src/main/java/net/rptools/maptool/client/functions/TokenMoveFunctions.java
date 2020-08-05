@@ -149,9 +149,11 @@ public class TokenMoveFunctions extends AbstractFunction {
       }
 
       if (useFractionOnly) {
-        if (getMovement(tokenInContext, useFractionOnly, useTerrainModifiers).equals("0.5"))
+        if (getMovement(tokenInContext, useFractionOnly, useTerrainModifiers).equals("0.5")) {
           return BigDecimal.ONE;
-        else return BigDecimal.ZERO;
+        } else {
+          return BigDecimal.ZERO;
+        }
       } else {
         return getMovement(tokenInContext, useFractionOnly, useTerrainModifiers);
       }
@@ -349,7 +351,7 @@ public class TokenMoveFunctions extends AbstractFunction {
     }
     JsonObject pointObj;
     // Lee: had to add handling for the line segment made by unsnapped movedOverToken()
-    if (pathPoints.get(0).containsKey("x"))
+    if (pathPoints.get(0).containsKey("x")) {
       for (Map<String, Integer> entry : pathPoints) {
         pointObj = new JsonObject();
         pointObj.addProperty("x", entry.get("x"));
@@ -359,7 +361,7 @@ public class TokenMoveFunctions extends AbstractFunction {
         }
         jsonArr.add(pointObj);
       }
-    else
+    } else {
       for (Map<String, Integer> entry : pathPoints) {
         pointObj = new JsonObject();
         pointObj.addProperty("x1", entry.get("x1"));
@@ -368,6 +370,7 @@ public class TokenMoveFunctions extends AbstractFunction {
         pointObj.addProperty("y2", entry.get("y2"));
         jsonArr.add(pointObj);
       }
+    }
 
     log.debug("...in pathPointsToJSONArrayt.  return JSONArray");
 
@@ -650,7 +653,9 @@ public class TokenMoveFunctions extends AbstractFunction {
       double unitsPerCell,
       WalkerMetric metric,
       boolean oneTwoOneFractionOnly) {
-    if (path == null || path.size() == 0) return 0;
+    if (path == null || path.size() == 0) {
+      return 0;
+    }
 
     final double unitsDistance;
 

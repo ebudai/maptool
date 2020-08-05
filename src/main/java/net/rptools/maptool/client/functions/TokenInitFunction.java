@@ -80,9 +80,13 @@ public class TokenInitFunction extends AbstractFunction {
   public static String getInitiative(Token token) {
     String ret = "";
     List<TokenInitiative> tis = token.getInitiatives();
-    if (tis.isEmpty()) return I18N.getText("macro.function.TokenInit.notOnList");
+    if (tis.isEmpty()) {
+      return I18N.getText("macro.function.TokenInit.notOnList");
+    }
     for (TokenInitiative ti : tis) {
-      if (ret.length() > 0) ret += ", ";
+      if (ret.length() > 0) {
+        ret += ", ";
+      }
       ret += ti.getState();
     } // endif
     return ret;
@@ -115,7 +119,9 @@ public class TokenInitFunction extends AbstractFunction {
     TokenInitiative ti = null;
     if (allowDuplicates || list.indexOf(token).isEmpty()) {
       ti = list.insertToken(-1, token);
-      if (state != null) ti.setState(state);
+      if (state != null) {
+        ti.setState(state);
+      }
     } else {
       setInitiative(token, state);
     } // endif
@@ -131,7 +137,9 @@ public class TokenInitFunction extends AbstractFunction {
    */
   public static Object setInitiative(Token token, String state) {
     List<InitiativeList.TokenInitiative> tis = token.getInitiatives();
-    for (InitiativeList.TokenInitiative ti : tis) ti.setState(state);
+    for (InitiativeList.TokenInitiative ti : tis) {
+      ti.setState(state);
+    }
     if (tis.isEmpty()) {
       return I18N.getText("macro.function.TokenInit.notOnListSet");
     } else {

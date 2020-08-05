@@ -3295,13 +3295,16 @@ public class ZoneRenderer extends JComponent
 
       // Calculate alpha Transparency from token and use opacity for indicating that token is moving
       float opacity = token.getTokenOpacity();
-      if (isTokenMoving(token)) opacity = opacity / 2.0f;
+      if (isTokenMoving(token)) {
+        opacity = opacity / 2.0f;
+      }
 
       // Finally render the token image
       timer.start("tokenlist-7");
       Composite oldComposite = tokenG.getComposite();
-      if (opacity < 1.0f)
+      if (opacity < 1.0f) {
         tokenG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+      }
       tokenG.drawImage(workImage, at, this);
       tokenG.setComposite(oldComposite);
       timer.stop("tokenlist-7");
@@ -3684,7 +3687,9 @@ public class ZoneRenderer extends JComponent
   private boolean isTokenInNeedOfClipping(Token token, Area tokenCellArea, boolean isGMView) {
 
     // can view everything or zone is not using vision = no clipping needed
-    if (isGMView || !zoneView.isUsingVision()) return false;
+    if (isGMView || !zoneView.isUsingVision()) {
+      return false;
+    }
 
     // If the token is a figure and its center is visible then no clipping
     if (token.getShape() == Token.TokenShape.FIGURE
@@ -3893,7 +3898,9 @@ public class ZoneRenderer extends JComponent
       }
       selectedTokenSet.removeAll(invalidTokenSet);
 
-      if (!selectedTokenSet.isEmpty()) break;
+      if (!selectedTokenSet.isEmpty()) {
+        break;
+      }
     }
     // TODO: if selection history is empty, notify the selection panel to
     // disable the undo button.

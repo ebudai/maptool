@@ -52,7 +52,9 @@ public class Path<T extends AbstractPoint> {
   }
 
   public T getLastWaypoint() {
-    if (waypointList.isEmpty()) return null;
+    if (waypointList.isEmpty()) {
+      return null;
+    }
     return waypointList.get(waypointList.size() - 1);
   }
 
@@ -102,12 +104,20 @@ public class Path<T extends AbstractPoint> {
       for (T p : cellList) {
         ZonePoint tempPoint = (ZonePoint) buildVal.clone();
         processPath.addPathCell(tempPoint);
-        if (waypointList.contains(p)) processPath.addWayPoint(tempPoint);
+        if (waypointList.contains(p)) {
+          processPath.addWayPoint(tempPoint);
+        }
 
-        if (buildVal.x < endPoint.x) buildVal.x += 100;
-        else if (buildVal.x > endPoint.x) buildVal.x -= 100;
-        if (buildVal.y < endPoint.y) buildVal.y += 100;
-        else if (buildVal.y > endPoint.y) buildVal.y -= 100;
+        if (buildVal.x < endPoint.x) {
+          buildVal.x += 100;
+        } else if (buildVal.x > endPoint.x) {
+          buildVal.x -= 100;
+        }
+        if (buildVal.y < endPoint.y) {
+          buildVal.y += 100;
+        } else if (buildVal.y > endPoint.y) {
+          buildVal.y -= 100;
+        }
       }
 
       path = (Path<T>) processPath;
@@ -141,8 +151,11 @@ public class Path<T extends AbstractPoint> {
 
       if (!waypointCheck.isEmpty()) {
         for (T p : waypointCheck) {
-          if (p instanceof ZonePoint) convPoint = grid.convert((ZonePoint) p);
-          else convPoint = (CellPoint) p;
+          if (p instanceof ZonePoint) {
+            convPoint = grid.convert((ZonePoint) p);
+          } else {
+            convPoint = (CellPoint) p;
+          }
           processPath.addAllPathCells(nw.calculatePath(prevPoint, convPoint));
           prevPoint = convPoint;
         }
@@ -152,8 +165,11 @@ public class Path<T extends AbstractPoint> {
       path = (Path<T>) processPath;
 
       for (T p : waypointCheck) {
-        if (p instanceof ZonePoint) convPoint = grid.convert((ZonePoint) p);
-        else convPoint = (CellPoint) p;
+        if (p instanceof ZonePoint) {
+          convPoint = grid.convert((ZonePoint) p);
+        } else {
+          convPoint = (CellPoint) p;
+        }
 
         T next = (T) convPoint.clone();
         next.x -= cellOffsetX;

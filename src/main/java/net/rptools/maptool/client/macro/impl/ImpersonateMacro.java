@@ -34,7 +34,9 @@ public class ImpersonateMacro implements Macro {
   public void execute(MacroContext context, String macro, MapToolMacroContext executionContext) {
     final MapToolFrame frame = MapTool.getFrame(); // cached for quicker access
     final CommandPanel cpanel = frame.getCommandPanel();
-    if (macro != null) macro = macro.trim();
+    if (macro != null) {
+      macro = macro.trim();
+    }
 
     // Clear current identity
     if (macro == null || macro.length() == 0) {

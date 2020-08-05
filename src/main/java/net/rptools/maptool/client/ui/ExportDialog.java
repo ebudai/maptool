@@ -716,7 +716,9 @@ public class ExportDialog extends JDialog implements IIOWriteProgressListener {
     // set according to dialog options
     //
     zone.setHasFog(ExportLayers.LAYER_FOG.isChecked());
-    if (!ExportLayers.LAYER_VISIBILITY.isChecked()) zone.setVisionType(Zone.VisionType.OFF);
+    if (!ExportLayers.LAYER_VISIBILITY.isChecked()) {
+      zone.setVisionType(Zone.VisionType.OFF);
+    }
     zone.setDrawBoard(ExportLayers.LAYER_BOARD.isChecked());
     Zone.Layer.TOKEN.setEnabled(ExportLayers.LAYER_TOKEN.isChecked());
     Zone.Layer.GM.setEnabled(ExportLayers.LAYER_HIDDEN.isChecked());

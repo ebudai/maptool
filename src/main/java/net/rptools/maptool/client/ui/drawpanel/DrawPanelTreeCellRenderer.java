@@ -95,16 +95,22 @@ public class DrawPanelTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   private String addText(Pen pen, String text, Drawable drawing) {
-    if (pen == null) return text;
+    if (pen == null) {
+      return text;
+    }
     String result = text;
-    if (pen.isEraser()) result = "CUT: " + result;
+    if (pen.isEraser()) {
+      result = "CUT: " + result;
+    }
     if (pen.getOpacity() < 1) {
       int perc = (int) (pen.getOpacity() * 100);
       result = result + String.format(" opacity %s%%", perc);
     }
     if (drawing instanceof AbstractDrawing) {
       String dName = ((AbstractDrawing) drawing).getName();
-      if (dName != null && !"".equals(dName)) result = dName + ": " + result;
+      if (dName != null && !"".equals(dName)) {
+        result = dName + ": " + result;
+      }
     }
     return result;
   }
@@ -114,80 +120,85 @@ public class DrawPanelTreeCellRenderer extends DefaultTreeCellRenderer {
     try {
       switch (key) {
         case "panel.DrawExplorer.ShapeDrawable.Area":
-          if (eraser)
+          if (eraser) {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-poly-erase.png")));
-          else
+          } else {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-poly.png")));
+          }
         case "panel.DrawExplorer.ShapeDrawable.Polygon":
-          if (eraser)
+          if (eraser) {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-poly-erase.png")));
-          else
+          } else {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-poly.png")));
+          }
         case "panel.DrawExplorer.ShapeDrawable.Float":
-          if (eraser)
+          if (eraser) {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-ellipse-erase.png")));
-          else
+          } else {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-ellipse.png")));
+          }
         case "panel.DrawExplorer.ShapeDrawable.Rectangle":
-          if (eraser)
+          if (eraser) {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-rectangle-erase.png")));
-          else
+          } else {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-rectangle.png")));
+          }
         case "panel.DrawExplorer.LineSegment.Line":
-          if (eraser)
+          if (eraser) {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-line-erase.png")));
-          else
+          } else {
             return new ImageIcon(
                 ImageIO.read(
                     getClass()
                         .getClassLoader()
                         .getResourceAsStream(
                             "net/rptools/maptool/client/image/tool/drawpanel-line.png")));
+          }
         case "panel.DrawExplorer.Template.RadiusCellTemplate":
           return new ImageIcon(
               ImageIO.read(

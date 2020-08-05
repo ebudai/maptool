@@ -74,9 +74,10 @@ public class YieldTokenOverlay extends XTokenOverlay {
     Stroke tempStroke = g.getStroke();
     g.setStroke(getStroke());
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     g.draw(new Line2D.Double(0, vc, bounds.width, vc));
     g.draw(new Line2D.Double(bounds.width, vc, hc, bounds.height));
     g.draw(new Line2D.Double(hc, bounds.height, 0, vc));

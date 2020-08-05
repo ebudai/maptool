@@ -55,7 +55,9 @@ public class StringUtil {
    * @return the result
    */
   public static Double parseDecimal(String text, Double def) {
-    if (text == null) return def;
+    if (text == null) {
+      return def;
+    }
     try {
       return parseDecimal(text);
     } catch (ParseException e) {
@@ -73,7 +75,9 @@ public class StringUtil {
    */
   public static Double parseDecimal(String text) throws ParseException {
     double def = 0.0;
-    if (text == null) return def;
+    if (text == null) {
+      return def;
+    }
     def = nf.parse(text).doubleValue();
     // System.out.println("Decimal: Input string is >>"+text+"<< and parsing produces "+newValue);
     return def;
@@ -89,7 +93,9 @@ public class StringUtil {
    * @return the result
    */
   public static Integer parseInteger(String text, Integer def) {
-    if (text == null) return def;
+    if (text == null) {
+      return def;
+    }
     try {
       return parseInteger(text);
     } catch (ParseException e) {
@@ -107,7 +113,9 @@ public class StringUtil {
    */
   public static Integer parseInteger(String text) throws ParseException {
     int def = 0;
-    if (text == null) return def;
+    if (text == null) {
+      return def;
+    }
     def = nf.parse(text).intValue();
     // System.out.println("Integer: Input string is >>"+text+"<< and parsing produces "+newValue);
     return def;
@@ -124,7 +132,9 @@ public class StringUtil {
    * @return the result
    */
   public static Boolean parseBoolean(String text, Boolean def) {
-    if (text == null) return def;
+    if (text == null) {
+      return def;
+    }
     try {
       return parseBoolean(text);
     } catch (ParseException e) {
@@ -145,8 +155,11 @@ public class StringUtil {
     Boolean def = Boolean.FALSE;
     if (text != null) {
       text = text.toLowerCase();
-      if (text.equals("true")) return Boolean.TRUE;
-      else if (text.equals("false")) return Boolean.FALSE;
+      if (text.equals("true")) {
+        return Boolean.TRUE;
+      } else if (text.equals("false")) {
+        return Boolean.FALSE;
+      }
       def = parseInteger(text) != 0;
     }
     return def;

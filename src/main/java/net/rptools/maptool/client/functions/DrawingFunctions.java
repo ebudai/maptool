@@ -123,7 +123,9 @@ public class DrawingFunctions extends AbstractFunction {
   protected DrawnElement getDrawnElement(String functionName, Zone map, GUID guid)
       throws ParserException {
     DrawnElement drawnElement = findDrawnElement(map.getAllDrawnElements(), guid);
-    if (drawnElement != null) return drawnElement;
+    if (drawnElement != null) {
+      return drawnElement;
+    }
     throw new ParserException(
         I18N.getText(
             "macro.function.drawingFunction.unknownDrawing", functionName, guid.toString()));
@@ -137,7 +139,9 @@ public class DrawingFunctions extends AbstractFunction {
       if (de.getDrawable() instanceof DrawablesGroup) {
         DrawnElement result =
             findDrawnElement(((DrawablesGroup) de.getDrawable()).getDrawableList(), guid);
-        if (result != null) return result;
+        if (result != null) {
+          return result;
+        }
       }
     }
     return null;
@@ -154,7 +158,9 @@ public class DrawingFunctions extends AbstractFunction {
   protected float getFloatPercent(String functionName, String f) throws ParserException {
     try {
       float per = Float.parseFloat(f);
-      while (per > 1) per = per / 100;
+      while (per > 1) {
+        per = per / 100;
+      }
       return per;
     } catch (Exception e) {
       throw new ParserException(
@@ -204,9 +210,13 @@ public class DrawingFunctions extends AbstractFunction {
    * @return Layer
    */
   protected Layer getLayer(String layer) {
-    if ("GM".equalsIgnoreCase(layer)) return Layer.GM;
-    else if ("OBJECT".equalsIgnoreCase(layer)) return Layer.OBJECT;
-    else if ("BACKGROUND".equalsIgnoreCase(layer)) return Layer.BACKGROUND;
+    if ("GM".equalsIgnoreCase(layer)) {
+      return Layer.GM;
+    } else if ("OBJECT".equalsIgnoreCase(layer)) {
+      return Layer.OBJECT;
+    } else if ("BACKGROUND".equalsIgnoreCase(layer)) {
+      return Layer.BACKGROUND;
+    }
     return Layer.TOKEN;
   }
 
@@ -440,9 +450,10 @@ public class DrawingFunctions extends AbstractFunction {
    */
   protected void setPen(String functionName, Zone map, GUID guid, Object pen)
       throws ParserException {
-    if (!(pen instanceof Pen))
+    if (!(pen instanceof Pen)) {
       throw new ParserException(
           I18N.getText("macro.function.drawingFunction.invalidPen", functionName));
+    }
     Pen p = new Pen((Pen) pen);
     List<DrawnElement> drawableList = map.getAllDrawnElements();
     DrawnElement de = findDrawnElement(drawableList, guid);

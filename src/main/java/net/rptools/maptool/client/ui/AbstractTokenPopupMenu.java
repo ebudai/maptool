@@ -374,15 +374,18 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
         switch (layer) {
           case BACKGROUND:
           case OBJECT:
-            if (token.getShape() != TokenShape.FIGURE) token.setShape(TokenShape.TOP_DOWN);
+            if (token.getShape() != TokenShape.FIGURE) {
+              token.setShape(TokenShape.TOP_DOWN);
+            }
             break;
           case TOKEN:
             Image image = ImageManager.getImage(token.getImageAssetId());
             if (image == null || image == ImageManager.TRANSFERING_IMAGE) {
               token.setShape(Token.TokenShape.TOP_DOWN);
             } else {
-              if (token.getShape() != TokenShape.FIGURE)
+              if (token.getShape() != TokenShape.FIGURE) {
                 token.setShape(TokenUtil.guessTokenType(image));
+              }
             }
             break;
         }
@@ -523,9 +526,13 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
 
         final String tokenName = token.getName();
         final String tokenNameGM;
-        if (token.getGMName() == null) tokenNameGM = tokenName;
-        else if (token.getGMName().trim().isEmpty()) tokenNameGM = tokenName;
-        else tokenNameGM = token.getGMName();
+        if (token.getGMName() == null) {
+          tokenNameGM = tokenName;
+        } else if (token.getGMName().trim().isEmpty()) {
+          tokenNameGM = tokenName;
+        } else {
+          tokenNameGM = token.getGMName();
+        }
 
         // chooser.setCurrentDirectory(AppPreferences.getSaveDir());
 
@@ -568,8 +575,12 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
         } else {
           if (saveDirectory == null) {
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if (chooser.showSaveDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) return;
-            if (chooser.getFileFilter() == tokenFilterGM) saveAsGmName = true;
+            if (chooser.showSaveDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) {
+              return;
+            }
+            if (chooser.getFileFilter() == tokenFilterGM) {
+              saveAsGmName = true;
+            }
             saveDirectory = chooser.getSelectedFile();
           }
 
@@ -619,7 +630,9 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
           overWriteFile = MapTool.confirm("File exists, would you like to overwrite?");
         }
 
-        if (tokenSaveFile.exists() && !overWriteFile) continue;
+        if (tokenSaveFile.exists() && !overWriteFile) {
+          continue;
+        }
 
         if (!MapTool.getPlayer().isGM()) {
           token.setGMNotes("");
@@ -819,11 +832,17 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
       if (!name.equals(key)) {
         putValue(NAME, name);
         int mnemonic = I18N.getMnemonic(key);
-        if (mnemonic != -1) putValue(MNEMONIC_KEY, mnemonic);
+        if (mnemonic != -1) {
+          putValue(MNEMONIC_KEY, mnemonic);
+        }
         String accel = I18N.getAccelerator(key);
-        if (accel != null) putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(accel));
+        if (accel != null) {
+          putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(accel));
+        }
         String description = I18N.getDescription(key);
-        if (description != null) putValue(SHORT_DESCRIPTION, description);
+        if (description != null) {
+          putValue(SHORT_DESCRIPTION, description);
+        }
       } else {
 
         // Default name if no I18N set
@@ -1033,7 +1052,9 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
       for (GUID guid : selectedTokenSet) {
         Zone zone = renderer.getZone();
         Token token = zone.getToken(guid);
-        if (token != null) token.toggleIsAlwaysVisible();
+        if (token != null) {
+          token.toggleIsAlwaysVisible();
+        }
       }
     }
   }

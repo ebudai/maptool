@@ -134,9 +134,15 @@ public class TwoToneTextPane extends JTextPane {
    */
   public static String getFontString(Style style) {
     String font = StyleConstants.getFontFamily(style) + "-";
-    if (StyleConstants.isBold(style)) font += "BOLD";
-    if (StyleConstants.isItalic(style)) font += "ITALIC";
-    if (!StyleConstants.isBold(style) && !StyleConstants.isItalic(style)) font += "PLAIN";
+    if (StyleConstants.isBold(style)) {
+      font += "BOLD";
+    }
+    if (StyleConstants.isItalic(style)) {
+      font += "ITALIC";
+    }
+    if (!StyleConstants.isBold(style) && !StyleConstants.isItalic(style)) {
+      font += "PLAIN";
+    }
     font += "-" + StyleConstants.getFontSize(style);
     return font;
   }
@@ -165,7 +171,9 @@ public class TwoToneTextPane extends JTextPane {
 
         // Get the next style
         style = pane.getStyle(match.group(1));
-        if (style == null) throw new IllegalArgumentException("Unknown style: '" + match.group(1));
+        if (style == null) {
+          throw new IllegalArgumentException("Unknown style: '" + match.group(1));
+        }
       } // endwhile
 
       // Add the last of the text

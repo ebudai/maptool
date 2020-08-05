@@ -138,9 +138,13 @@ public class FacingTool extends DefaultTool {
       // }
       boolean revealFog = false;
       if (renderer.getZone().hasFog()) {
-        if (ownerReveal && token.isOwner(name)) revealFog = true;
-        else if (hasOwnerReveal && token.hasOwners()) revealFog = true;
-        else if (noOwnerReveal && !token.hasOwners()) revealFog = true;
+        if (ownerReveal && token.isOwner(name)) {
+          revealFog = true;
+        } else if (hasOwnerReveal && token.hasOwners()) {
+          revealFog = true;
+        } else if (noOwnerReveal && !token.hasOwners()) {
+          revealFog = true;
+        }
       }
 
       if (revealFog) {

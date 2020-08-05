@@ -325,7 +325,9 @@ public class TokenBarController
         if (imageFile == null
             || imageFile.isDirectory()
             || !imageFile.exists()
-            || !imageFile.canRead()) return;
+            || !imageFile.canRead()) {
+          return;
+        }
         if (imageSelected >= 0) {
           imageModel.insertElementAt(
               TokenStatesController.loadAsssetFile(imageFile.getAbsolutePath(), formPanel),
@@ -351,7 +353,9 @@ public class TokenBarController
         if (imageFile == null
             || imageFile.isDirectory()
             || !imageFile.exists()
-            || !imageFile.canRead()) return;
+            || !imageFile.canRead()) {
+          return;
+        }
         imageModel.set(
             imageSelected,
             TokenStatesController.loadAsssetFile(imageFile.getAbsolutePath(), formPanel));
@@ -394,7 +398,9 @@ public class TokenBarController
     } else if (UPDATE.equals(name)) {
       BarTokenOverlay selectedOverlay = (BarTokenOverlay) formPanel.getSelectedItem(BARS);
       BarTokenOverlay overlay = createTokenOverlay(selectedOverlay);
-      if (overlay != null) model.set(selected, overlay);
+      if (overlay != null) {
+        model.set(selected, overlay);
+      }
 
       // Move an item up one row
     } else if (MOVE_UP.equals(name)) {
@@ -515,7 +521,9 @@ public class TokenBarController
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting()) return;
+    if (e.getValueIsAdjusting()) {
+      return;
+    }
     if (e.getSource() == formPanel.getList(BARS)) {
       int selected = formPanel.getList(BARS).getSelectedIndex();
       int size = formPanel.getList(BARS).getModel().getSize();
@@ -566,7 +574,11 @@ public class TokenBarController
           type = 2;
         }
         DefaultListModel<MD5Key> model = new DefaultListModel<>();
-        if (assetIds != null) for (MD5Key key : assetIds) model.addElement(key);
+        if (assetIds != null) {
+          for (MD5Key key : assetIds) {
+            model.addElement(key);
+          }
+        }
         formPanel.getList(IMAGES).setModel(model);
         formPanel.getList(IMAGES).repaint();
 

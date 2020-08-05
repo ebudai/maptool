@@ -48,7 +48,9 @@ public class BurstTemplate extends RadiusTemplate {
    * the radius is an even number and still stay in the squares, that case isn't allowed.
    */
   private void adjustShape() {
-    if (getZoneId() == null) return;
+    if (getZoneId() == null) {
+      return;
+    }
     int gridSize = MapTool.getCampaign().getZone(getZoneId()).getGrid().getSize();
     Rectangle r = (Rectangle) vertexRenderer.getShape();
     r.setBounds(getVertex().x, getVertex().y, gridSize, gridSize);
@@ -113,8 +115,9 @@ public class BurstTemplate extends RadiusTemplate {
   @Override
   protected void drawBackground(Graphics2D g) {
     Composite old = g.getComposite();
-    if (old != AlphaComposite.Clear)
+    if (old != AlphaComposite.Clear) {
       g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, DEFAULT_BG_ALPHA));
+    }
     renderer.drawBackground(g);
     g.setComposite(old);
   }

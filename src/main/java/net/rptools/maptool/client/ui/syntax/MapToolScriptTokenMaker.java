@@ -77,8 +77,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
     while (i < l) {
       int count = packed.charAt(i++);
       int value = packed.charAt(i++);
-      do result[j++] = value;
-      while (--count > 0);
+      do {
+        result[j++] = value;
+      } while (--count > 0);
     }
     return j;
   }
@@ -212,8 +213,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
       int count = packed.charAt(i++);
       int value = packed.charAt(i++);
       value--;
-      do result[j++] = value;
-      while (--count > 0);
+      do {
+        result[j++] = value;
+      } while (--count > 0);
     }
     return j;
   }
@@ -255,8 +257,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
     while (i < l) {
       int count = packed.charAt(i++);
       int value = packed.charAt(i++);
-      do result[j++] = value;
-      while (--count > 0);
+      do {
+        result[j++] = value;
+      } while (--count > 0);
     }
     return j;
   }
@@ -462,8 +465,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
     while (i < 180) {
       int count = packed.charAt(i++);
       char value = packed.charAt(i++);
-      do map[j++] = value;
-      while (--count > 0);
+      do {
+        map[j++] = value;
+      } while (--count > 0);
     }
     return map;
   }
@@ -477,7 +481,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
     zzAtEOF = true; /* indicate end of file */
     zzEndRead = zzStartRead; /* invalidate buffer */
 
-    if (zzReader != null) zzReader.close();
+    if (zzReader != null) {
+      zzReader.close();
+    }
   }
 
   /** @return the current lexical state. */
@@ -548,7 +554,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
    *     yylength()!
    */
   public void yypushback(int number) {
-    if (number > yylength()) zzScanError(ZZ_PUSHBACK_2BIG);
+    if (number > yylength()) {
+      zzScanError(ZZ_PUSHBACK_2BIG);
+    }
 
     zzMarkedPos -= number;
   }
@@ -588,8 +596,9 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
       {
         while (true) {
 
-          if (zzCurrentPosL < zzEndReadL) zzInput = zzBufferL[zzCurrentPosL++];
-          else if (zzAtEOF) {
+          if (zzCurrentPosL < zzEndReadL) {
+            zzInput = zzBufferL[zzCurrentPosL++];
+          } else if (zzAtEOF) {
             zzInput = YYEOF;
             break zzForAction;
           } else {
@@ -610,14 +619,18 @@ public class MapToolScriptTokenMaker extends AbstractJFlexCTokenMaker {
             }
           }
           int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
-          if (zzNext == -1) break zzForAction;
+          if (zzNext == -1) {
+            break zzForAction;
+          }
           zzState = zzNext;
 
           int zzAttributes = zzAttrL[zzState];
           if ((zzAttributes & 1) == 1) {
             zzAction = zzState;
             zzMarkedPosL = zzCurrentPosL;
-            if ((zzAttributes & 8) == 8) break zzForAction;
+            if ((zzAttributes & 8) == 8) {
+              break zzForAction;
+            }
           }
         }
       }

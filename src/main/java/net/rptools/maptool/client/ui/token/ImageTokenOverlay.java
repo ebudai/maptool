@@ -91,9 +91,10 @@ public class ImageTokenOverlay extends BooleanTokenOverlay {
     int x = iBounds.x + (d.width - width) / 2;
     int y = iBounds.y + (d.height - height) / 2;
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     g.drawImage(image, x, y, size.width, size.height, null);
     g.setComposite(tempComposite);
   }

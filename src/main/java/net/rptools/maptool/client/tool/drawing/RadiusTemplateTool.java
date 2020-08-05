@@ -155,8 +155,12 @@ public class RadiusTemplateTool extends AbstractDrawingTool implements MouseMoti
 
     // If the mouse is over half way to the next vertex, move it there (both X & Y)
     int grid = (int) (renderer.getZone().getGrid().getSize() * renderer.getScale());
-    if (mouse.x - working.x >= grid / 2) working.x += renderer.getZone().getGrid().getSize();
-    if (mouse.y - working.y >= grid / 2) working.y += renderer.getZone().getGrid().getSize();
+    if (mouse.x - working.x >= grid / 2) {
+      working.x += renderer.getZone().getGrid().getSize();
+    }
+    if (mouse.y - working.y >= grid / 2) {
+      working.y += renderer.getZone().getGrid().getSize();
+    }
     return working;
   }
 
@@ -412,7 +416,9 @@ public class RadiusTemplateTool extends AbstractDrawingTool implements MouseMoti
   @Override
   public void mousePressed(MouseEvent e) {
     super.mousePressed(e);
-    if (!painting) return;
+    if (!painting) {
+      return;
+    }
 
     if (SwingUtilities.isLeftMouseButton(e)) {
       // Need to set the anchor?
@@ -423,7 +429,9 @@ public class RadiusTemplateTool extends AbstractDrawingTool implements MouseMoti
       } // endif
 
       // Need to finish the radius?
-      if (template.getRadius() < AbstractTemplate.MIN_RADIUS) return;
+      if (template.getRadius() < AbstractTemplate.MIN_RADIUS) {
+        return;
+      }
 
       // Set the eraser, set the drawable, reset the tool.
       setIsEraser(isEraser(e));

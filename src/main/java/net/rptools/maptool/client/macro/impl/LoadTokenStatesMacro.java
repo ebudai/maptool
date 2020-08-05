@@ -54,13 +54,16 @@ public class LoadTokenStatesMacro implements Macro {
       JFileChooser chooser = MapTool.getFrame().getLoadFileChooser();
       chooser.setDialogTitle(I18N.getText("loadtokenstates.dialogTitle"));
       chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-      if (chooser.showOpenDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) return;
+      if (chooser.showOpenDialog(MapTool.getFrame()) != JFileChooser.APPROVE_OPTION) {
+        return;
+      }
       aliasFile = chooser.getSelectedFile();
     } // endif
 
     // Make it an XML file if type isn't set, check for existance
-    if (!aliasFile.getName().contains("."))
+    if (!aliasFile.getName().contains(".")) {
       aliasFile = new File(aliasFile.getAbsolutePath() + "-tokenStates.xml");
+    }
     if (!aliasFile.exists()) {
       MapTool.addLocalMessage(I18N.getText("loadtokenstates.cantFindFile", aliasFile));
       return;

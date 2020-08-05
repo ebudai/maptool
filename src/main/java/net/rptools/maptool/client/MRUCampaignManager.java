@@ -52,7 +52,9 @@ public class MRUCampaignManager {
   public void addMRUCampaign(File newCampaign) {
     // FIXME (this coupling is too tight; change the calling function to avoid this call entirely)
     // don't add the autosave recovery file until it is resaved
-    if (newCampaign == AutoSaveManager.AUTOSAVE_FILE) return;
+    if (newCampaign == AutoSaveManager.AUTOSAVE_FILE) {
+      return;
+    }
 
     if (mruCampaigns.isEmpty()) {
       mruCampaigns.add(newCampaign);
@@ -66,9 +68,13 @@ public class MRUCampaignManager {
       ArrayList<File> newMruList = new ArrayList<File>(DEFAULT_MAX_MRU + 1);
       newMruList.add(newCampaign);
       for (File next : mruCampaigns) {
-        if (newMruList.size() == DEFAULT_MAX_MRU) break;
-        else if (next.equals(newCampaign)) continue;
-        else newMruList.add(next);
+        if (newMruList.size() == DEFAULT_MAX_MRU) {
+          break;
+        } else if (next.equals(newCampaign)) {
+          continue;
+        } else {
+          newMruList.add(next);
+        }
       }
       mruCampaigns = newMruList;
     }

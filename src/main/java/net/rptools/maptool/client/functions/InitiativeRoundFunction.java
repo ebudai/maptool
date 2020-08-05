@@ -51,8 +51,9 @@ public class InitiativeRoundFunction extends AbstractFunction {
     if (functionName.equals("getInitiativeRound")) {
       return getInitiativeRound();
     } else if ("setInitiativeRound".equalsIgnoreCase(functionName)) {
-      if (args.size() != 1)
+      if (args.size() != 1) {
         throw new ParserException(I18N.getText("macro.function.setinitiativeRound.oneParam"));
+      }
       if (MapTool.getParser().isMacroTrusted()
           || MapTool.getFrame().getInitiativePanel().hasGMPermission()) {
         setInitiativeRound(args.get(0));
@@ -91,7 +92,9 @@ public class InitiativeRoundFunction extends AbstractFunction {
    * @return The integer value or 0 if no value could be determined.
    */
   public static int getInt(Object value) {
-    if (value == null) return 0;
+    if (value == null) {
+      return 0;
+    }
     if (value instanceof Number) {
       return ((Number) value).intValue();
     } else {

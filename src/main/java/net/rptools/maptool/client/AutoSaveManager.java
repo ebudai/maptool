@@ -48,19 +48,24 @@ public class AutoSaveManager {
     if (autoSaveTimer == null) {
       autoSaveTimer = new Timer(1000, (Object) -> execute());
       autoSaveTimer.setRepeats(false);
-      if (log.isDebugEnabled())
+      if (log.isDebugEnabled()) {
         log.debug("Logging level of 'DEBUG' sets timeout to seconds"); // $NON-NLS-1$
+      }
       next(true);
     }
   }
 
   private void next(boolean markSaved) {
     autoSaveTimer.start();
-    if (markSaved) lastAutoSave = System.currentTimeMillis();
+    if (markSaved) {
+      lastAutoSave = System.currentTimeMillis();
+    }
   }
 
   private void execute() {
-    if (executeAndContinue()) next(false);
+    if (executeAndContinue()) {
+      next(false);
+    }
   }
 
   private boolean executeAndContinue() {
@@ -75,7 +80,9 @@ public class AutoSaveManager {
     }
 
     // time's not up yet?
-    if (System.currentTimeMillis() - lastAutoSave < interval) return true;
+    if (System.currentTimeMillis() - lastAutoSave < interval) {
+      return true;
+    }
 
     // Don't autosave if we don't "own" the campaign
     if (!MapTool.isHostingServer() && !MapTool.isPersonalServer()) {
@@ -144,9 +151,11 @@ public class AutoSaveManager {
         MapTool.getFrame().setStatusMessage(get());
       } catch (Throwable t) {
         log.debug("Throwable during autosave: " + t.getCause());
-        if (t.getCause() instanceof AppState.FailedToAcquireLockException)
+        if (t.getCause() instanceof AppState.FailedToAcquireLockException) {
           MapTool.getFrame().setStatusMessage(I18N.getText("AutoSaveManager.status.lockFailed"));
-        else MapTool.showError("AutoSaveManager.failed", t.getCause());
+        } else {
+          MapTool.showError("AutoSaveManager.failed", t.getCause());
+        }
       }
 
       next(true);

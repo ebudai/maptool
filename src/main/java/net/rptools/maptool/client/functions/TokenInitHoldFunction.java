@@ -71,7 +71,9 @@ public class TokenInitHoldFunction extends AbstractFunction {
    */
   public static Object getInitiativeHold(Token token) {
     TokenInitiative ti = token.getInitiative();
-    if (ti == null) return I18N.getText("macro.function.TokenInit.notOnList");
+    if (ti == null) {
+      return I18N.getText("macro.function.TokenInit.notOnList");
+    }
     return ti.isHolding() ? BigDecimal.ONE : BigDecimal.ZERO;
   }
 
@@ -84,7 +86,9 @@ public class TokenInitHoldFunction extends AbstractFunction {
    */
   public static Object setInitiativeHold(Token token, boolean set) {
     List<InitiativeList.TokenInitiative> tis = token.getInitiatives();
-    for (InitiativeList.TokenInitiative ti : tis) ti.setHolding(set);
+    for (InitiativeList.TokenInitiative ti : tis) {
+      ti.setHolding(set);
+    }
     if (tis.isEmpty()) {
       return I18N.getText("macro.function.TokenInit.notOnListSet");
     } else {

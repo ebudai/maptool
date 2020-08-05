@@ -213,7 +213,9 @@ public class LookupTableFunction extends AbstractFunction {
       lookupTable.setName(name);
       lookupTable.setVisible(FunctionUtil.getBooleanValue(visible));
       lookupTable.setAllowLookup(FunctionUtil.getBooleanValue(lookups));
-      if (asset != null) lookupTable.setTableImage(asset);
+      if (asset != null) {
+        lookupTable.setTableImage(asset);
+      }
       MapTool.getCampaign().getLookupTableMap().put(name, lookupTable);
       MapTool.serverCommand().updateCampaign(MapTool.getCampaign().getCampaignProperties());
       return "";
@@ -275,20 +277,26 @@ public class LookupTableFunction extends AbstractFunction {
       }
       LookupTable lookupTable = getMaptoolTable(name, function);
       LookupEntry entry = lookupTable.getLookup(roll);
-      if (entry == null) return 0; // no entry was found
+      if (entry == null) {
+        return 0; // no entry was found
+      }
       int rollInt = Integer.parseInt(roll);
-      if (rollInt < entry.getMin() || rollInt > entry.getMax())
+      if (rollInt < entry.getMin() || rollInt > entry.getMax()) {
         return 0; // entry was found but doesn't match
+      }
       List<LookupEntry> oldlist = new ArrayList<>(lookupTable.getEntryList());
       lookupTable.clearEntries();
-      for (LookupEntry e : oldlist)
+      for (LookupEntry e : oldlist) {
         if (e != entry) {
           lookupTable.addEntry(e.getMin(), e.getMax(), e.getValue(), e.getImageId());
         } else {
-          if (imageId == null) imageId = e.getImageId();
+          if (imageId == null) {
+            imageId = e.getImageId();
+          }
 
           lookupTable.addEntry(e.getMin(), e.getMax(), result, imageId);
         }
+      }
       MapTool.serverCommand().updateCampaign(MapTool.getCampaign().getCampaignProperties());
       return 1;
     } else if ("getTableEntry".equalsIgnoreCase(function)) {
@@ -298,7 +306,9 @@ public class LookupTableFunction extends AbstractFunction {
       LookupTable lookupTable = getMaptoolTable(name, function);
       String roll = params.get(1).toString();
       LookupEntry entry = lookupTable.getLookup(roll);
-      if (entry == null) return ""; // no entry was found
+      if (entry == null) {
+        return ""; // no entry was found
+      }
 
       JsonObject entryDetails = new JsonObject();
       entryDetails.addProperty("min", entry.getMin());
@@ -444,11 +454,13 @@ public class LookupTableFunction extends AbstractFunction {
    */
   private List<String> getTableList(boolean isGm) {
     List<String> tables = new ArrayList<>();
-    if (isGm) tables.addAll(MapTool.getCampaign().getLookupTableMap().keySet());
-    else
+    if (isGm) {
+      tables.addAll(MapTool.getCampaign().getLookupTableMap().keySet());
+    } else {
       MapTool.getCampaign().getLookupTableMap().values().stream()
           .filter(LookupTable::getVisible)
           .forEachOrdered((lt) -> tables.add(lt.getName()));
+    }
     return tables;
   }
 

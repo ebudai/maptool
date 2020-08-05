@@ -40,9 +40,11 @@ public class SayMacro extends AbstractMacro {
         && AppPreferences.getShowAvatarInChat()) {
       Token token;
       GUID guid = MapTool.getFrame().getCommandPanel().getIdentityGUID();
-      if (guid != null)
+      if (guid != null) {
         token = MapTool.getFrame().getCurrentZoneRenderer().getZone().getToken(guid);
-      else token = MapTool.getFrame().getCurrentZoneRenderer().getZone().getTokenByName(identity);
+      } else {
+        token = MapTool.getFrame().getCurrentZoneRenderer().getZone().getTokenByName(identity);
+      }
       if (token != null) {
         MD5Key imageId = token.getPortraitImage();
         if (imageId == null) {

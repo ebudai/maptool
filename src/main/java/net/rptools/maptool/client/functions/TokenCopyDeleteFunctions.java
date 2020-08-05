@@ -66,8 +66,11 @@ public class TokenCopyDeleteFunctions extends AbstractFunction {
       Token token = FunctionUtil.getTokenFromParam(resolver, functionName, parameters, 0, 2);
       int nCopies = psize > 1 ? FunctionUtil.paramAsInteger(functionName, parameters, 1, false) : 1;
       JsonObject newVals;
-      if (psize > 3) newVals = FunctionUtil.paramAsJsonObject(functionName, parameters, 3);
-      else newVals = new JsonObject();
+      if (psize > 3) {
+        newVals = FunctionUtil.paramAsJsonObject(functionName, parameters, 3);
+      } else {
+        newVals = new JsonObject();
+      }
 
       return copyTokens((MapToolVariableResolver) resolver, token, nCopies, newVals);
     }

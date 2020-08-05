@@ -99,8 +99,9 @@ public class DrawPanelTreeModel implements TreeModel, ModelChangeListener {
   }
 
   private boolean isDrawnElementGroup(Object object) {
-    if (object instanceof DrawnElement)
+    if (object instanceof DrawnElement) {
       return ((DrawnElement) object).getDrawable() instanceof DrawablesGroup;
+    }
     return false;
   }
 

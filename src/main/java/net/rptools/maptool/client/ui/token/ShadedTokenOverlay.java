@@ -73,9 +73,10 @@ public class ShadedTokenOverlay extends BooleanTokenOverlay {
     Color temp = g.getColor();
     g.setColor(color);
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     g.fill(bounds);
     g.setColor(temp);
     g.setComposite(tempComposite);

@@ -25,7 +25,9 @@ public class PCVisionTransform implements ModelVersionTransformation {
     int start = 0;
     while ((start = xml.indexOf(searchFor, index)) > 0) {
       int sightPos = xml.indexOf(subField, start) + subField.length();
-      while (Character.isWhitespace(xml.charAt(sightPos))) sightPos++;
+      while (Character.isWhitespace(xml.charAt(sightPos))) {
+        sightPos++;
+      }
       if (xml.charAt(sightPos) == 'f') {
         String pre = xml.substring(0, sightPos);
         String post = xml.substring(sightPos + "false".length());

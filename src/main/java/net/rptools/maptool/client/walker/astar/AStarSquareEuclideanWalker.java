@@ -75,8 +75,11 @@ public class AStarSquareEuclideanWalker extends AbstractAStarWalker {
     if (Arrays.equals(neighborArray, NORTH_EAST)
         || Arrays.equals(neighborArray, SOUTH_EAST)
         || Arrays.equals(neighborArray, SOUTH_WEST)
-        || Arrays.equals(neighborArray, NORTH_WEST)) return diagonalMultiplier;
-    else return 1;
+        || Arrays.equals(neighborArray, NORTH_WEST)) {
+      return diagonalMultiplier;
+    } else {
+      return 1;
+    }
   }
 
   private double metricDistance(CellPoint current, CellPoint goal) {

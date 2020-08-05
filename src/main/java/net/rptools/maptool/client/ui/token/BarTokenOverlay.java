@@ -76,9 +76,15 @@ public abstract class BarTokenOverlay extends AbstractTokenOverlay {
    * @return The size of the bar to be painted.
    */
   public int calcBarSize(int size, double value) {
-    if (value == 0) return 0;
-    if (value == 1) return size;
-    if (increments == 0) return (int) Math.ceil(size * value);
+    if (value == 0) {
+      return 0;
+    }
+    if (value == 1) {
+      return size;
+    }
+    if (increments == 0) {
+      return (int) Math.ceil(size * value);
+    }
     double iSize = 1.0 / (increments - 1);
     return (int) (size * findIncrement(value) * iSize);
   }
@@ -90,9 +96,15 @@ public abstract class BarTokenOverlay extends AbstractTokenOverlay {
    * @return The increment for the value or -1 if no increments defined.
    */
   public int findIncrement(double value) {
-    if (increments == 0) return -1;
-    if (value == 0) return 0;
-    if (value == 1) return increments - 1;
+    if (increments == 0) {
+      return -1;
+    }
+    if (value == 0) {
+      return 0;
+    }
+    if (value == 1) {
+      return increments - 1;
+    }
     return (int) Math.ceil(value * (increments - 1));
   }
 
@@ -116,7 +128,9 @@ public abstract class BarTokenOverlay extends AbstractTokenOverlay {
    */
   @Override
   public void paintOverlay(Graphics2D g, Token token, Rectangle bounds, Object value) {
-    if (value == null) return;
+    if (value == null) {
+      return;
+    }
     double val = 0;
     if (value instanceof Number) {
       val = ((Number) value).doubleValue();
@@ -127,8 +141,12 @@ public abstract class BarTokenOverlay extends AbstractTokenOverlay {
         return; // Bad value so don't paint.
       } // endtry
     } // endif
-    if (val < 0) val = 0;
-    if (val > 1) val = 1;
+    if (val < 0) {
+      val = 0;
+    }
+    if (val > 1) {
+      val = 1;
+    }
     paintOverlay(g, token, bounds, val);
   }
 

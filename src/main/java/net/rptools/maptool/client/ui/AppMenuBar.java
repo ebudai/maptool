@@ -147,8 +147,9 @@ public class AppMenuBar extends JMenuBar {
 
     fowToggleMenuItem.addItemListener(
         e -> {
-          if (e.getStateChange() == ItemEvent.SELECTED) fowRevealToggleMenuItem.setEnabled(true);
-          else {
+          if (e.getStateChange() == ItemEvent.SELECTED) {
+            fowRevealToggleMenuItem.setEnabled(true);
+          } else {
             ZoneRenderer zr = MapTool.getFrame().getCurrentZoneRenderer();
             // Check in case no map exists. Fix #1572.
             if (zr != null) {
@@ -225,7 +226,9 @@ public class AppMenuBar extends JMenuBar {
     menu.addSeparator();
 
     menu.add(new JMenuItem(AppActions.CAMPAIGN_PROPERTIES));
-    if (!AppUtil.MAC_OS_X) menu.add(new JMenuItem(AppActions.SHOW_PREFERENCES));
+    if (!AppUtil.MAC_OS_X) {
+      menu.add(new JMenuItem(AppActions.SHOW_PREFERENCES));
+    }
 
     return menu;
   }

@@ -55,8 +55,9 @@ public abstract class BooleanTokenOverlay extends AbstractTokenOverlay {
     if (FunctionUtil.getBooleanValue(value)) {
       // Apply Alpha Transparency
       float opacity = token.getTokenOpacity();
-      if (opacity < 1.0f)
+      if (opacity < 1.0f) {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+      }
 
       paintOverlay(g, token, bounds);
     }

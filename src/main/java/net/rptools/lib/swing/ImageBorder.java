@@ -96,7 +96,9 @@ public class ImageBorder implements Border {
 
   public void paintWithin(Graphics2D g, int x, int y, int width, int height) {
     Rectangle2D r = g.getClipBounds().createIntersection(new Rectangle(x, y, width, height));
-    if (r.isEmpty()) return;
+    if (r.isEmpty()) {
+      return;
+    }
     Shape oldClip = g.getClip();
 
     // Draw Corners

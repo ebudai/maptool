@@ -217,7 +217,9 @@ public class MacroButtonDialog extends JDialog implements SearchListener {
   private void installHotKeyCombo() {
     String[] hotkeys = MacroButtonHotKeyManager.HOTKEYS;
     JComboBox<String> combo = getHotKeyCombo();
-    for (int i = 0; i < hotkeys.length; i++) combo.insertItemAt(hotkeys[i], i);
+    for (int i = 0; i < hotkeys.length; i++) {
+      combo.insertItemAt(hotkeys[i], i);
+    }
   }
 
   private void installColorCombo() {
@@ -545,7 +547,9 @@ public class MacroButtonDialog extends JDialog implements SearchListener {
   /** Is called when the dialog is about to disappear. We use it to do any menu cleanup. */
   private void destroyMenuBar() {
     JMenuBar mb = MapTool.getFrame().getJMenuBar();
-    if (mb == null) return;
+    if (mb == null) {
+      return;
+    }
     for (int i = 0; i < mb.getMenuCount(); i++) {
       JMenu menu = mb.getMenu(i);
       if (menu.getText().equalsIgnoreCase(I18N.getText("menu.edit"))) {

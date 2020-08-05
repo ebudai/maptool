@@ -59,14 +59,17 @@ public class TokenRemoveFromInitiativeFunction extends AbstractFunction {
     if (!MapTool.getParser().isMacroTrusted()) {
       if (!MapTool.getFrame().getInitiativePanel().hasOwnerPermission(token)) {
         String message = I18N.getText("macro.function.initiative.gmOnly", functionName);
-        if (MapTool.getFrame().getInitiativePanel().isOwnerPermissions())
+        if (MapTool.getFrame().getInitiativePanel().isOwnerPermissions()) {
           message = I18N.getText("macro.function.initiative.gmOrOwner", functionName);
+        }
         throw new ParserException(message);
       } // endif
     }
     List<Integer> tokens = list.indexOf(token);
     list.startUnitOfWork();
-    for (int i = tokens.size() - 1; i >= 0; i--) list.removeToken(tokens.get(i));
+    for (int i = tokens.size() - 1; i >= 0; i--) {
+      list.removeToken(tokens.get(i));
+    }
     list.finishUnitOfWork();
     return new BigDecimal(tokens.size());
   }

@@ -73,9 +73,10 @@ public class OTokenOverlay extends XTokenOverlay {
     Stroke tempStroke = g.getStroke();
     g.setStroke(getStroke());
     Composite tempComposite = g.getComposite();
-    if (getOpacity() != 100)
+    if (getOpacity() != 100) {
       g.setComposite(
           AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) getOpacity() / 100));
+    }
     double offset = getStroke().getLineWidth() / 2.0;
     g.draw(
         new Ellipse2D.Double(

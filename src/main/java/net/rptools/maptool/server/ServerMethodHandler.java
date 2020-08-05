@@ -505,7 +505,9 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
 
   public void updateInitiative(InitiativeList list, Boolean ownerPermission) {
     if (list != null) {
-      if (list.getZone() == null) return;
+      if (list.getZone() == null) {
+        return;
+      }
       Zone zone = server.getCampaign().getZone(list.getZone().getId());
       zone.setInitiativeList(list);
     } else if (ownerPermission != null) {
@@ -525,7 +527,9 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
       List<Integer> tokenIndex = list.indexOf(token);
 
       // If token in list more than one time, punt
-      if (tokenIndex.size() != 1) return;
+      if (tokenIndex.size() != 1) {
+        return;
+      }
       ti = list.getTokenInitiative(tokenIndex.get(0));
     } // endif
     ti.update(hold, state);

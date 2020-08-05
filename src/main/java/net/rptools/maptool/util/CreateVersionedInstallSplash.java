@@ -90,8 +90,9 @@ public class CreateVersionedInstallSplash extends Application {
 
   private static void updateWebVersion(String versionText) throws IOException {
     File releaseDir = new File(webOutputPath);
-    if (!releaseDir.mkdirs())
+    if (!releaseDir.mkdirs()) {
       System.out.println("Error: Unable to create directory path [" + releaseDir + "]");
+    }
 
     FileWriter fstream = new FileWriter(webOutputPath + "/MapTool-version.js");
     BufferedWriter out = new BufferedWriter(fstream);

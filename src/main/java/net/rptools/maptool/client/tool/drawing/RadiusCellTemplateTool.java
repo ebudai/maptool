@@ -179,7 +179,9 @@ public class RadiusCellTemplateTool extends AbstractDrawingTool implements Mouse
     int grid = renderer.getZone().getGrid().getSize();
     g.drawRect(vertex.x, vertex.y, grid, grid);
 
-    if (1 == 1) return;
+    if (1 == 1) {
+      return;
+    }
     int halfCursor = CURSOR_WIDTH / 2;
     g.setPaint(paint);
     g.setStroke(new BasicStroke(thickness));
@@ -409,7 +411,9 @@ public class RadiusCellTemplateTool extends AbstractDrawingTool implements Mouse
   @Override
   public void mousePressed(MouseEvent e) {
     super.mousePressed(e);
-    if (!painting) return;
+    if (!painting) {
+      return;
+    }
 
     if (SwingUtilities.isLeftMouseButton(e)) {
       // Need to set the anchor?
@@ -420,7 +424,9 @@ public class RadiusCellTemplateTool extends AbstractDrawingTool implements Mouse
       } // endif
 
       // Need to finish the radius?
-      if (template.getRadius() < AbstractTemplate.MIN_RADIUS) return;
+      if (template.getRadius() < AbstractTemplate.MIN_RADIUS) {
+        return;
+      }
 
       // Set the eraser, set the drawable, reset the tool.
       setIsEraser(isEraser(e));

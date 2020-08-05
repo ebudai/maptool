@@ -63,13 +63,16 @@ public class TokenSightFunctions extends AbstractFunction {
         || functionName.equalsIgnoreCase("getSightType")) {
       FunctionUtil.checkNumberParam(functionName, parameters, 0, 2);
       token = FunctionUtil.getTokenFromParam(resolver, functionName, parameters, 0, 1);
-      if (functionName.equalsIgnoreCase("hasSight"))
+      if (functionName.equalsIgnoreCase("hasSight")) {
         return token.getHasSight() ? BigDecimal.ONE : BigDecimal.ZERO;
+      }
 
       // if (functionName.equals("getSightType"))
       // Don't test to remove code warning for always true if statement
       String sightType = token.getSightType();
-      if (sightType == null) sightType = "";
+      if (sightType == null) {
+        sightType = "";
+      }
       return sightType;
     }
 
@@ -109,7 +112,9 @@ public class TokenSightFunctions extends AbstractFunction {
           target
               .getFootprint(grid)
               .getBounds(grid, grid.convert(new ZonePoint(target.getX(), target.getY())));
-      if (!target.isSnapToGrid()) bounds = target.getBounds(zone);
+      if (!target.isSnapToGrid()) {
+        bounds = target.getBounds(zone);
+      }
 
       int x = (int) bounds.getX();
       int y = (int) bounds.getY();

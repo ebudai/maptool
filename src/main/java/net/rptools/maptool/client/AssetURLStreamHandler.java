@@ -88,7 +88,9 @@ public class AssetURLStreamHandler extends URLStreamHandler {
             query = query.substring(delim2 + 1);
           }
           var.put(name, value);
-        } else break;
+        } else {
+          break;
+        }
       }
       // Default value is 0: scale the dimension to preserve the aspect ratio
       // Use -1 to indicate that the original dimension from the image should be used
@@ -134,7 +136,9 @@ public class AssetURLStreamHandler extends URLStreamHandler {
           g.drawImage(img, 0, 0, scaleW, scaleH, null);
           g.dispose();
           data = ImageUtil.imageToBytes(bimg, "png"); // assume png because translucent.
-        } else data = asset.getImage();
+        } else {
+          data = asset.getImage();
+        }
       } else {
         log.error("Could not find asset: " + assetId);
         data = new byte[] {};

@@ -60,7 +60,9 @@ public class GUID implements Serializable, Comparable<GUID> {
    * @throws InvalidGUIDException if the GUID is invalid
    */
   public GUID(String strGUID) {
-    if (strGUID == null) throw new InvalidGUIDException("GUID is null");
+    if (strGUID == null) {
+      throw new InvalidGUIDException("GUID is null");
+    }
 
     this.baGUID = HexCode.decode(strGUID);
     validateGUID();
@@ -72,9 +74,12 @@ public class GUID implements Serializable, Comparable<GUID> {
    * @throws InvalidGUIDException if the GUID is invalid
    */
   private void validateGUID() throws InvalidGUIDException {
-    if (baGUID == null) throw new InvalidGUIDException("GUID is null");
-    if (baGUID.length != GUID_LENGTH)
+    if (baGUID == null) {
+      throw new InvalidGUIDException("GUID is null");
+    }
+    if (baGUID.length != GUID_LENGTH) {
       throw new InvalidGUIDException("GUID length is invalid: " + baGUID.length);
+    }
   }
 
   /**
@@ -84,7 +89,9 @@ public class GUID implements Serializable, Comparable<GUID> {
    * @return a new GUID instance
    */
   public static GUID valueOf(byte[] bits) {
-    if (bits == null) return null;
+    if (bits == null) {
+      return null;
+    }
     return new GUID(bits);
   }
 
@@ -95,7 +102,9 @@ public class GUID implements Serializable, Comparable<GUID> {
    * @return a new GUID instance
    */
   public static GUID valueOf(String s) {
-    if (s == null) return null;
+    if (s == null) {
+      return null;
+    }
     return new GUID(s);
   }
 
@@ -120,7 +129,9 @@ public class GUID implements Serializable, Comparable<GUID> {
 
     // Compare bytes.
     for (int i = 0; i < GUID_LENGTH; i++) {
-      if (this.baGUID[i] != guid.baGUID[i]) return false;
+      if (this.baGUID[i] != guid.baGUID[i]) {
+        return false;
+      }
     }
 
     // All tests pass.
@@ -150,7 +161,9 @@ public class GUID implements Serializable, Comparable<GUID> {
       byte val[] = baGUID;
       int len = GUID_LENGTH;
 
-      for (int i = 0; i < len; i++) h = 31 * h + val[i];
+      for (int i = 0; i < len; i++) {
+        h = 31 * h + val[i];
+      }
       hash = h;
     }
     return h;
@@ -191,7 +204,9 @@ public class GUID implements Serializable, Comparable<GUID> {
   public int compareTo(@NotNull GUID o) {
     if (o != this) {
       for (int i = 0; i < GUID_LENGTH; i++) {
-        if (this.baGUID[i] != o.baGUID[i]) return this.baGUID[i] - o.baGUID[i];
+        if (this.baGUID[i] != o.baGUID[i]) {
+          return this.baGUID[i] - o.baGUID[i];
+        }
       }
     }
     return 0;

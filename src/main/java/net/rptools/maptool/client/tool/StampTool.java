@@ -1376,8 +1376,9 @@ public class StampTool extends DefaultTool implements ZoneOverlay {
       tokenUnderMouse.setScaleY(newScaleY);
 
       MapTool.getFrame().refresh();
-      if (adjustAnchor)
+      if (adjustAnchor) {
         adjustAnchor(1 + (newScaleX - currentScaleX), 1 + (newScaleY - currentScaleY));
+      }
     }
 
     // AppState.setShowGrid(showGrid);
