@@ -874,7 +874,8 @@ public class ZoneRenderer extends JComponent
     if (timer == null) {
       timer = new CodeTimer("ZoneRenderer.renderZone");
     }
-    timer.setEnabled(AppState.isCollectProfilingData() || log.isDebugEnabled());
+    //timer.setEnabled(AppState.isCollectProfilingData() || log.isDebugEnabled());
+    timer.setEnabled(true);
     timer.clear();
     timer.setThreshold(10);
 

@@ -14,13 +14,18 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import java.awt.BasicStroke;
+import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import net.rptools.maptool.util.GraphicsUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,26 +71,22 @@ public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
   }
 
   public Area getPath() {
+    if (faceList.isEmpty()) {
+      return null;
+    }
     if (pathArea == null) {
-      List<Point2D> pathPoints = new LinkedList<Point2D>();
-
-      for (AreaFace face : faceList) {
-        // Initial point
-        if (pathPoints.size() == 0) {
-          pathPoints.add(face.getP1());
-        }
-        pathPoints.add(face.getP2());
+      int size = faceList.size() + 1;
+      Point2D[] pathPoints = new Point2D[size];
+      pathPoints[0] = faceList.get(0).getP1();
+      for (int i = 1; i < size; i++) {
+        pathPoints[i] = faceList.get(i - 1).getP2();
       }
-      GeneralPath path = null;
-      for (Point2D p : pathPoints) {
-        if (path == null) {
-          path = new GeneralPath();
-          path.moveTo((float) p.getX(), (float) p.getY());
-          continue;
-        }
-        path.lineTo((float) p.getX(), (float) p.getY());
+      GeneralPath path = new GeneralPath();
+      path.moveTo((float) pathPoints[0].getX(), (float) pathPoints[0].getY());
+      for (int i = 1; i < pathPoints.length; i++) {
+        path.lineTo((float) pathPoints[i].getX(), (float) pathPoints[i].getY());
       }
-      BasicStroke stroke = new BasicStroke(1);
+      Stroke stroke = new BasicStroke(1);
       pathArea = new Area(stroke.createStrokedShape(path));
     }
     return pathArea;
