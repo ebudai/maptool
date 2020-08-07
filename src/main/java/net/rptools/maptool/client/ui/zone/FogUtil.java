@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -72,7 +73,6 @@ public class FogUtil {
    */
   public static Area calculateVisibility(int x, int y, Area vision, AreaTree topology) {
     CodeTimer timer = new CodeTimer("calculateVisibility");
-
     vision = new Area(vision);
     vision.transform(AffineTransform.getTranslateInstance(x, y));
 
@@ -93,7 +93,7 @@ public class FogUtil {
         new ArrayList<VisibleAreaSegment>(ocean.getVisibleAreaSegments(origin));
     Collections.sort(segmentList);
 
-    List<Area> clearedAreaList = new LinkedList<>();
+    List<Area> clearedAreaList = new ArrayList<>(segmentList.size());
     nextSegment:
     for (VisibleAreaSegment segment : segmentList) {
       Rectangle r = segment.getPath().getBounds();
@@ -121,18 +121,15 @@ public class FogUtil {
       clearedAreaList.add(intersectedArea != null ? intersectedArea : area);
     }
 
-    while (clearedAreaList.size() > 1) {
-      Area a1 = clearedAreaList.remove(0);
-      Area a2 = clearedAreaList.remove(0);
-
-      a1.add(a2);
-      clearedAreaList.add(a1);
+    Path2D path = new Path2D.Double();
+    for (Area area : clearedAreaList) {
+      path.append(area.getPathIterator(null, 1), false);
     }
 
-    if (clearedAreaList.size() > 0) {
-      vision.subtract(clearedAreaList.get(0));
+    if (!clearedAreaList.isEmpty()) {
+      Area remaining = new Area(path);
+      vision.subtract(remaining);
     }
-
     // For simplicity, this catches some of the edge cases
     return vision;
   }

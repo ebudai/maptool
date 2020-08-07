@@ -19,13 +19,8 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
 import net.rptools.maptool.util.GraphicsUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,7 +67,7 @@ public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
 
   public Area getPath() {
     if (faceList.isEmpty()) {
-      return null;
+      return new Area();
     }
     if (pathArea == null) {
       int size = faceList.size() + 1;
