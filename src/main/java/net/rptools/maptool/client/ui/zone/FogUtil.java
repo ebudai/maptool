@@ -121,14 +121,16 @@ public class FogUtil {
       clearedAreaList.add(intersectedArea != null ? intersectedArea : area);
     }
 
-    Path2D path = new Path2D.Double();
-    for (Area area : clearedAreaList) {
-      path.append(area.getPathIterator(null, 1), false);
+    while (clearedAreaList.size() > 1) {
+      Area a1 = clearedAreaList.remove(0);
+      Area a2 = clearedAreaList.remove(0);
+
+      a1.add(a2);
+      clearedAreaList.add(a1);
     }
 
-    if (!clearedAreaList.isEmpty()) {
-      Area remaining = new Area(path);
-      vision.subtract(remaining);
+    if (clearedAreaList.size() > 0) {
+      vision.subtract(clearedAreaList.get(0));
     }
     // For simplicity, this catches some of the edge cases
     return vision;
