@@ -396,7 +396,7 @@ public class ZoneView implements ModelChangeListener {
     // Jamz TODO: add condition for daylight and darkness! Currently no darkness in daylight
     if (tokenVisibleArea != null && zone.getVisionType() == Zone.VisionType.NIGHT) {
       Rectangle2D origBounds = tokenVisibleArea.getBounds();
-      List<Token> lightSourceTokens = new ArrayList<Token>();
+      List<Token> lightSourceTokens = new ArrayList<Token>(lightSourceMap.size());
 
       // Add the tokens from the lightSourceMap with normal (not aura) lights
       if (lightSourceMap.get(LightSource.Type.NORMAL) != null) {
@@ -539,18 +539,14 @@ public class ZoneView implements ModelChangeListener {
         Path2D path = new Path2D.Double();
         path.append(light.getValue().getPathIterator(null, 1), false);
 
-        synchronized (allLightAreaMap) {
-          if (allLightAreaMap.containsKey(light.getKey())) {
-            // Area allLight = allLightAreaMap.get(light.getKey());
-            // tempArea.add(allLight);
-
-            // Path2D is faster than Area it looks like
-            path.append(allLightAreaMap.get(light.getKey()).getPathIterator(null, 1), false);
-          }
-
-          // allLightAreaMap.put(light.getKey(), tempArea);
-          allLightAreaMap.put(light.getKey(), new Area(path));
+        Area area = allLightAreaMap.get(light.getKey());
+        if (area != null) {
+          // Path2D is faster than Area it looks like
+          path.append(area.getPathIterator(null, 1), false);
         }
+
+        // allLightAreaMap.put(light.getKey(), tempArea);
+        allLightAreaMap.put(light.getKey(), new Area(path));
       }
 
       return lightArea;
