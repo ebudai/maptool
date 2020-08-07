@@ -440,13 +440,15 @@ public class ZoneView implements ModelChangeListener {
                 sight.getPersonalLightSource(), token, sight, Direction.CENTER);
         if (lightArea != null) {
           double lumens = sight.getPersonalLightSource().getLumens();
-          lumens = (lumens == 0) ? LUMEN_VISION : lumens;
-          // maybe some kind of imposed blindness?  Anyway, make sure to handle personal darkness..
-          if (lumens < 0) lumens = Math.abs(lumens) + .5;
-          if (allLightAreaMap.containsKey(lumens)) {
-            allLightAreaMap.get(lumens).add(lightArea);
-          } else {
-            allLightAreaMap.put(lumens, lightArea);
+          if (lumens == 0) {
+            lumens = LUMEN_VISION;
+          } else if (lumens < 0) {
+            // maybe some kind of imposed blindness?  Anyway, make sure to handle personal darkness..
+            lumens = Math.abs(lumens) + .5;
+          }
+          Area existing = allLightAreaMap.putIfAbsent(lumens, lightArea);
+          if (existing != null) {
+            existing.add(lightArea);
           }
         }
       }
@@ -455,15 +457,13 @@ public class ZoneView implements ModelChangeListener {
       // map
       Area allLightArea = new Area();
       for (Entry<Double, Area> light : allLightAreaMap.entrySet()) {
-        boolean isDarkness = false;
-        // Jamz: negative lumens were converted to absolute value + .5 to sort lights
-        // in tree map, so non-integers == darkness and lights are draw/removed in order
-        // of lumens and darkness with equal lumens are drawn second due to the added .5
-        if (light.getKey().intValue() != light.getKey()) isDarkness = true;
-
         if (origBounds.intersects(light.getValue().getBounds2D())) {
           Area intersection = new Area(tokenVisibleArea);
           intersection.intersect(light.getValue());
+          // Jamz: negative lumens were converted to absolute value + .5 to sort lights
+          // in tree map, so non-integers == darkness and lights are draw/removed in order
+          // of lumens and darkness with equal lumens are drawn second due to the added .5
+          boolean isDarkness = light.getKey().intValue() == light.getKey();
           if (isDarkness) {
             allLightArea.subtract(intersection);
           } else {
@@ -483,7 +483,7 @@ public class ZoneView implements ModelChangeListener {
     return tokenVisibleArea;
   }
 
-  private class CombineLightsSwingWorker extends SwingWorker<Void, List<Token>> {
+  private final class CombineLightsSwingWorker extends SwingWorker<Void, List<Token>> {
     private final String sightName;
     private final List<Token> lightSourceTokens;
     private final ExecutorService lightsThreadPool;
@@ -513,8 +513,6 @@ public class ZoneView implements ModelChangeListener {
       lightsThreadPool.shutdown(); // always reclaim resources just in case?
       // System.out.println("Time to calculated lights for token: " + baseToken.getName() + ", " +
       // (System.currentTimeMillis() - startTime) + "ms");
-
-      return;
     }
   }
 

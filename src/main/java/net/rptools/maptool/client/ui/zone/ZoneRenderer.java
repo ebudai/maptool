@@ -2476,7 +2476,6 @@ public class ZoneRenderer extends JComponent
     if (path.getCellPath().get(0) instanceof CellPoint) {
       timer.start("renderPath-1");
       CellPoint previousPoint = null;
-      Point previousHalfPoint = null;
 
       Path<CellPoint> pathCP = (Path<CellPoint>) path;
       List<CellPoint> cellPath = pathCP.getCellPath();
@@ -2544,6 +2543,7 @@ public class ZoneRenderer extends JComponent
         g.setColor(Color.blue);
 
         previousPoint = null;
+        Point previousHalfPoint = null;
         for (CellPoint p : cellPath) {
           if (previousPoint != null) {
             ZonePoint ozp = grid.convert(previousPoint);
