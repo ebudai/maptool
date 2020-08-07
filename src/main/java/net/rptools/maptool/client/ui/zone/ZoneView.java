@@ -371,7 +371,9 @@ public class ZoneView implements ModelChangeListener {
     Area tokenVisibleArea = tokenVisionCache.get(token.getId());
     // System.out.println("tokenVisionCache size? " + tokenVisionCache.size());
 
-    if (tokenVisibleArea != null) return tokenVisibleArea;
+    if (tokenVisibleArea != null) {
+      return tokenVisibleArea;
+    }
 
     SightType sight = MapTool.getCampaign().getSightType(token.getSightType());
     // More sanity checks; maybe sight type removed from campaign after token set?

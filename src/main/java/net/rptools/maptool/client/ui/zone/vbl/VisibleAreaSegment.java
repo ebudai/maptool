@@ -19,14 +19,15 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
+
 import net.rptools.maptool.util.GraphicsUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
   private final Point2D origin;
-  private final List<AreaFace> faceList = new LinkedList<AreaFace>();
+  private final List<AreaFace> faceList = new ArrayList<>();
   private final double EPSILON = 0.01;
 
   private Point2D centerPoint;
@@ -91,29 +92,22 @@ public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
     if (faceList.isEmpty()) {
       return new Area();
     }
-    List<Point2D> pathPoints = new LinkedList<Point2D>();
-
+    Deque<Point2D> pathPoints = new ArrayDeque<>(faceList.size() * 2);
+    Point2D first = faceList.get(0).getP1();
+    pathPoints.offer(GraphicsUtil.getProjectedPoint(origin, first, Integer.MAX_VALUE / 2));
+    pathPoints.offer(first);
     for (AreaFace face : faceList) {
       // Initial point
-      if (pathPoints.size() == 0) {
-        pathPoints.add(face.getP1());
-        pathPoints.add(
-            0, GraphicsUtil.getProjectedPoint(origin, face.getP1(), Integer.MAX_VALUE / 2));
-      }
       // Add to the path
-      pathPoints.add(face.getP2());
-      pathPoints.add(
-          0, GraphicsUtil.getProjectedPoint(origin, face.getP2(), Integer.MAX_VALUE / 2));
+      pathPoints.offer(face.getP2());
+      pathPoints.offerFirst(GraphicsUtil.getProjectedPoint(origin, face.getP2(), Integer.MAX_VALUE / 2));
     }
     // System.out.println("Skipped: " + skipCount);
 
-    GeneralPath path = null;
+    GeneralPath path = new GeneralPath();
+    first = pathPoints.pop();
+    path.moveTo((float) first.getX(), (float) first.getY());
     for (Point2D p : pathPoints) {
-      if (path == null) {
-        path = new GeneralPath();
-        path.moveTo((float) p.getX(), (float) p.getY());
-        continue;
-      }
       path.lineTo((float) p.getX(), (float) p.getY());
     }
     return new Area(path);

@@ -876,7 +876,7 @@ public class ZoneRenderer extends JComponent
     }
     timer.setEnabled(AppState.isCollectProfilingData() || log.isDebugEnabled());
     timer.clear();
-    timer.setThreshold(0);
+    timer.setThreshold(10);
 
     Graphics2D g2d = (Graphics2D) g;
 
