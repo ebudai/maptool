@@ -19,7 +19,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -17,7 +17,7 @@ package net.rptools.maptool.model.drawing;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import javax.swing.CellRendererPane;
 import net.rptools.maptool.client.swing.TwoToneTextPane;
 import net.rptools.maptool.client.tool.drawing.DrawnTextTool;

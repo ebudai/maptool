@@ -16,7 +16,7 @@ package net.rptools.maptool.client.ui.zone;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;

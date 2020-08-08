@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.model;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 
 public class SightType {
   private String name;

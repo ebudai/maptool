@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.server;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.util.List;
 import java.util.Set;
 import net.rptools.lib.MD5Key;

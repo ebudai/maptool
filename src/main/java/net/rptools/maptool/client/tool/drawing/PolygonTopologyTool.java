@@ -20,7 +20,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.Path2D;
 import java.io.IOException;
 import javax.imageio.ImageIO;

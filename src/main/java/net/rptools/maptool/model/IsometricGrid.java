@@ -21,6 +21,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

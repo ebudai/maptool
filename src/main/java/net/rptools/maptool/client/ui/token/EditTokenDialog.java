@@ -45,7 +45,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;

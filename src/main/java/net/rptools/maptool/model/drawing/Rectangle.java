@@ -17,7 +17,7 @@ package net.rptools.maptool.model.drawing;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 
 /** An rectangle */
 public class Rectangle extends AbstractDrawing {

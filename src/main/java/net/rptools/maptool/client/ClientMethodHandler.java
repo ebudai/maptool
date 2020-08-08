@@ -16,7 +16,7 @@ package net.rptools.maptool.client;
 
 import java.awt.EventQueue;
 import java.awt.Point;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

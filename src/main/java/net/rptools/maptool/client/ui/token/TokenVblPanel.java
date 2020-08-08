@@ -30,7 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.text.NumberFormat;

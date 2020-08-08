@@ -16,7 +16,7 @@ package net.rptools.maptool.client.walker.astar;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;

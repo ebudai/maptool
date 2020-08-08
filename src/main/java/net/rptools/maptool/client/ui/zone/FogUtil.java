@@ -25,8 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.PathIterator;
+import net.rptools.lib.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -474,10 +473,7 @@ public class FogUtil {
                 Integer.MAX_VALUE,
                 Integer.MAX_VALUE));
 
-    int pointCount = 0;
-    for (PathIterator iter = topology.getPathIterator(null); !iter.isDone(); iter.next()) {
-      pointCount++;
-    }
+    int pointCount = topology.getGeometry().getNumPoints();
     System.out.println("Starting test " + pointCount + " points");
     final AreaData data = new AreaData(topology);
     data.digest();

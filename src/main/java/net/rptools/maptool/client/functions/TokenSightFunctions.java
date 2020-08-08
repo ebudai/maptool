@@ -16,7 +16,7 @@ package net.rptools.maptool.client.functions;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.math.BigDecimal;
 import java.util.List;
 import net.rptools.maptool.client.AppUtil;

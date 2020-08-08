@@ -19,7 +19,7 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Iterator;

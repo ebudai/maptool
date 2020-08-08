@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.ui.zone;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.model.LightSource;
 import net.rptools.maptool.model.drawing.DrawablePaint;
 

@@ -18,7 +18,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

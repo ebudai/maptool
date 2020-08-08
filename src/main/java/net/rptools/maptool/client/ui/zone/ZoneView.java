@@ -15,9 +15,9 @@
 package net.rptools.maptool.client.ui.zone;
 
 import java.awt.Point;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Path2D;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
+
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -535,21 +535,14 @@ public class ZoneView implements ModelChangeListener {
       Map<Double, Area> lightArea = getLightSourceArea(sightName, lightSourceToken);
 
       for (Entry<Double, Area> light : lightArea.entrySet()) {
-        // Area tempArea = light.getValue();
-        Path2D path = new Path2D.Double();
-        path.append(light.getValue().getPathIterator(null, 1), false);
+        Area tempArea = light.getValue();
 
         synchronized (allLightAreaMap) {
           if (allLightAreaMap.containsKey(light.getKey())) {
-            // Area allLight = allLightAreaMap.get(light.getKey());
-            // tempArea.add(allLight);
-
-            // Path2D is faster than Area it looks like
-            path.append(allLightAreaMap.get(light.getKey()).getPathIterator(null, 1), false);
+            Area allLight = allLightAreaMap.get(light.getKey());
+            tempArea.add(allLight);
           }
-
-          // allLightAreaMap.put(light.getKey(), tempArea);
-          allLightAreaMap.put(light.getKey(), new Area(path));
+          allLightAreaMap.put(light.getKey(), tempArea);
         }
       }
 

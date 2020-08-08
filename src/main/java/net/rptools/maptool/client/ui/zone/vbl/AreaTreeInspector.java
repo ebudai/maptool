@@ -22,7 +22,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.Point2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

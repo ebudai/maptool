@@ -16,7 +16,7 @@ package net.rptools.maptool.client.tool.drawing;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.io.IOException;
 import java.util.Set;

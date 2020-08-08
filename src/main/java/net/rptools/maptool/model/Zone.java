@@ -17,7 +17,7 @@ package net.rptools.maptool.model;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.util.*;
 import net.rptools.lib.MD5Key;
 import net.rptools.maptool.client.AppPreferences;

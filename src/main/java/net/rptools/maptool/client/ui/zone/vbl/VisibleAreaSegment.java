@@ -15,7 +15,7 @@
 package net.rptools.maptool.client.ui.zone.vbl;
 
 import java.awt.BasicStroke;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;

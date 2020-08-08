@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.model;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 
 /** Stores the exposed area of a token. */
 public class ExposedAreaMetaData {

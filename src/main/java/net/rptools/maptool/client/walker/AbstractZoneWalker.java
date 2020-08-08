@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.walker;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

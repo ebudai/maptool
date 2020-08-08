@@ -25,7 +25,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -1192,7 +1192,7 @@ public class ZoneRenderer extends JComponent
     {
       // renderMoveSelectionSet() requires exposedFogArea to be properly set
       exposedFogArea = new Area(zone.getExposedArea());
-      if (exposedFogArea != null && zone.hasFog()) {
+      if (zone.hasFog()) {
         if (visibleScreenArea != null && !visibleScreenArea.isEmpty()) {
           exposedFogArea.intersect(visibleScreenArea);
         } else {
@@ -1554,9 +1554,8 @@ public class ZoneRenderer extends JComponent
     timer.start("lights-5");
     for (Entry<Paint, List<Area>> entry : renderedLightMap.entrySet()) {
       newG.setPaint(entry.getKey());
-      for (Area area : entry.getValue()) {
-        newG.fill(area);
-      }
+      Area totalArea = entry.getValue().stream().reduce(Area::add).get();
+      newG.fill(totalArea);
     }
     timer.stop("lights-5");
     newG.dispose();

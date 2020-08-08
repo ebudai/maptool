@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.ui.zone;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.util.Set;
 import javax.swing.SwingWorker;
 import net.rptools.maptool.client.walker.ZoneWalker;

@@ -19,7 +19,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.awt.BasicStroke;
 import java.awt.Point;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
