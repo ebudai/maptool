@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.ui;
 
-import java.awt.Rectangle;
+import net.rptools.lib.geom.Rectangle;
 import net.rptools.maptool.model.Token;
 
 public class TokenLocation {

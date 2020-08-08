@@ -17,15 +17,18 @@ package net.rptools.maptool.client.ui.zone.vbl;
 import com.google.common.base.Stopwatch;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
+
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+
+import net.rptools.lib.geom.Area;
+import net.rptools.lib.geom.Rectangle;
 import net.rptools.lib.swing.SwingUtil;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.ui.zone.ZoneRenderer;
@@ -118,13 +121,11 @@ public class TokenVBL {
       return vblArea;
     }
 
-    final GeometryFactory geometryFactory = new GeometryFactory();
-    ShapeReader shapeReader = new ShapeReader(geometryFactory);
     Geometry vblGeometry = null;
 
     if (!vblArea.isEmpty()) {
       try {
-        vblGeometry = shapeReader.read(vblArea.getPathIterator(null));
+        vblGeometry = vblArea.getGeometry();
         // .buffer(1); // helps creating valid geometry and prevent self-intersecting polygons
         if (!vblGeometry.isValid()) {
           log.debug(
@@ -204,7 +205,7 @@ public class TokenVBL {
     Rectangle footprintBounds = token.getBounds(renderer.getZone());
     Area newTokenVBL = new Area(footprintBounds);
     Dimension imgSize = new Dimension(token.getWidth(), token.getHeight());
-    SwingUtil.constrainTo(imgSize, footprintBounds.width, footprintBounds.height);
+    SwingUtil.constrainTo(imgSize, (int)footprintBounds.getWidth(), (int)footprintBounds.getHeight());
     AffineTransform atArea = new AffineTransform();
 
     double tx, ty, sx, sy;

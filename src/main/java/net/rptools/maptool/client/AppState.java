@@ -40,7 +40,7 @@ public class AppState {
   private static boolean showLightSources = false;
   private static boolean zoomLocked = false;
 
-  private static boolean collectProfilingData = false;
+  private static boolean collectProfilingData = true;
   private static boolean isLoggingToConsole = false;
   private static boolean isLockedForBackgroundTask = false;
 

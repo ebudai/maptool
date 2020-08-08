@@ -19,7 +19,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JComponent;
+
+import net.rptools.lib.geom.Rectangle;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.model.GUID;
 import net.rptools.maptool.model.Zone;
@@ -82,9 +84,9 @@ public class DrawablesPanel extends JComponent {
             Collections.reverse(drawableList);
             Rectangle bounds = getBounds(drawableList);
             double scale =
-                (double) Math.min(MAX_PANEL_SIZE, getSize().width) / (double) bounds.width;
-            if ((bounds.height * scale) > MAX_PANEL_SIZE)
-              scale = (double) Math.min(MAX_PANEL_SIZE, getSize().height) / (double) bounds.height;
+                (double) Math.min(MAX_PANEL_SIZE, getSize().width) / bounds.getWidth();
+            if ((bounds.getHeight() * scale) > MAX_PANEL_SIZE)
+              scale = (double) Math.min(MAX_PANEL_SIZE, getSize().height) / bounds.getHeight();
             g.drawImage(drawDrawables(drawableList, bounds, scale, onlyCuts), 0, 0, null);
           }
         }
@@ -93,11 +95,11 @@ public class DrawablesPanel extends JComponent {
   }
 
   private BufferedImage drawDrawables(
-      List<DrawnElement> drawableList, Rectangle viewport, double scale, boolean showEraser) {
+          List<DrawnElement> drawableList, Rectangle viewport, double scale, boolean showEraser) {
     BufferedImage backBuffer =
         new BufferedImage(
-            (int) (viewport.width * scale),
-            (int) (viewport.height * scale),
+            (int) (viewport.getWidth() * scale),
+            (int) (viewport.getHeight() * scale),
             Transparency.TRANSLUCENT);
     Graphics2D g = backBuffer.createGraphics();
     g.setClip(0, 0, backBuffer.getWidth(), backBuffer.getHeight());
@@ -105,7 +107,7 @@ public class DrawablesPanel extends JComponent {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     AffineTransform tf = new AffineTransform();
-    tf.translate(-(viewport.x * scale), -(viewport.y * scale));
+    tf.translate(-(viewport.getX() * scale), -(viewport.getY() * scale));
     tf.scale(scale, scale);
     g.transform(tf);
     for (DrawnElement element : drawableList) {
@@ -127,8 +129,8 @@ public class DrawablesPanel extends JComponent {
         g.drawImage(
             drawDrawables(
                 ((DrawablesGroup) drawable).getDrawableList(), new Rectangle(viewport), 1, false),
-            viewport.x,
-            viewport.y,
+                (int)viewport.getX(),
+                (int)viewport.getY(),
             null);
       } else drawable.draw(g, pen);
       g.setComposite(oldComposite);
@@ -147,7 +149,7 @@ public class DrawablesPanel extends JComponent {
       // Handle pen size
       Pen pen = element.getPen();
       int penSize = pen.getForegroundMode() == Pen.MODE_TRANSPARENT ? 0 : (int) pen.getThickness();
-      drawnBounds.setRect(
+      drawnBounds.setBounds(
           drawnBounds.getX() - penSize,
           drawnBounds.getY() - penSize,
           drawnBounds.getWidth() + (penSize * 2),

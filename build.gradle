@@ -290,7 +290,7 @@ dependencies {
 
     // For some math functions used in the A* Pathfinding
     // https://locationtech.github.io/jts/jts-features.html
-    implementation group: 'org.locationtech.jts', name: 'jts-core', version: '1.16.1'	// https://mvnrepository.com/artifact/org.locationtech.jts/jts-core
+    implementation group: 'org.locationtech.jts', name: 'jts-core', version: '1.17.0'	// https://mvnrepository.com/artifact/org.locationtech.jts/jts-core
 
     // For RESTful functions
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.3.0'
@@ -314,8 +314,6 @@ dependencies {
 
     // Noise Generator
     implementation 'com.github.cwisniew:NoiseLib:1.0.0-rc3' // The most recent version, 1.0.0 is build for a later java version: major version 55 is newer than 54, the highest major version supported by this compiler
-
-    implementation 'org.locationtech.jts:jts-core:1.17.0'
 }
 
 

@@ -30,7 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.text.NumberFormat;
@@ -42,6 +42,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import net.rptools.lib.geom.Area;
+import net.rptools.lib.geom.Rectangle;
 import net.rptools.lib.swing.SwingUtil;
 import net.rptools.maptool.client.AppStyle;
 import net.rptools.maptool.client.MapTool;
@@ -206,18 +209,18 @@ public class TokenVblPanel extends JPanel {
 
     // Gather info
     BufferedImage image = ImageManager.getImage(token.getImageAssetId());
-    java.awt.Rectangle tokenSize = token.getBounds(zone);
+    Rectangle tokenSize = token.getBounds(zone);
     Dimension originalImgSize = new Dimension(image.getWidth(), image.getHeight());
     Dimension imgSize = new Dimension(image.getWidth(), image.getHeight());
 
     // If figure we need to calculate an additional offset for the token height
     double iso_ho = 0;
     if (token.getShape() == TokenShape.FIGURE) {
-      double th = token.getHeight() * (double) tokenSize.width / token.getWidth();
-      iso_ho = tokenSize.height - th;
+      double th = token.getHeight() * (double) tokenSize.getWidth() / token.getWidth();
+      iso_ho = tokenSize.getHeight() - th;
       tokenSize =
-          new java.awt.Rectangle(
-              tokenSize.x, tokenSize.y - (int) iso_ho, tokenSize.width, (int) th);
+          new Rectangle(
+              tokenSize.getX(), tokenSize.getY() - (int) iso_ho, tokenSize.getWidth(), (int) th);
     }
 
     SwingUtil.constrainTo(imgSize, panelUsableSize.width, panelUsableSize.height);
@@ -282,7 +285,7 @@ public class TokenVblPanel extends JPanel {
       } else {
         g2d.setColor(AppStyle.tokenTopologyColor.brighter());
       }
-      g2d.fill(atArea.createTransformedShape(tokenVBL_optimized));
+      g2d.fill(atArea.createTransformedShape(tokenVBL_optimized.asShape()));
     }
 
     // Draw the number of points generated
@@ -478,10 +481,7 @@ public class TokenVblPanel extends JPanel {
     this.tokenVBL_optimized = tokenVBL_optimized;
 
     if (tokenVBL_optimized != null) {
-      tokenVblOptimizedPointCount = 0;
-      for (PathIterator pi = tokenVBL_optimized.getPathIterator(null); !pi.isDone(); pi.next()) {
-        tokenVblOptimizedPointCount++;
-      }
+      tokenVblOptimizedPointCount = tokenVBL_optimized.getGeometry().getNumPoints();
     }
   }
 
@@ -493,10 +493,7 @@ public class TokenVblPanel extends JPanel {
     this.tokenVBL_original = tokenVBL_original;
 
     if (tokenVBL_original != null) {
-      tokenVblOriginalPointCount = 0;
-      for (PathIterator pi = tokenVBL_original.getPathIterator(null); !pi.isDone(); pi.next()) {
-        tokenVblOriginalPointCount++;
-      }
+      tokenVblOriginalPointCount = tokenVBL_original.getGeometry().getNumPoints();
     }
   }
 

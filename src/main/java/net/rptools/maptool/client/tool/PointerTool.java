@@ -23,7 +23,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
-import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.AttributedCharacterIterator;
@@ -34,6 +33,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import javax.swing.*;
 import net.rptools.lib.MD5Key;
+import net.rptools.lib.geom.Area;
+import net.rptools.lib.geom.Rectangle;
 import net.rptools.lib.image.ImageUtil;
 import net.rptools.lib.swing.SwingUtil;
 import net.rptools.maptool.client.*;
@@ -404,13 +405,13 @@ public class PointerTool extends DefaultTool {
         Rectangle bounds =
             new Rectangle(
                 x + PADDING + i * (gridSize + PADDING), y + PADDING, imgSize.width, imgSize.height);
-        g.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, renderer);
+        g.drawImage(image, (int)bounds.getX(), (int)bounds.getY(), (int)bounds.getWidth(), (int)bounds.getHeight(), renderer);
 
         GraphicsUtil.drawBoxedString(
             (Graphics2D) g,
             token.getName(),
-            bounds.x + bounds.width / 2,
-            bounds.y + bounds.height + fm.getAscent());
+                (int)(bounds.getX() + bounds.getWidth() / 2),
+                (int)(bounds.getY() + bounds.getHeight() + fm.getAscent()));
 
         tokenLocationList.add(new TokenLocation(bounds, token));
       }
@@ -762,10 +763,10 @@ public class PointerTool extends DefaultTool {
         int x2 = mouseX;
         int y2 = mouseY;
 
-        selectionBoundBox.x = Math.min(x1, x2);
-        selectionBoundBox.y = Math.min(y1, y2);
-        selectionBoundBox.width = Math.abs(x1 - x2);
-        selectionBoundBox.height = Math.abs(y1 - y2);
+        selectionBoundBox.setX(Math.min(x1, x2));
+        selectionBoundBox.setY(Math.min(y1, y2));
+        selectionBoundBox.setWidth(Math.abs(x1 - x2));
+        selectionBoundBox.setHeight(Math.abs(y1 - y2));
         /*
          * NOTE: This is a weird one that has to do with the order of the mouseReleased event. If the selection box started the drag while hovering over a marker, we need to tell it to not
          * show the marker after the drag is complete.
@@ -942,7 +943,7 @@ public class PointerTool extends DefaultTool {
         Rectangle tokenSize = token.getBounds(zone);
         Rectangle destination =
             new Rectangle(
-                tokenSize.x + deltaX, tokenSize.y + deltaY, tokenSize.width, tokenSize.height);
+                tokenSize.getX() + deltaX, tokenSize.getY() + deltaY, tokenSize.getWidth(), tokenSize.getHeight());
         isBlocked = !grid.validateMove(token, destination, dirx, diry, tokenFog);
       }
     }
@@ -979,23 +980,23 @@ public class PointerTool extends DefaultTool {
          * Perhaps create a counter and count the number of times that the contains() check returns true? There are currently 9 rectangular areas checked by this code (note the "/3" in the two
          * 'interval' variables) so checking for 5 or more would mean more than 55%+ of the destination was visible...
          */
-        int intervalX = tokenSize.width - fudgeSize * 2;
-        int intervalY = tokenSize.height - fudgeSize * 2;
+        int intervalX = (int)(tokenSize.getWidth() - fudgeSize * 2);
+        int intervalY = (int)(tokenSize.getHeight() - fudgeSize * 2);
         int counter = 0;
         for (int dy = 0; dy < 3; dy++) {
           for (int dx = 0; dx < 3; dx++) {
             int by = y + fudgeSize + (intervalY * dy / 3);
             int bx = x + fudgeSize + (intervalX * dx / 3);
-            bounds.x = bx;
-            bounds.y = by;
-            bounds.width = intervalY * (dy + 1) / 3 - intervalY * dy / 3; // No, this
+            bounds.setX(bx);
+            bounds.setY(by);
+            bounds.setWidth(intervalY * (dy + 1) / 3 - intervalY * dy / 3); // No, this
             // isn't the
             // same as
             // intervalY*1/3
             // because of
             // integer
             // arithmetic
-            bounds.height = intervalX * (dx + 1) / 3 - intervalX * dx / 3;
+            bounds.setHeight(intervalX * (dx + 1) / 3 - intervalX * dx / 3);
 
             if (!MapTool.getServerPolicy().isUseIndividualFOW()
                 || zone.getVisionType() == VisionType.OFF) {
@@ -1540,10 +1541,10 @@ public class PointerTool extends DefaultTool {
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, .25f));
         g.setPaint(AppStyle.selectionBoxFill);
         g.fillRoundRect(
-            selectionBoundBox.x,
-            selectionBoundBox.y,
-            selectionBoundBox.width,
-            selectionBoundBox.height,
+                (int)selectionBoundBox.getX(),
+                (int)selectionBoundBox.getY(),
+                (int)selectionBoundBox.getWidth(),
+                (int)selectionBoundBox.getHeight(),
             10,
             10);
         g.setComposite(composite);
@@ -1551,10 +1552,10 @@ public class PointerTool extends DefaultTool {
       g.setColor(AppStyle.selectionBoxOutline);
       g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g.drawRoundRect(
-          selectionBoundBox.x,
-          selectionBoundBox.y,
-          selectionBoundBox.width,
-          selectionBoundBox.height,
+              (int)selectionBoundBox.getX(),
+              (int)selectionBoundBox.getY(),
+              (int)selectionBoundBox.getWidth(),
+              (int)selectionBoundBox.getHeight(),
           10,
           10);
 
@@ -1721,14 +1722,14 @@ public class PointerTool extends DefaultTool {
                   + PADDING * 2;
           statSheet = new BufferedImage(width, height, BufferedImage.BITMASK);
           Graphics2D statsG = statSheet.createGraphics();
-          statsG.setClip(new Rectangle(0, 0, width, height));
+          statsG.setClip(new java.awt.Rectangle(0, 0, width, height));
           statsG.setFont(font);
           SwingUtil.useAntiAliasing(statsG);
 
           // Draw the stats first, right aligned
           if (statSize != null) {
-            Rectangle bounds =
-                new Rectangle(
+            java.awt.Rectangle bounds =
+                new java.awt.Rectangle(
                     width - statSize.width - rm,
                     statSize.height == height ? 0 : height - statSize.height - bm,
                     statSize.width,
@@ -1736,7 +1737,7 @@ public class PointerTool extends DefaultTool {
             statsG.setPaint(
                 new TexturePaint(
                     AppStyle.panelTexture,
-                    new Rectangle(
+                    new java.awt.Rectangle(
                         0,
                         0,
                         AppStyle.panelTexture.getWidth(),
@@ -1808,13 +1809,13 @@ public class PointerTool extends DefaultTool {
 
           // Draw the portrait
           if (AppPreferences.getShowPortrait()) {
-            Rectangle bounds =
-                new Rectangle(lm, height - imgSize.height - bm, imgSize.width, imgSize.height);
+            java.awt.Rectangle bounds =
+                new java.awt.Rectangle(lm, height - imgSize.height - bm, imgSize.width, imgSize.height);
 
             statsG.setPaint(
                 new TexturePaint(
                     AppStyle.panelTexture,
-                    new Rectangle(
+                    new java.awt.Rectangle(
                         0,
                         0,
                         AppStyle.panelTexture.getWidth(),
@@ -1840,7 +1841,7 @@ public class PointerTool extends DefaultTool {
             GraphicsUtil.drawBoxedString(
                 statsG,
                 tokenUnderMouse.getName(),
-                bounds.width / 2 + lm,
+                    (int)(bounds.getWidth() / 2 + lm),
                 height - statSize.height - PADDING * 3);
           }
 
@@ -1868,10 +1869,10 @@ public class PointerTool extends DefaultTool {
               (int) (renderer.getHeight() * .75));
       Point location =
           new Point(
-              hoverTokenBounds.getBounds().x
-                  + hoverTokenBounds.getBounds().width / 2
-                  - size.width / 2,
-              hoverTokenBounds.getBounds().y);
+                  (int)(hoverTokenBounds.getBounds().getX()
+                  + hoverTokenBounds.getBounds().getWidth() / 2
+                  - size.width / 2),
+                  (int)(hoverTokenBounds.getBounds().getY()));
 
       // Anchor in the bottom left corner
       location.x = 4 + PADDING;
@@ -1899,7 +1900,7 @@ public class PointerTool extends DefaultTool {
       g.setPaint(
           new TexturePaint(
               AppStyle.panelTexture,
-              new Rectangle(
+              new java.awt.Rectangle(
                   0, 0, AppStyle.panelTexture.getWidth(), AppStyle.panelTexture.getHeight())));
       g.fillRect(location.x, location.y, size.width, size.height);
 

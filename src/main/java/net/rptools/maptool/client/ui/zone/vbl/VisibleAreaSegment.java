@@ -14,11 +14,14 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import java.awt.BasicStroke;
+import java.awt.*;
+
 import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import net.rptools.lib.geom.Rectangle;
+
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import net.rptools.maptool.util.GraphicsUtil;
@@ -67,7 +70,7 @@ public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
 
   public Area getPath() {
     if (pathArea == null) {
-      List<Point2D> pathPoints = new LinkedList<Point2D>();
+      Collection<Point2D> pathPoints = new LinkedList<>();
 
       for (AreaFace face : faceList) {
         // Initial point
@@ -85,7 +88,7 @@ public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
         }
         path.lineTo((float) p.getX(), (float) p.getY());
       }
-      BasicStroke stroke = new BasicStroke(1);
+      Stroke stroke = new BasicStroke(1);
       pathArea = new Area(stroke.createStrokedShape(path));
     }
     return pathArea;
