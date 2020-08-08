@@ -15,7 +15,7 @@
 package net.rptools.maptool.model;
 
 import java.awt.Point;
-import java.awt.Rectangle;
+import net.rptools.lib.geom.Rectangle;
 import java.util.*;
 
 /**

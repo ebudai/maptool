@@ -15,8 +15,9 @@
 package net.rptools.maptool.client.ui.zone;
 
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
+import java.awt.Shape;
+import net.rptools.lib.geom.Rectangle;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -76,12 +77,12 @@ public class AreaData {
     }
     metaList = new ArrayList<AreaMeta>();
 
-    List<Area> areaQueue = new LinkedList<Area>();
+    List<Shape> areaQueue = new LinkedList<>();
     List<Point> splitPoints = new LinkedList<Point>();
-    areaQueue.add(area);
+    areaQueue.add(area.asShape());
 
     while (areaQueue.size() > 0) {
-      Area area = areaQueue.remove(0);
+      Shape area = areaQueue.remove(0);
 
       // Break the big area into independent areas
       float[] coords = new float[6];
@@ -109,7 +110,7 @@ public class AreaData {
                   // through the center point it will cut the hole into at least 2 pieces
                   Rectangle bounds = meta.area.getBounds();
                   splitPoints.add(
-                      new Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2));
+                      new Point((int)(bounds.getX() + bounds.getWidth() / 2), (int)(bounds.getY() + bounds.getHeight() / 2)));
 
                   // Keep track of the hole for future reference
                   holeList.add(meta.area);
@@ -123,18 +124,18 @@ public class AreaData {
                 Rectangle bounds = areaMeta.area.getBounds();
                 Area part1 = new Area(areaMeta.area);
                 part1.intersect(
-                    new Area(new Rectangle(bounds.x, bounds.y, point.x - bounds.x, bounds.height)));
-                areaQueue.add(part1);
+                    new Area(new Rectangle(bounds.getX(), bounds.getY(), point.x - bounds.getX(), bounds.getHeight())));
+                areaQueue.add(part1.asShape());
 
                 Area part2 = new Area(areaMeta.area);
                 part2.intersect(
                     new Area(
                         new Rectangle(
                             point.x,
-                            bounds.y,
-                            (bounds.x + bounds.width) - point.x,
-                            bounds.height)));
-                areaQueue.add(part2);
+                            bounds.getY(),
+                            (bounds.getX() + bounds.getWidth()) - point.x,
+                            bounds.getHeight())));
+                areaQueue.add(part2.asShape());
               } else {
                 metaList.add(areaMeta);
               }

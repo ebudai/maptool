@@ -18,13 +18,12 @@ import com.google.common.base.Stopwatch;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
+import net.rptools.lib.geom.Rectangle;
+import net.rptools.lib.geom.AffineTransform;
 import java.awt.geom.Arc2D;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashSet;
@@ -250,7 +249,7 @@ public abstract class Grid implements Cloneable {
    *     the ZonePoint returned by myHexGrid.convert(CellPoint cp) in an equivalent position to that
    *     returned by mySquareGrid.convert(CellPoint cp)....I think ;)
    */
-  public Dimension getCellOffset() {
+  public java.awt.Dimension getCellOffset() {
     return NO_DIM;
   }
 
@@ -381,9 +380,9 @@ public abstract class Grid implements Cloneable {
     Area visibleArea = new Area();
     switch (shape) {
       case CIRCLE:
-        visibleArea =
+        visibleArea = new Area(
             GraphicsUtil.createLineSegmentEllipse(
-                -visionRange, -visionRange, visionRange, visionRange, CIRCLE_SEGMENTS);
+                -visionRange, -visionRange, visionRange, visionRange, CIRCLE_SEGMENTS));
         break;
       case GRID:
         visibleArea = getGridArea(token, range, scaleWithToken, visionRange);
@@ -391,7 +390,7 @@ public abstract class Grid implements Cloneable {
       case SQUARE:
         visibleArea =
             new Area(
-                new Rectangle2D.Double(
+                new Rectangle(
                     -visionRange, -visionRange, visionRange * 2, visionRange * 2));
         break;
       case CONE:
@@ -420,8 +419,8 @@ public abstract class Grid implements Cloneable {
                 AffineTransform.getRotateInstance(-Math.toRadians(token.getFacing())));
 
         Rectangle footprint = token.getFootprint(this).getBounds(this);
-        footprint.x = -footprint.width / 2;
-        footprint.y = -footprint.height / 2;
+        footprint.setX(-footprint.getWidth() / 2);
+        footprint.setY(-footprint.getHeight() / 2);
 
         visibleArea.add(new Area(footprint));
         visibleArea.add(tempvisibleArea);
@@ -440,9 +439,9 @@ public abstract class Grid implements Cloneable {
         visibleArea = createHex(x, y, visionRange, 0);
         break;
       default:
-        visibleArea =
+        visibleArea = new Area(
             GraphicsUtil.createLineSegmentEllipse(
-                -visionRange, -visionRange, visionRange * 2, visionRange * 2, CIRCLE_SEGMENTS);
+                -visionRange, -visionRange, visionRange * 2, visionRange * 2, CIRCLE_SEGMENTS));
         break;
     }
 
@@ -586,7 +585,7 @@ public abstract class Grid implements Cloneable {
     Rectangle bounds = new Rectangle();
     int bit = 1;
 
-    if (areaToCheck.width < 9 || (dirx == 0 && diry == 0)) {
+    if (areaToCheck.getWidth() < 9 || (dirx == 0 && diry == 0)) {
       direction = (512 - 1) & ~DirectionCalculator.CENTER;
     }
 
@@ -642,7 +641,7 @@ public abstract class Grid implements Cloneable {
     for (int dy = 0; dy < 3; dy++) {
       for (int dx = 0; dx < 3; dx++) {
         oneThird(center, dx, dy, bounds);
-        if (bounds.width < 1 || bounds.height < 1) {
+        if (bounds.getWidth() < 1 || bounds.getHeight() < 1) {
           continue;
         }
         if (!fog.intersects(bounds)) {
@@ -682,7 +681,7 @@ public abstract class Grid implements Cloneable {
     for (int dy = 0; dy < 3; dy++) {
       for (int dx = 0; dx < 3; dx++) {
         oneThird(regionToCheck, dx, dy, bounds);
-        if (bounds.width < 1 || bounds.height < 1) {
+        if (bounds.getWidth() < 1 || bounds.getHeight() < 1) {
           continue;
         }
         if (!fog.intersects(bounds)) {
@@ -721,18 +720,16 @@ public abstract class Grid implements Cloneable {
    * @param destination one of nine possible pieces represented as a Rectangle
    */
   private void oneThird(Rectangle regionToDivide, int column, int row, Rectangle destination) {
-    int width = regionToDivide.width * column / 3;
-    int height = regionToDivide.height * row / 3;
-    destination.x = regionToDivide.x + width;
-    destination.y = regionToDivide.y + height;
-    destination.width =
-        regionToDivide.width * (column + 1) / 3 - regionToDivide.width * column / 3; // don't
+    int width = (int)regionToDivide.getWidth() * column / 3;
+    int height = (int)regionToDivide.getHeight() * row / 3;
+    destination.setBounds(regionToDivide.getX() + width, regionToDivide.getX() + height,
+            regionToDivide.getWidth() * (column + 1) / 3 - regionToDivide.getWidth() * column / 3, // don't
     // simplify
     // or
     // roundoff
     // will be
     // introduced
-    destination.height = regionToDivide.height * (row + 1) / 3 - regionToDivide.height * row / 3;
+            regionToDivide.getHeight() * (row + 1) / 3 - regionToDivide.getHeight() * row / 3);
   }
 
   /**
@@ -767,9 +764,9 @@ public abstract class Grid implements Cloneable {
       }
     } else {
       // Fall back to regular circle in daylight, etc.
-      visibleArea =
+      visibleArea = new Area(
           GraphicsUtil.createLineSegmentEllipse(
-              -visionRange, -visionRange, visionRange, visionRange, CIRCLE_SEGMENTS);
+              -visionRange, -visionRange, visionRange, visionRange, CIRCLE_SEGMENTS));
     }
 
     return visibleArea;

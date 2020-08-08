@@ -15,10 +15,10 @@
 package net.rptools.maptool.client.ui.zone.vbl;
 
 import java.awt.BasicStroke;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import net.rptools.lib.geom.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 import net.rptools.maptool.util.GraphicsUtil;
@@ -56,7 +56,7 @@ public class VisibleAreaSegment implements Comparable<VisibleAreaSegment> {
   public Point2D getCenterPoint() {
     if (centerPoint == null) {
       Area path = getPath();
-      Rectangle2D bounds = path.getBounds2D();
+      Rectangle bounds = path.getBounds2D();
       // Jamz: getCenter points now available from class
       // centerPoint = new Point2D.Double(bounds.getX() + bounds.getWidth() / 2.0, bounds.getY() +
       // bounds.getHeight() / 2.0);

@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class AreaTree {
     // Break the big area into independent areas
     float[] coords = new float[6];
     AreaMeta areaMeta = new AreaMeta();
-    for (PathIterator iter = area.getPathIterator(null); !iter.isDone(); iter.next()) {
+    for (PathIterator iter = area.asShape().getPathIterator(null); !iter.isDone(); iter.next()) {
       int type = iter.currentSegment(coords);
       switch (type) {
         case PathIterator.SEG_CLOSE:

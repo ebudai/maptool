@@ -102,12 +102,20 @@ public class Path<T extends AbstractPoint> {
       for (T p : cellList) {
         ZonePoint tempPoint = (ZonePoint) buildVal.clone();
         processPath.addPathCell(tempPoint);
-        if (waypointList.contains(p)) processPath.addWayPoint(tempPoint);
+        if (waypointList.contains(p)) {
+          processPath.addWayPoint(tempPoint);
+        }
 
-        if (buildVal.x < endPoint.x) buildVal.x += 100;
-        else if (buildVal.x > endPoint.x) buildVal.x -= 100;
-        if (buildVal.y < endPoint.y) buildVal.y += 100;
-        else if (buildVal.y > endPoint.y) buildVal.y -= 100;
+        if (buildVal.x < endPoint.x) {
+          buildVal.x += 100;
+        } else if (buildVal.x > endPoint.x) {
+          buildVal.x -= 100;
+        }
+        if (buildVal.y < endPoint.y) {
+          buildVal.y += 100;
+        } else if (buildVal.y > endPoint.y) {
+          buildVal.y -= 100;
+        }
       }
 
       path = (Path<T>) processPath;

@@ -15,10 +15,9 @@
 package net.rptools.maptool.client.ui.zone;
 
 import java.awt.Point;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
+import net.rptools.lib.geom.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -395,7 +394,7 @@ public class ZoneView implements ModelChangeListener {
     // Combine in the visible light areas
     // Jamz TODO: add condition for daylight and darkness! Currently no darkness in daylight
     if (tokenVisibleArea != null && zone.getVisionType() == Zone.VisionType.NIGHT) {
-      Rectangle2D origBounds = tokenVisibleArea.getBounds();
+      Rectangle origBounds = tokenVisibleArea.getBounds();
       List<Token> lightSourceTokens = new ArrayList<Token>();
 
       // Add the tokens from the lightSourceMap with normal (not aura) lights
@@ -535,21 +534,16 @@ public class ZoneView implements ModelChangeListener {
       Map<Double, Area> lightArea = getLightSourceArea(sightName, lightSourceToken);
 
       for (Entry<Double, Area> light : lightArea.entrySet()) {
-        // Area tempArea = light.getValue();
-        Path2D path = new Path2D.Double();
-        path.append(light.getValue().getPathIterator(null, 1), false);
+        Area tempArea = light.getValue().copy();
 
         synchronized (allLightAreaMap) {
           if (allLightAreaMap.containsKey(light.getKey())) {
-            // Area allLight = allLightAreaMap.get(light.getKey());
-            // tempArea.add(allLight);
-
-            // Path2D is faster than Area it looks like
-            path.append(allLightAreaMap.get(light.getKey()).getPathIterator(null, 1), false);
+            Area allLight = allLightAreaMap.get(light.getKey());
+            tempArea.add(allLight);
           }
 
           // allLightAreaMap.put(light.getKey(), tempArea);
-          allLightAreaMap.put(light.getKey(), new Area(path));
+          allLightAreaMap.put(light.getKey(), tempArea);
         }
       }
 

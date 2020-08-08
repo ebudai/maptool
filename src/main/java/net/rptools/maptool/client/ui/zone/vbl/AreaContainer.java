@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 
 public interface AreaContainer {
   public Area getBounds();

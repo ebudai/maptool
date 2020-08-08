@@ -19,9 +19,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
+import net.rptools.lib.geom.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.geom.*;
+import java.awt.geom.Arc2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,6 +41,8 @@ import net.rptools.maptool.client.walker.WalkerMetric;
 import net.rptools.maptool.client.walker.ZoneWalker;
 import net.rptools.maptool.client.walker.astar.AStarSquareEuclideanWalker;
 import net.rptools.maptool.util.GraphicsUtil;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
 
 public class IsometricGrid extends Grid {
   /**
@@ -346,9 +350,9 @@ public class IsometricGrid extends Grid {
         visionRange = (float) Math.sin(Math.toRadians(45)) * visionRange;
         // visibleArea = new Area(new Ellipse2D.Double(-visionRange * 2, -visionRange, visionRange *
         // 4, visionRange * 2));
-        visibleArea =
+        visibleArea = new Area(
             GraphicsUtil.createLineSegmentEllipse(
-                -visionRange * 2, -visionRange, visionRange * 2, visionRange, CIRCLE_SEGMENTS);
+                -visionRange * 2, -visionRange, visionRange * 2, visionRange, CIRCLE_SEGMENTS));
         break;
       case SQUARE:
         int x[] = {0, (int) visionRange * 2, 0, (int) -visionRange * 2};
@@ -383,13 +387,13 @@ public class IsometricGrid extends Grid {
         // Get the cell footprint
         Rectangle footprint =
             token.getFootprint(getZone().getGrid()).getBounds(getZone().getGrid());
-        footprint.x = -footprint.width / 2;
-        footprint.y = -footprint.height / 2;
+        footprint.setX(-footprint.getWidth() / 2);
+        footprint.setY(-footprint.getHeight() / 2);
         // convert the cell footprint to an area
-        Area cellShape = getZone().getGrid().createCellShape(footprint.height);
+        Area cellShape = getZone().getGrid().createCellShape((int) footprint.getHeight());
         // convert the area to isometric view
         AffineTransform mtx = new AffineTransform();
-        mtx.translate(-footprint.width / 2, -footprint.height / 2);
+        mtx.translate(-footprint.getWidth() / 2, -footprint.getHeight() / 2);
         cellShape.transform(mtx);
         // join cell footprint and cone to create viewable area
         visibleArea.add(cellShape);
@@ -398,9 +402,9 @@ public class IsometricGrid extends Grid {
       default:
         // visibleArea = new Area(new Ellipse2D.Double(-visionRange, -visionRange, visionRange * 2,
         // visionRange * 2));
-        visibleArea =
+        visibleArea = new Area(
             GraphicsUtil.createLineSegmentEllipse(
-                -visionRange, -visionRange, visionRange, visionRange, CIRCLE_SEGMENTS);
+                -visionRange, -visionRange, visionRange, visionRange, CIRCLE_SEGMENTS));
         break;
     }
     return visibleArea;
@@ -415,10 +419,10 @@ public class IsometricGrid extends Grid {
   public Area getTokenCellArea(Area bounds) {
     // Get the cell footprint
     Rectangle footprint = bounds.getBounds();
-    footprint.x = -footprint.width / 2;
-    footprint.y = -footprint.height / 2;
+    footprint.setX(-footprint.getWidth() / 2);
+    footprint.setY(-footprint.getHeight() / 2);
     // convert the cell footprint to an area
-    Area cellShape = getZone().getGrid().createCellShape(footprint.height);
+    Area cellShape = getZone().getGrid().createCellShape((int) footprint.getHeight());
     // convert the area to isometric view
     AffineTransform mtx = new AffineTransform();
     mtx.translate(bounds.getBounds().getX(), bounds.getBounds().getY());
@@ -438,20 +442,20 @@ public class IsometricGrid extends Grid {
     int offX = (int) (renderer.getViewOffsetX() % isoWidth + getOffsetX() * scale);
     int offY = (int) (renderer.getViewOffsetY() % gridSize + getOffsetY() * scale);
 
-    int startCol = (int) ((int) (bounds.x / isoWidth) * isoWidth);
-    int startRow = (int) ((int) (bounds.y / gridSize) * gridSize);
+    int startCol = (int) ((int) (bounds.getX() / isoWidth) * isoWidth);
+    int startRow = (int) ((int) (bounds.getY() / gridSize) * gridSize);
 
-    for (double row = startRow; row < bounds.y + bounds.height + gridSize; row += gridSize) {
-      for (double col = startCol; col < bounds.x + bounds.width + isoWidth; col += isoWidth) {
+    for (double row = startRow; row < bounds.getY() + bounds.getHeight() + gridSize; row += gridSize) {
+      for (double col = startCol; col < bounds.getX() + bounds.getWidth() + isoWidth; col += isoWidth) {
         drawHatch(renderer, g, (int) (col + offX), (int) (row + offY));
       }
     }
 
     for (double row = startRow - (isoHeight / 2);
-        row < bounds.y + bounds.height + gridSize;
+        row < bounds.getY() + bounds.getHeight() + gridSize;
         row += gridSize) {
       for (double col = startCol - (isoWidth / 2);
-          col < bounds.x + bounds.width + isoWidth;
+          col < bounds.getX() + bounds.getWidth() + isoWidth;
           col += isoWidth) {
         drawHatch(renderer, g, (int) (col + offX), (int) (row + offY));
       }
@@ -513,7 +517,7 @@ public class IsometricGrid extends Grid {
    * @return Area in isometric format
    */
   public static Area isoArea(Area planArea) {
-    int nSize = (planArea.getBounds().width + planArea.getBounds().height);
+    int nSize = (int) (planArea.getBounds().getWidth() + planArea.getBounds().getHeight());
 
     return resize(rotate(planArea), nSize, nSize / 2);
     // return rotate(planArea);
@@ -523,7 +527,7 @@ public class IsometricGrid extends Grid {
     double sin = Math.abs(Math.sin(Math.toRadians(45)));
     double cos = Math.abs(Math.cos(Math.toRadians(45)));
 
-    int w = planArea.getBounds().width, h = planArea.getBounds().height;
+    int w = (int) planArea.getBounds().getWidth(), h = (int) planArea.getBounds().getHeight();
 
     int neww = (int) Math.floor(w * cos + h * sin);
     int newh = (int) Math.floor(h * cos + w * sin);
@@ -544,7 +548,7 @@ public class IsometricGrid extends Grid {
 
   private static Area resize(Area planArea, int newWidth, int newHeight) {
     // Resize into a Area
-    double w = planArea.getBounds().width, h = planArea.getBounds().height;
+    double w = planArea.getBounds().getWidth(), h = planArea.getBounds().getHeight();
     double scaleX = newWidth / w;
     double scaleY = newHeight / h;
 

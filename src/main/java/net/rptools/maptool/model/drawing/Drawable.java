@@ -15,21 +15,21 @@
 package net.rptools.maptool.model.drawing;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.model.GUID;
 import net.rptools.maptool.model.Zone;
 
 /** @author drice */
 public interface Drawable {
-  public void draw(Graphics2D g, Pen pen);
+  void draw(Graphics2D g, Pen pen);
 
-  public java.awt.Rectangle getBounds();
+  net.rptools.lib.geom.Rectangle getBounds();
 
-  public Area getArea();
+  Area getArea();
 
-  public GUID getId();
+  GUID getId();
 
-  public Zone.Layer getLayer();
+  Zone.Layer getLayer();
 
-  public void setLayer(Zone.Layer layer);
+  void setLayer(Zone.Layer layer);
 }

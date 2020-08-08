@@ -24,13 +24,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.NoninvertibleTransformException;
+import org.locationtech.jts.geom.util.NoninvertibleTransformationException;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
-import java.awt.geom.Rectangle2D;
+import net.rptools.lib.geom.Rectangle;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -157,7 +157,7 @@ public class ZoneRenderer extends JComponent
   private final DrawableRenderer objectDrawableRenderer = new PartitionedDrawableRenderer();
   private final DrawableRenderer tokenDrawableRenderer = new PartitionedDrawableRenderer();
   private final DrawableRenderer gmDrawableRenderer = new PartitionedDrawableRenderer();
-  private final List<ZoneOverlay> overlayList = new ArrayList<ZoneOverlay>();
+  private final List<ZoneOverlay> overlayList = new ArrayList<>();
   private final Map<Zone.Layer, List<TokenLocation>> tokenLocationMap =
       new HashMap<Zone.Layer, List<TokenLocation>>();
   private Set<GUID> selectedTokenSet = new LinkedHashSet<GUID>();
@@ -322,7 +322,7 @@ public class ZoneRenderer extends JComponent
   }
 
   public ZonePoint getCenterPoint() {
-    return new ScreenPoint(getSize().width / 2, getSize().height / 2).convertToZone(this);
+    return new ScreenPoint(getSize().getWidth() / 2, getSize().getHeight() / 2).convertToZone(this);
   }
 
   public boolean isPathShowing(Token token) {
@@ -693,8 +693,8 @@ public class ZoneRenderer extends JComponent
     int x = point.x;
     int y = point.y;
 
-    x = getSize().width / 2 - (int) (x * getScale()) - 1;
-    y = getSize().height / 2 - (int) (y * getScale()) - 1;
+    x = (int) (getSize().getWidth() / 2 - (int) (x * getScale()) - 1);
+    y = (int) (getSize().getHeight() / 2 - (int) (y * getScale()) - 1);
 
     setViewOffset(x, y);
     repaintDebouncer.dispatch();
@@ -996,10 +996,10 @@ public class ZoneRenderer extends JComponent
       Pen pen = element.getPen();
       int penSize = (int) Math.ceil((pen.getThickness() / 2) + 1);
       drawnBounds.setBounds(
-          drawnBounds.x - penSize,
-          drawnBounds.y - penSize,
-          drawnBounds.width + (penSize * 2),
-          drawnBounds.height + (penSize * 2));
+          drawnBounds.getX() - penSize,
+          drawnBounds.getY() - penSize,
+          drawnBounds.getWidth() + (penSize * 2),
+          drawnBounds.getHeight() + (penSize * 2));
 
       if (extents == null) {
         extents = drawnBounds;
@@ -1046,7 +1046,7 @@ public class ZoneRenderer extends JComponent
           // also swap them if rotated more than 90 (optimization for non-90deg rotations)
           if (facing != 0 && facing != 180) {
             if (Math.abs(facing) >= 90) {
-              drawnBounds.setSize(drawnBounds.height, drawnBounds.width); // swapping h and w
+              drawnBounds.setSize(drawnBounds.getHeight(), drawnBounds.getWidth()); // swapping h and w
             }
             // if rotated to non-axis direction, assume the worst case 45 deg
             // also assumes the rectangle rotates around its center
@@ -1056,11 +1056,11 @@ public class ZoneRenderer extends JComponent
             // shift by 1/2 of the length.
             // The size increase is: (sqrt*(2) - 1) * size ~= 0.42 * size.
             if (facing != 0 && facing != 180 && facing != 90 && facing != -90) {
-              int size = Math.max(drawnBounds.width, drawnBounds.height);
-              int x = drawnBounds.x - (int) (0.21 * size);
-              int y = drawnBounds.y - (int) (0.21 * size);
-              int w = drawnBounds.width + (int) (0.42 * size);
-              int h = drawnBounds.height + (int) (0.42 * size);
+              int size = (int) Math.max(drawnBounds.getWidth(), drawnBounds.getHeight());
+              int x = (int) (drawnBounds.getX() - (0.21 * size));
+              int y = (int) (drawnBounds.getY() - (0.21 * size));
+              int w = (int) (drawnBounds.getWidth() + (0.42 * size));
+              int h = (int) (drawnBounds.getHeight() + (0.42 * size));
               drawnBounds.setBounds(x, y, w, h);
             }
           }
@@ -1121,26 +1121,26 @@ public class ZoneRenderer extends JComponent
     g2d.setFont(AppStyle.labelFont);
     Object oldAA = SwingUtil.useAntiAliasing(g2d);
 
-    Rectangle viewRect = new Rectangle(getSize().width, getSize().height);
+    Rectangle viewRect = new Rectangle(getSize().getWidth(), getSize().getHeight());
     Area viewArea = new Area(viewRect);
     // much of the raster code assumes the user clip is set
     boolean resetClip = false;
     if (g2d.getClipBounds() == null) {
-      g2d.setClip(0, 0, viewRect.width, viewRect.height);
+      g2d.setClip(0, 0, (int)viewRect.getWidth(), (int)viewRect.getHeight());
       resetClip = true;
     }
     // Are we still waiting to show the zone ?
     if (isLoading()) {
       g2d.setColor(Color.black);
-      g2d.fillRect(0, 0, viewRect.width, viewRect.height);
-      GraphicsUtil.drawBoxedString(g2d, loadingProgress, viewRect.width / 2, viewRect.height / 2);
+      g2d.fillRect(0, 0, (int)viewRect.getWidth(), (int)viewRect.getHeight());
+      GraphicsUtil.drawBoxedString(g2d, loadingProgress, (int)viewRect.getWidth() / 2, (int)viewRect.getHeight() / 2);
       return;
     }
     if (MapTool.getCampaign().isBeingSerialized()) {
       g2d.setColor(Color.black);
-      g2d.fillRect(0, 0, viewRect.width, viewRect.height);
+      g2d.fillRect(0, 0, (int)viewRect.getWidth(), (int)viewRect.getHeight());
       GraphicsUtil.drawBoxedString(
-          g2d, "    Please Wait    ", viewRect.width / 2, viewRect.height / 2);
+          g2d, "    Please Wait    ", (int)viewRect.getWidth() / 2, (int)viewRect.getHeight() / 2);
       return;
     }
     if (zone == null) {
@@ -1171,7 +1171,7 @@ public class ZoneRenderer extends JComponent
      * visibleScreenArea = a; } exposedFogArea = new Area(zone.getExposedArea()); if (visibleScreenArea != null) {
      * if (exposedFogArea != null) exposedFogArea.transform(af); visibleScreenArea.transform(af); } if
      * (exposedFogArea == null || !zone.hasFog()) { // fully exposed (screen area) exposedFogArea = new Area(new
-     * Rectangle(0, 0, getSize().width, getSize().height)); }
+     * Rectangle(0, 0, getSize().getWidth(), getSize().getHeight())); }
      */
     // @formatter:on
 
@@ -1192,7 +1192,7 @@ public class ZoneRenderer extends JComponent
     {
       // renderMoveSelectionSet() requires exposedFogArea to be properly set
       exposedFogArea = new Area(zone.getExposedArea());
-      if (exposedFogArea != null && zone.hasFog()) {
+      if (zone.hasFog()) {
         if (visibleScreenArea != null && !visibleScreenArea.isEmpty()) {
           exposedFogArea.intersect(visibleScreenArea);
         } else {
@@ -1201,7 +1201,7 @@ public class ZoneRenderer extends JComponent
             viewArea.transform(af.createInverse());
             // If it works, restrict the exposedFogArea to the resulting rectangle.
             exposedFogArea.intersect(viewArea);
-          } catch (NoninvertibleTransformException nte) {
+          } catch (NoninvertibleTransformationException nte) {
             // If it doesn't work, ignore the intersection and produce an error (should never
             // happen,
             // right?)
@@ -1471,13 +1471,13 @@ public class ZoneRenderer extends JComponent
     if (!view.isGMView() && visibleScreenArea != null) {
       Area clip = new Area(g.getClip());
       clip.intersect(visibleScreenArea);
-      newG.setClip(clip);
+      newG.setClip(clip.asShape());
     }
     SwingUtil.useAntiAliasing(newG);
     timer.stop("lights-1");
     timer.start("lights-2");
 
-    AffineTransform af = g.getTransform();
+    java.awt.geom.AffineTransform af = g.getTransform();
     af.translate(getViewOffsetX(), getViewOffsetY());
     af.scale(getScale(), getScale());
     newG.setTransform(af);
@@ -1544,18 +1544,18 @@ public class ZoneRenderer extends JComponent
           }
         }
       }
-      renderedLightMap = new LinkedHashMap<Paint, List<Area>>();
-      for (Entry<Paint, List<Area>> entry : colorMap.entrySet()) {
+      renderedLightMap = new LinkedHashMap<>();
+      for (Map.Entry<Paint, List<Area>> entry : colorMap.entrySet()) {
         renderedLightMap.put(entry.getKey(), entry.getValue());
       }
       timer.stop("lights-4");
     }
     // Draw
     timer.start("lights-5");
-    for (Entry<Paint, List<Area>> entry : renderedLightMap.entrySet()) {
+    for (Map.Entry<Paint, List<Area>> entry : renderedLightMap.entrySet()) {
       newG.setPaint(entry.getKey());
       for (Area area : entry.getValue()) {
-        newG.fill(area);
+        newG.fill(area.asShape());
       }
     }
     timer.stop("lights-5");
@@ -1579,13 +1579,13 @@ public class ZoneRenderer extends JComponent
     if (!view.isGMView() && visibleScreenArea != null) {
       Area clip = new Area(g.getClip());
       clip.intersect(visibleScreenArea);
-      newG.setClip(clip);
+      newG.setClip(clip.asShape());
     }
     SwingUtil.useAntiAliasing(newG);
     timer.stop("auras-1");
     timer.start("auras-2");
 
-    AffineTransform af = g.getTransform();
+    java.awt.geom.AffineTransform af = g.getTransform();
     af.translate(getViewOffsetX(), getViewOffsetY());
     af.scale(getScale(), getScale());
     newG.setTransform(af);
@@ -1614,8 +1614,8 @@ public class ZoneRenderer extends JComponent
         }
       }
 
-      renderedAuraMap = new LinkedHashMap<Paint, Area>();
-      for (Entry<Paint, List<Area>> entry : colorMap.entrySet()) {
+      renderedAuraMap = new LinkedHashMap<>();
+      for (Map.Entry<Paint, List<Area>> entry : colorMap.entrySet()) {
         renderedAuraMap.put(entry.getKey(), entry.getValue().get(0));
       }
       timer.stop("auras-4");
@@ -1623,10 +1623,10 @@ public class ZoneRenderer extends JComponent
 
     // Draw
     timer.start("auras-5");
-    for (Entry<Paint, Area> entry : renderedAuraMap.entrySet()) {
+    for (Map.Entry<Paint, Area> entry : renderedAuraMap.entrySet()) {
 
       newG.setPaint(entry.getKey());
-      newG.fill(entry.getValue());
+      newG.fill(entry.getValue().asShape());
     }
     timer.stop("auras-5");
 
@@ -1640,7 +1640,7 @@ public class ZoneRenderer extends JComponent
   private void renderPlayerVisionOverlay(Graphics2D g, PlayerView view) {
     Graphics2D g2 = (Graphics2D) g.create();
     if (zone.hasFog()) {
-      Area clip = new Area(new Rectangle(getSize().width, getSize().height));
+      Area clip = new Area(new Rectangle(getSize().getWidth(), getSize().getHeight()));
 
       Area viewArea = new Area(exposedFogArea);
       List<Token> tokens = view.getTokens();
@@ -1655,7 +1655,7 @@ public class ZoneRenderer extends JComponent
       }
       // Note: the viewArea doesn't need to be transform()'d because exposedFogArea has been
       // already.
-      g2.setClip(clip);
+      g2.setClip(clip.asShape());
     }
     renderVisionOverlay(g2, view);
     g2.dispose();
@@ -1711,7 +1711,7 @@ public class ZoneRenderer extends JComponent
       Object oldAA = SwingUtil.useAntiAliasing(g);
       // g.setStroke(new BasicStroke(2));
       g.setColor(new Color(255, 255, 255)); // outline around visible area
-      g.draw(area);
+      g.draw(area.asShape());
       renderHaloArea(g, area);
       SwingUtil.restoreAntiAliasing(g, oldAA);
     }
@@ -1729,7 +1729,7 @@ public class ZoneRenderer extends JComponent
               visionColor.getGreen(),
               visionColor.getBlue(),
               AppPreferences.getHaloOverlayOpacity()));
-      g.fill(visible);
+      g.fill(visible.asShape());
     }
   }
 
@@ -1745,7 +1745,7 @@ public class ZoneRenderer extends JComponent
       ScreenPoint sp = ScreenPoint.fromZonePointRnd(this, zp.x, zp.y);
       Rectangle bounds = null;
       if (label.isShowBackground()) {
-        bounds =
+        bounds = new Rectangle(
             GraphicsUtil.drawBoxedString(
                 g,
                 label.getLabel(),
@@ -1753,7 +1753,7 @@ public class ZoneRenderer extends JComponent
                 (int) sp.y,
                 SwingUtilities.CENTER,
                 GraphicsUtil.GREY_LABEL,
-                label.getForegroundColor());
+                label.getForegroundColor()));
       } else {
         FontMetrics fm = g.getFontMetrics();
         int strWidth = SwingUtilities.computeStringWidth(fm, label.getLabel());
@@ -1778,7 +1778,7 @@ public class ZoneRenderer extends JComponent
 
   private Area renderFog(Graphics2D g, PlayerView view) {
     Dimension size = getSize();
-    Area fogClip = new Area(new Rectangle(0, 0, size.width, size.height));
+    Area fogClip = new Area(new Rectangle(0, 0, size.getWidth(), size.getHeight()));
     Area combined = null;
 
     // Optimization for panning
@@ -1788,36 +1788,36 @@ public class ZoneRenderer extends JComponent
         && (fogX != getViewOffsetX() || fogY != getViewOffsetY())) {
       // This optimization does not seem to keep the alpha channel correctly, and sometimes leaves
       // lines on some graphics boards, we'll leave it out for now
-      // if (Math.abs(fogX - getViewOffsetX()) < size.width && Math.abs(fogY - getViewOffsetY()) <
-      // size.height) {
+      // if (Math.abs(fogX - getViewOffsetX()) < size.getWidth() && Math.abs(fogY - getViewOffsetY()) <
+      // size.getHeight()) {
       // int deltaX = getViewOffsetX() - fogX;
       // int deltaY = getViewOffsetY() - fogY;
       //
       // Graphics2D buffG = fogBuffer.createGraphics();
       //
       // buffG.setComposite(AlphaComposite.Src);
-      // buffG.copyArea(0, 0, size.width, size.height, deltaX, deltaY);
+      // buffG.copyArea(0, 0, size.getWidth(), size.getHeight(), deltaX, deltaY);
       // buffG.dispose();
       //
       // fogClip = new Area();
       // if (deltaX < 0) {
-      // fogClip.add(new Area(new Rectangle(size.width+deltaX, 0, -deltaX, size.height)));
+      // fogClip.add(new Area(new Rectangle(size.getWidth()+deltaX, 0, -deltaX, size.getHeight())));
       // } else if (deltaX > 0){
-      // fogClip.add(new Area(new Rectangle(0, 0, deltaX, size.height)));
+      // fogClip.add(new Area(new Rectangle(0, 0, deltaX, size.getHeight())));
       // }
       //
       // if (deltaY < 0) {
-      // fogClip.add(new Area(new Rectangle(0, size.height + deltaY, size.width, -deltaY)));
+      // fogClip.add(new Area(new Rectangle(0, size.getHeight() + deltaY, size.getWidth(), -deltaY)));
       // } else if (deltaY > 0) {
-      // fogClip.add(new Area(new Rectangle(0, 0, size.width, deltaY)));
+      // fogClip.add(new Area(new Rectangle(0, 0, size.getWidth(), deltaY)));
       // }
       // }
       flushFog = true;
     }
     boolean cacheNotValid =
         (fogBuffer == null
-            || fogBuffer.getWidth() != size.width
-            || fogBuffer.getHeight() != size.height);
+            || fogBuffer.getWidth() != size.getWidth()
+            || fogBuffer.getHeight() != size.getHeight());
     timer.start("renderFog");
     if (flushFog || cacheNotValid) {
       fogX = getViewOffsetX();
@@ -1829,13 +1829,13 @@ public class ZoneRenderer extends JComponent
         timer.start("renderFog-allocateBufferedImage");
         fogBuffer =
             new BufferedImage(
-                size.width,
-                size.height,
-                view.isGMView() ? Transparency.TRANSLUCENT : Transparency.BITMASK);
+              (int)size.getWidth(),
+              (int)size.getHeight(),
+              view.isGMView() ? Transparency.TRANSLUCENT : Transparency.BITMASK);
         timer.stop("renderFog-allocateBufferedImage");
       }
       Graphics2D buffG = fogBuffer.createGraphics();
-      buffG.setClip(fogClip);
+      buffG.setClip(fogClip.asShape());
       SwingUtil.useAntiAliasing(buffG);
 
       // XXX Is this even needed? Immediately below is another call to fillRect() with the same
@@ -1844,7 +1844,7 @@ public class ZoneRenderer extends JComponent
         timer.start("renderFog-clearOldImage");
         // Composite oldComposite = buffG.getComposite();
         buffG.setComposite(AlphaComposite.Clear);
-        // buffG.fillRect(0, 0, size.width, size.height); // Jamz: Removed as it's called again
+        // buffG.fillRect(0, 0, size.getWidth(), size.getHeight()); // Jamz: Removed as it's called again
         // below
         // buffG.setComposite(oldComposite);
         timer.stop("renderFog-clearOldImage");
@@ -1860,11 +1860,11 @@ public class ZoneRenderer extends JComponent
       // exposed
       // area
       // view.
-      buffG.fillRect(0, 0, size.width, size.height);
+      buffG.fillRect(0, 0, (int)size.getWidth(), (int)size.getHeight());
       timer.stop("renderFog-fill");
 
       // Cut out the exposed area
-      AffineTransform af = new AffineTransform();
+      java.awt.geom.AffineTransform af = new java.awt.geom.AffineTransform();
       af.translate(fogX, fogY);
       af.scale(scale, scale);
 
@@ -1905,14 +1905,14 @@ public class ZoneRenderer extends JComponent
         }
         if (combinedView) {
           // combined = zone.getExposedArea(view);
-          buffG.fill(combined);
+          buffG.fill(combined.asShape());
           renderFogArea(buffG, view, combined, visibleArea);
           renderFogOutline(buffG, view, combined);
         } else {
           // 'combined' already includes the area encompassed by 'tempArea', so just
           // use 'combined' instead in this block of code?
           tempArea.add(combined);
-          buffG.fill(tempArea);
+          buffG.fill(tempArea.asShape());
           renderFogArea(buffG, view, tempArea, visibleArea);
           renderFogOutline(buffG, view, tempArea);
         }
@@ -1923,7 +1923,7 @@ public class ZoneRenderer extends JComponent
           if (combined.isEmpty()) {
             combined = zone.getExposedArea();
           }
-          buffG.fill(combined);
+          buffG.fill(combined.asShape());
           renderFogArea(buffG, view, combined, visibleArea);
           renderFogOutline(buffG, view, combined);
         } else {
@@ -1939,7 +1939,7 @@ public class ZoneRenderer extends JComponent
             exposedArea = meta.getExposedAreaHistory();
             myCombined.add(new Area(exposedArea));
           }
-          buffG.fill(myCombined);
+          buffG.fill(myCombined.asShape());
           renderFogArea(buffG, view, myCombined, visibleArea);
           renderFogOutline(buffG, view, myCombined);
         }
@@ -1961,27 +1961,28 @@ public class ZoneRenderer extends JComponent
 
   private void renderFogArea(
       final Graphics2D buffG, final PlayerView view, Area softFog, Area visibleArea) {
+    Shape fog = softFog.asShape();
     if (zoneView.isUsingVision()) {
       buffG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
       if (visibleArea != null && !visibleArea.isEmpty()) {
         buffG.setColor(new Color(0, 0, 0, AppPreferences.getFogOverlayOpacity()));
 
         // Fill in the exposed area
-        buffG.fill(softFog);
+        buffG.fill(fog);
 
         buffG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 
         Shape oldClip = buffG.getClip();
-        buffG.setClip(softFog);
-        buffG.fill(visibleArea);
+        buffG.setClip(fog);
+        buffG.fill(visibleArea.asShape());
         buffG.setClip(oldClip);
       } else {
         buffG.setColor(new Color(0, 0, 0, 80));
-        buffG.fill(softFog);
+        buffG.fill(fog);
       }
     } else {
-      buffG.fill(softFog);
-      buffG.setClip(softFog);
+      buffG.fill(fog);
+      buffG.setClip(fog);
     }
   }
 
@@ -1994,12 +1995,12 @@ public class ZoneRenderer extends JComponent
     {
       if (visibleScreenArea != null) {
         // buffG.setClip(softFog);
-        buffG.setTransform(new AffineTransform());
+        buffG.setTransform(new java.awt.geom.AffineTransform());
         buffG.setComposite(AlphaComposite.Src);
         buffG.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         buffG.setStroke(new BasicStroke(1));
         buffG.setColor(Color.BLACK);
-        buffG.draw(visibleScreenArea);
+        buffG.draw(visibleScreenArea.asShape());
         // buffG.setClip(oldClip);
       }
     }
@@ -2054,9 +2055,9 @@ public class ZoneRenderer extends JComponent
 
   protected void renderDrawableOverlay(
       Graphics g, DrawableRenderer renderer, PlayerView view, List<DrawnElement> drawnElements) {
-    Rectangle viewport =
-        new Rectangle(
-            zoneScale.getOffsetX(), zoneScale.getOffsetY(), getSize().width, getSize().height);
+    java.awt.Rectangle viewport =
+        new java.awt.Rectangle(
+            zoneScale.getOffsetX(), zoneScale.getOffsetY(), (int)getSize().getWidth(), (int)getSize().getHeight());
     // List<DrawnElement> list = new ArrayList<DrawnElement>();
     // list.addAll(drawnElements);
 
@@ -2066,9 +2067,9 @@ public class ZoneRenderer extends JComponent
   protected void renderBoard(Graphics2D g, PlayerView view) {
     Dimension size = getSize();
     if (backbuffer == null
-        || backbuffer.getWidth() != size.width
-        || backbuffer.getHeight() != size.height) {
-      backbuffer = new BufferedImage(size.width, size.height, Transparency.OPAQUE);
+        || backbuffer.getWidth() != size.getWidth()
+        || backbuffer.getHeight() != size.getHeight()) {
+      backbuffer = new BufferedImage((int)size.getWidth(), (int)size.getHeight(), Transparency.OPAQUE);
       drawBackground = true;
     }
     Scale scale = getZoneScale();
@@ -2088,12 +2089,12 @@ public class ZoneRenderer extends JComponent
       Paint paint =
           zone.getBackgroundPaint().getPaint(getViewOffsetX(), getViewOffsetY(), getScale(), this);
       bbg.setPaint(paint);
-      bbg.fillRect(0, 0, size.width, size.height);
+      bbg.fillRect(0, 0, (int)size.getWidth(), (int)size.getHeight());
 
       // Only apply the noise if the feature is on and the background a textured paint
       if (bgTextureNoiseFilterOn && paint instanceof TexturePaint) {
         bbg.setPaint(noise.getPaint(getViewOffsetX(), getViewOffsetY(), getScale()));
-        bbg.fillRect(0, 0, size.width, size.height);
+        bbg.fillRect(0, 0, (int)size.getWidth(), (int)size.getHeight());
       }
 
       // Map
@@ -2123,7 +2124,7 @@ public class ZoneRenderer extends JComponent
     if (!AppState.isShowGrid() || gridSize < MIN_GRID_SIZE) {
       return;
     }
-    zone.getGrid().draw(this, g, g.getClipBounds());
+    zone.getGrid().draw(this, g, new Rectangle(g.getClipBounds()));
   }
 
   protected void renderCoordinates(Graphics2D g, PlayerView view) {
@@ -2209,13 +2210,13 @@ public class ZoneRenderer extends JComponent
         Rectangle footprintBounds = token.getBounds(zone);
         ScreenPoint newScreenPoint =
             ScreenPoint.fromZonePoint(
-                this, footprintBounds.x + set.getOffsetX(), footprintBounds.y + set.getOffsetY());
+                this, footprintBounds.getX() + set.getOffsetX(), footprintBounds.getY() + set.getOffsetY());
 
         // get token image, using image table if present
         BufferedImage image = getTokenImage(token);
 
-        int scaledWidth = (int) (footprintBounds.width * scale);
-        int scaledHeight = (int) (footprintBounds.height * scale);
+        int scaledWidth = (int) (footprintBounds.getWidth() * scale);
+        int scaledHeight = (int) (footprintBounds.getHeight() * scale);
 
         // Tokens are centered on the image center point
         int x = (int) (newScreenPoint.x);
@@ -2232,7 +2233,7 @@ public class ZoneRenderer extends JComponent
             visibleArea.intersect(visibleScreenArea);
 
             g = (Graphics2D) g.create();
-            g.setClip(new GeneralPath(visibleArea));
+            g.setClip(new GeneralPath(visibleArea.asShape()));
 
             clipInstalled = true;
             // System.out.println("Adding Clip: " + MapTool.getPlayer().getName());
@@ -2291,30 +2292,30 @@ public class ZoneRenderer extends JComponent
         double iso_ho = 0;
         Dimension imgSize = new Dimension(workImage.getWidth(), workImage.getHeight());
         if (token.getShape() == TokenShape.FIGURE) {
-          double th = token.getHeight() * (double) footprintBounds.width / token.getWidth();
-          iso_ho = footprintBounds.height - th;
+          double th = token.getHeight() * (double) footprintBounds.getWidth() / token.getWidth();
+          iso_ho = footprintBounds.getHeight() - th;
           footprintBounds =
               new Rectangle(
-                  footprintBounds.x,
-                  footprintBounds.y - (int) iso_ho,
-                  footprintBounds.width,
+                  footprintBounds.getX(),
+                  footprintBounds.getY() - (int) iso_ho,
+                  footprintBounds.getWidth(),
                   (int) th);
-          iso_ho = iso_ho * getScale();
+          iso_ho *= getScale();
         }
-        SwingUtil.constrainTo(imgSize, footprintBounds.width, footprintBounds.height);
+        SwingUtil.constrainTo(imgSize, (int)footprintBounds.getWidth(), (int)footprintBounds.getHeight());
 
         int offsetx = 0;
         int offsety = 0;
         if (token.isSnapToScale()) {
           offsetx =
               (int)
-                  (imgSize.width < footprintBounds.width
-                      ? (footprintBounds.width - imgSize.width) / 2 * getScale()
+                  (imgSize.getWidth() < footprintBounds.getWidth()
+                      ? (footprintBounds.getWidth() - imgSize.getWidth()) / 2 * getScale()
                       : 0);
           offsety =
               (int)
-                  (imgSize.height < footprintBounds.height
-                      ? (footprintBounds.height - imgSize.height) / 2 * getScale()
+                  (imgSize.getHeight() < footprintBounds.getHeight()
+                      ? (footprintBounds.getHeight() - imgSize.getHeight()) / 2 * getScale()
                       : 0);
         }
         int tx = x + offsetx;
@@ -2333,8 +2334,8 @@ public class ZoneRenderer extends JComponent
         }
         if (token.isSnapToScale()) {
           at.scale(
-              (double) imgSize.width / workImage.getWidth(),
-              (double) imgSize.height / workImage.getHeight());
+              (double) imgSize.getWidth() / workImage.getWidth(),
+              (double) imgSize.getHeight() / workImage.getHeight());
           at.scale(getScale(), getScale());
         } else {
           if (token.getShape() == TokenShape.FIGURE) {
@@ -2347,14 +2348,14 @@ public class ZoneRenderer extends JComponent
                 (double) scaledHeight / workImage.getHeight());
           }
         }
-
-        g.drawImage(workImage, at, this);
+        java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform(at.getMatrix());
+        g.drawImage(workImage, transform, this);
 
         // Other details
         if (token == keyToken) {
-          Rectangle bounds = new Rectangle(tx, ty, imgSize.width, imgSize.height);
-          bounds.width *= getScale();
-          bounds.height *= getScale();
+          Rectangle bounds = new Rectangle(tx, ty, imgSize.getWidth(), imgSize.getHeight());
+          bounds.setWidth(bounds.getWidth() * getScale());
+          bounds.setHeight(bounds.getHeight() * getScale());
 
           Grid grid = zone.getGrid();
           boolean checkForFog =
@@ -2389,16 +2390,10 @@ public class ZoneRenderer extends JComponent
             }
           } else {
             boolean hasFog = zone.hasFog();
-            boolean fogIntersects = exposedFogArea.intersects(bounds);
             showLabels = showLabels || (visibleScreenArea == null && !hasFog); // no vision - fog
-            showLabels =
-                showLabels
-                    || (visibleScreenArea == null && hasFog && fogIntersects); // no vision + fog
-            showLabels =
-                showLabels
-                    || (visibleScreenArea != null
-                        && visibleScreenArea.intersects(bounds)
-                        && fogIntersects); // vision
+            boolean fogIntersects = showLabels || exposedFogArea.intersects(bounds); //if showLabels is true, dont do intersection
+            showLabels = showLabels || (visibleScreenArea == null && hasFog && fogIntersects); // no vision + fog
+            showLabels = showLabels || (visibleScreenArea != null && visibleScreenArea.intersects(bounds) && fogIntersects); // vision
           }
           if (showLabels) {
             // if the token is visible on the screen it will be in the location cache
@@ -2488,8 +2483,8 @@ public class ZoneRenderer extends JComponent
 
         if (pathCP.isWaypoint(p) && previousPoint != null) {
           ZonePoint zp = grid.convert(p);
-          zp.x += footprintBounds.width / 2;
-          zp.y += footprintBounds.height / 2;
+          zp.x += footprintBounds.getWidth() / 2;
+          zp.y += footprintBounds.getHeight() / 2;
           waypointList.add(zp);
         }
         previousPoint = p;
@@ -2506,23 +2501,23 @@ public class ZoneRenderer extends JComponent
       Dimension cellOffset = zone.getGrid().getCellOffset();
       for (CellPoint p : pathSet) {
         ZonePoint zp = grid.convert(p);
-        zp.x += grid.getCellWidth() / 2 + cellOffset.width;
-        zp.y += grid.getCellHeight() / 2 + cellOffset.height;
+        zp.x += grid.getCellWidth() / 2 + cellOffset.getWidth();
+        zp.y += grid.getCellHeight() / 2 + cellOffset.getHeight();
         highlightCell(g, zp, grid.getCellHighlight(), 1.0f);
       }
       if (AppState.getShowMovementMeasurements()) {
         double cellAdj = grid.isHex() ? 2.5 : 2;
         for (CellPoint p : cellPath) {
           ZonePoint zp = grid.convert(p);
-          zp.x += grid.getCellWidth() / cellAdj + cellOffset.width;
-          zp.y += grid.getCellHeight() / cellAdj + cellOffset.height;
+          zp.x += grid.getCellWidth() / cellAdj + cellOffset.getWidth();
+          zp.y += grid.getCellHeight() / cellAdj + cellOffset.getHeight();
           addDistanceText(
               g, zp, 1.0f, p.getDistanceTraveled(zone), p.getDistanceTraveledWithoutTerrain());
         }
       }
       int w = 0;
       for (ZonePoint p : waypointList) {
-        ZonePoint zp = new ZonePoint(p.x + cellOffset.width, p.y + cellOffset.height);
+        ZonePoint zp = new ZonePoint(p.x + (int)cellOffset.getWidth(), p.y + (int)cellOffset.getHeight());
         highlightCell(g, zp, AppStyle.cellWaypointImage, .333f);
       }
 
@@ -2534,8 +2529,8 @@ public class ZoneRenderer extends JComponent
         } else {
           lineOffset =
               new ZonePoint(
-                  footprintBounds.x + footprintBounds.width / 2 - grid.getOffsetX(),
-                  footprintBounds.y + footprintBounds.height / 2 - grid.getOffsetY());
+                      (int)(footprintBounds.getX() + footprintBounds.getWidth()) / 2 - grid.getOffsetX(),
+                      (int)(footprintBounds.getY() + footprintBounds.getHeight()) / 2 - grid.getOffsetY());
         }
 
         int xOffset = (int) (lineOffset.x * scale);
@@ -2598,15 +2593,15 @@ public class ZoneRenderer extends JComponent
           lastPoint =
               ScreenPoint.fromZonePointRnd(
                   this,
-                  zp.x + (footprintBounds.width / 2) * footprint.getScale(),
-                  zp.y + (footprintBounds.height / 2) * footprint.getScale());
+                  zp.x + (footprintBounds.getWidth() / 2) * footprint.getScale(),
+                  zp.y + (footprintBounds.getHeight() / 2) * footprint.getScale());
           continue;
         }
         ScreenPoint nextPoint =
             ScreenPoint.fromZonePoint(
                 this,
-                zp.x + (footprintBounds.width / 2) * footprint.getScale(),
-                zp.y + (footprintBounds.height / 2) * footprint.getScale());
+                zp.x + (footprintBounds.getWidth() / 2) * footprint.getScale(),
+                zp.y + (footprintBounds.getHeight() / 2) * footprint.getScale());
 
         g.setColor(highlight);
         g.setStroke(highlightStroke);
@@ -2634,8 +2629,8 @@ public class ZoneRenderer extends JComponent
         }
         p =
             new ZonePoint(
-                (int) (p.x + (footprintBounds.width / 2) * footprint.getScale()),
-                (int) (p.y + (footprintBounds.height / 2) * footprint.getScale()));
+                (int) (p.x + (footprintBounds.getWidth() / 2) * footprint.getScale()),
+                (int) (p.y + (footprintBounds.getHeight() / 2) * footprint.getScale()));
         highlightCell(g, p, AppStyle.cellWaypointImage, .333f);
       }
       timer.stop("renderPath-3");
@@ -2708,7 +2703,7 @@ public class ZoneRenderer extends JComponent
     at.translate(getViewOffsetX(), getViewOffsetY());
     at.scale(getScale(), getScale());
 
-    this.shape = at.createTransformedShape(shape);
+    this.shape = at.createTransformedShape(shape).asShape();
   }
 
   public void setShape2(Shape shape) {
@@ -2720,7 +2715,7 @@ public class ZoneRenderer extends JComponent
     at.translate(getViewOffsetX(), getViewOffsetY());
     at.scale(getScale(), getScale());
 
-    this.shape2 = at.createTransformedShape(shape);
+    this.shape2 = at.createTransformedShape(shape).asShape();
   }
 
   public Shape getShape() {
@@ -2745,7 +2740,7 @@ public class ZoneRenderer extends JComponent
 
     AffineTransform at = new AffineTransform();
     at.translate(sp.x, sp.y);
-    g.draw(at.createTransformedShape(shape));
+    g.draw(at.createTransformedShape(shape).asShape());
   }
 
   public void showBlockedMoves(
@@ -2762,7 +2757,7 @@ public class ZoneRenderer extends JComponent
 
     ScreenPoint sp = ScreenPoint.fromZonePoint(this, point);
 
-    AffineTransform backup = g.getTransform();
+    java.awt.geom.AffineTransform backup = g.getTransform();
 
     g.drawImage(
         image,
@@ -2914,8 +2909,8 @@ public class ZoneRenderer extends JComponent
     GeneralPath gp =
         (GeneralPath)
             facingArrow.createTransformedShape(
-                AffineTransform.getRotateInstance(-Math.toRadians(angle)));
-    return gp.createTransformedShape(AffineTransform.getScaleInstance(getScale(), getScale() / 2));
+                java.awt.geom.AffineTransform.getRotateInstance(-Math.toRadians(angle)));
+    return gp.createTransformedShape(java.awt.geom.AffineTransform.getScaleInstance(getScale(), getScale() / 2));
   }
 
   // TODO: I don't like this hardwiring
@@ -2932,8 +2927,8 @@ public class ZoneRenderer extends JComponent
     GeneralPath gp =
         (GeneralPath)
             facingArrow.createTransformedShape(
-                AffineTransform.getRotateInstance(-Math.toRadians(angle)));
-    return gp.createTransformedShape(AffineTransform.getScaleInstance(getScale(), getScale()));
+                    java.awt.geom.AffineTransform.getRotateInstance(-Math.toRadians(angle)));
+    return gp.createTransformedShape(java.awt.geom.AffineTransform.getScaleInstance(getScale(), getScale()));
   }
 
   // TODO: I don't like this hardwiring
@@ -2950,8 +2945,8 @@ public class ZoneRenderer extends JComponent
     GeneralPath gp =
         (GeneralPath)
             facingArrow.createTransformedShape(
-                AffineTransform.getRotateInstance(-Math.toRadians(angle)));
-    return gp.createTransformedShape(AffineTransform.getScaleInstance(getScale(), getScale()));
+                    java.awt.geom.AffineTransform.getRotateInstance(-Math.toRadians(angle)));
+    return gp.createTransformedShape(java.awt.geom.AffineTransform.getScaleInstance(getScale(), getScale()));
   }
 
   protected void renderTokens(Graphics2D g, List<Token> tokenList, PlayerView view) {
@@ -2972,22 +2967,22 @@ public class ZoneRenderer extends JComponent
 
       Area visibleArea = new Area(g.getClipBounds());
       visibleArea.intersect(visibleScreenArea);
-      clippedG.setClip(new GeneralPath(visibleArea));
+      clippedG.setClip(new GeneralPath(visibleArea.asShape()));
     }
     timer.stop("createClip");
 
     // This is in screen coordinates
-    Rectangle viewport = new Rectangle(0, 0, getSize().width, getSize().height);
+    Rectangle viewport = new Rectangle(0, 0, getSize().getWidth(), getSize().getHeight());
 
-    Rectangle clipBounds = g.getClipBounds();
+    Rectangle clipBounds = new Rectangle(g.getClipBounds());
     double scale = zoneScale.getScale();
-    Set<GUID> tempVisTokens = new HashSet<GUID>();
+    Set<GUID> tempVisTokens = new HashSet<>();
 
     // calculations
     boolean calculateStacks =
         !tokenList.isEmpty() && !tokenList.get(0).isStamp() && tokenStackMap == null;
     if (calculateStacks) {
-      tokenStackMap = new HashMap<Token, Set<Token>>();
+      tokenStackMap = new HashMap<>();
     }
 
     // TODO: I (Craig) have commented out the clearing of the tokenLocationCache.clear() for now as
@@ -3041,8 +3036,8 @@ public class ZoneRenderer extends JComponent
       timer.stop("tokenlist-1b");
 
       timer.start("tokenlist-1c");
-      double scaledWidth = (footprintBounds.width * scale);
-      double scaledHeight = (footprintBounds.height * scale);
+      double scaledWidth = (footprintBounds.getWidth() * scale);
+      double scaledHeight = (footprintBounds.getHeight() * scale);
 
       // if (!token.isStamp()) {
       // // Fit inside the grid
@@ -3051,7 +3046,7 @@ public class ZoneRenderer extends JComponent
       // }
 
       ScreenPoint tokenScreenLocation =
-          ScreenPoint.fromZonePoint(this, footprintBounds.x, footprintBounds.y);
+          ScreenPoint.fromZonePoint(this, footprintBounds.getX(), footprintBounds.getY());
       timer.stop("tokenlist-1c");
 
       timer.start("tokenlist-1d");
@@ -3059,7 +3054,7 @@ public class ZoneRenderer extends JComponent
       double x = tokenScreenLocation.x;
       double y = tokenScreenLocation.y;
 
-      Rectangle2D origBounds = new Rectangle2D.Double(x, y, scaledWidth, scaledHeight);
+      Rectangle origBounds = new Rectangle(x, y, scaledWidth, scaledHeight);
       Area tokenBounds = new Area(origBounds);
       if (token.hasFacing() && token.getShape() == Token.TokenShape.TOP_DOWN) {
         double sx = scaledWidth / 2 + x - (token.getAnchor().x * scale);
@@ -3085,8 +3080,8 @@ public class ZoneRenderer extends JComponent
                 token,
                 x,
                 y,
-                footprintBounds.width,
-                footprintBounds.height,
+                    (int)footprintBounds.getWidth(),
+                    (int)footprintBounds.getHeight(),
                 scaledWidth,
                 scaledHeight);
         tokenLocationCache.put(token, location);
@@ -3225,17 +3220,17 @@ public class ZoneRenderer extends JComponent
       double iso_ho = 0;
       Dimension imgSize = new Dimension(workImage.getWidth(), workImage.getHeight());
       if (token.getShape() == TokenShape.FIGURE) {
-        double th = token.getHeight() * (double) footprintBounds.width / token.getWidth();
-        iso_ho = footprintBounds.height - th;
+        double th = token.getHeight() * footprintBounds.getWidth() / token.getWidth();
+        iso_ho = footprintBounds.getHeight() - th;
         footprintBounds =
             new Rectangle(
-                footprintBounds.x,
-                footprintBounds.y - (int) iso_ho,
-                footprintBounds.width,
+                footprintBounds.getX(),
+                footprintBounds.getY() - (int) iso_ho,
+                footprintBounds.getWidth(),
                 (int) th);
-        iso_ho = iso_ho * getScale();
+        iso_ho *= getScale();
       }
-      SwingUtil.constrainTo(imgSize, footprintBounds.width, footprintBounds.height);
+      SwingUtil.constrainTo(imgSize, (int)footprintBounds.getWidth(), (int)footprintBounds.getHeight());
 
       int offsetx = 0;
       int offsety = 0;
@@ -3243,19 +3238,19 @@ public class ZoneRenderer extends JComponent
       if (token.isSnapToScale()) {
         offsetx =
             (int)
-                (imgSize.width < footprintBounds.width
-                    ? (footprintBounds.width - imgSize.width) / 2 * getScale()
+                (imgSize.getWidth() < footprintBounds.getWidth()
+                    ? (footprintBounds.getWidth() - imgSize.getWidth()) / 2 * getScale()
                     : 0);
         offsety =
             (int)
-                (imgSize.height < footprintBounds.height
-                    ? (footprintBounds.height - imgSize.height) / 2 * getScale()
+                (imgSize.getHeight() < footprintBounds.getHeight()
+                    ? (footprintBounds.getHeight() - imgSize.getHeight()) / 2 * getScale()
                     : 0);
       }
       double tx = location.x + offsetx;
       double ty = location.y + offsety + iso_ho;
 
-      AffineTransform at = new AffineTransform();
+      java.awt.geom.AffineTransform at = new java.awt.geom.AffineTransform();
       at.translate(tx, ty);
 
       // Rotated
@@ -3274,8 +3269,8 @@ public class ZoneRenderer extends JComponent
       // Snap
       if (token.isSnapToScale()) {
         at.scale(
-            ((double) imgSize.width) / workImage.getWidth(),
-            ((double) imgSize.height) / workImage.getHeight());
+            imgSize.getWidth() / workImage.getWidth(),
+            imgSize.getHeight() / workImage.getHeight());
         at.scale(getScale(), getScale());
       } else {
         if (token.getShape() == TokenShape.FIGURE) {
@@ -3290,18 +3285,21 @@ public class ZoneRenderer extends JComponent
       if (token.hasHalo()) {
         tokenG.setStroke(new BasicStroke(AppPreferences.getHaloLineWidth()));
         tokenG.setColor(token.getHaloColor());
-        tokenG.draw(zone.getGrid().getTokenCellArea(tokenBounds));
+        tokenG.draw(zone.getGrid().getTokenCellArea(tokenBounds).asShape());
       }
 
       // Calculate alpha Transparency from token and use opacity for indicating that token is moving
       float opacity = token.getTokenOpacity();
-      if (isTokenMoving(token)) opacity = opacity / 2.0f;
+      if (isTokenMoving(token)) {
+        opacity /= 2.0f;
+      }
 
       // Finally render the token image
       timer.start("tokenlist-7");
       Composite oldComposite = tokenG.getComposite();
-      if (opacity < 1.0f)
+      if (opacity < 1.0f) {
         tokenG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+      }
       tokenG.drawImage(workImage, at, this);
       tokenG.setComposite(oldComposite);
       timer.stop("tokenlist-7");
@@ -3325,10 +3323,10 @@ public class ZoneRenderer extends JComponent
                 && AppPreferences.getForceFacingArrow() == false) {
               break;
             }
-            Shape arrow = getFigureFacingArrow(token.getFacing(), footprintBounds.width / 2);
+            Shape arrow = getFigureFacingArrow(token.getFacing(), (int) (footprintBounds.getWidth() / 2));
 
             if (!zone.getGrid().isIsometric()) {
-              arrow = getCircleFacingArrow(token.getFacing(), footprintBounds.width / 2);
+              arrow = getCircleFacingArrow(token.getFacing(), (int) (footprintBounds.getWidth() / 2));
             }
 
             double fx = location.x + location.scaledWidth / 2;
@@ -3350,9 +3348,9 @@ public class ZoneRenderer extends JComponent
               break;
             }
           case CIRCLE:
-            arrow = getCircleFacingArrow(token.getFacing(), footprintBounds.width / 2);
+            arrow = getCircleFacingArrow(token.getFacing(), (int) (footprintBounds.getWidth() / 2));
             if (zone.getGrid().isIsometric()) {
-              arrow = getFigureFacingArrow(token.getFacing(), footprintBounds.width / 2);
+              arrow = getFigureFacingArrow(token.getFacing(), (int) (footprintBounds.getWidth() / 2));
             }
 
             double cx = location.x + location.scaledWidth / 2;
@@ -3367,7 +3365,7 @@ public class ZoneRenderer extends JComponent
             break;
           case SQUARE:
             if (zone.getGrid().isIsometric()) {
-              arrow = getFigureFacingArrow(token.getFacing(), footprintBounds.width / 2);
+              arrow = getFigureFacingArrow(token.getFacing(), (int) (footprintBounds.getWidth() / 2));
               cx = location.x + location.scaledWidth / 2;
               cy = location.y + location.scaledHeight / 2;
             } else {
@@ -3378,7 +3376,7 @@ public class ZoneRenderer extends JComponent
               // the chance
               // of breaking something, so change this when it's safe to break stuff
               facing %= 360;
-              arrow = getSquareFacingArrow(facing, footprintBounds.width / 2);
+              arrow = getSquareFacingArrow(facing, (int) (footprintBounds.getWidth() / 2));
 
               cx = location.x + location.scaledWidth / 2;
               cy = location.y + location.scaledHeight / 2;
@@ -3424,8 +3422,8 @@ public class ZoneRenderer extends JComponent
                   (int) tokenBounds.getBounds().getY(),
                   (int) tokenBounds.getBounds().getWidth(),
                   (int) tokenBounds.getBounds().getHeight());
-      Rectangle bounds =
-          new Rectangle(
+      java.awt.Rectangle bounds =
+          new java.awt.Rectangle(
               0,
               0,
               (int) tokenBounds.getBounds().getWidth(),
@@ -3475,8 +3473,8 @@ public class ZoneRenderer extends JComponent
       // ScreenPoint tmpsp = ScreenPoint.fromZonePoint(this, new ZonePoint(token.getX(),
       // token.getY()));
       // g.setColor(Color.red);
-      // g.drawLine(tmpsp.x, 0, tmpsp.x, getSize().height);
-      // g.drawLine(0, tmpsp.y, getSize().width, tmpsp.y);
+      // g.drawLine(tmpsp.x, 0, tmpsp.x, getSize().getHeight());
+      // g.drawLine(0, tmpsp.y, getSize().getWidth(), tmpsp.y);
     }
     timer.start("tokenlist-12");
     boolean useIF = MapTool.getServerPolicy().isUseIndividualFOW();
@@ -3497,9 +3495,9 @@ public class ZoneRenderer extends JComponent
 
       boolean isSelected = selectedTokenSet.contains(token.getId());
       if (isSelected) {
-        ScreenPoint sp = ScreenPoint.fromZonePoint(this, footprintBounds.x, footprintBounds.y);
-        double width = footprintBounds.width * getScale();
-        double height = footprintBounds.height * getScale();
+        ScreenPoint sp = ScreenPoint.fromZonePoint(this, footprintBounds.getX(), footprintBounds.getY());
+        double width = footprintBounds.getWidth() * getScale();
+        double height = footprintBounds.getHeight() * getScale();
 
         ImageBorder selectedBorder =
             token.isStamp() ? AppStyle.selectedStampBorder : AppStyle.selectedBorder;
@@ -3522,7 +3520,7 @@ public class ZoneRenderer extends JComponent
         }
         if (token.hasFacing()
             && (token.getShape() == Token.TokenShape.TOP_DOWN || token.isStamp())) {
-          AffineTransform oldTransform = clippedG.getTransform();
+          java.awt.geom.AffineTransform oldTransform = clippedG.getTransform();
 
           // Rotated
           clippedG.translate(sp.x, sp.y);
@@ -3632,8 +3630,8 @@ public class ZoneRenderer extends JComponent
         delayRendering(
             new LabelRenderer(
                 name,
-                r.x + r.width / 2,
-                r.y + r.height + offset,
+                    (int)(r.getX() + r.getWidth() / 2),
+                    (int)(r.getY() + r.getHeight() + offset),
                 SwingUtilities.CENTER,
                 background,
                 foreground,
@@ -3656,8 +3654,8 @@ public class ZoneRenderer extends JComponent
           BufferedImage stackImage = AppStyle.stackImage;
           clippedG.drawImage(
               stackImage,
-              bounds.getBounds().x + bounds.getBounds().width - stackImage.getWidth() + 2,
-              bounds.getBounds().y - 2,
+                  (int)(bounds.getBounds().getX() + bounds.getBounds().getWidth() - stackImage.getWidth() + 2),
+                  (int)bounds.getBounds().getY() - 2,
               null);
         }
       }
@@ -3970,7 +3968,7 @@ public class ZoneRenderer extends JComponent
   public Area getTokenBounds(Token token) {
     TokenLocation location = tokenLocationCache.get(token);
     if (location != null
-        && !location.maybeOnscreen(new Rectangle(0, 0, getSize().width, getSize().height))) {
+        && !location.maybeOnscreen(new Rectangle(0, 0, getSize().getWidth(), getSize().getHeight()))) {
       location = null;
     }
     return location != null ? location.bounds : null;
@@ -4422,7 +4420,7 @@ public class ZoneRenderer extends JComponent
      */
     public TokenLocation(
         Area bounds,
-        Rectangle2D origBounds,
+        Rectangle origBounds,
         Token token,
         double x,
         double y,
@@ -4447,8 +4445,8 @@ public class ZoneRenderer extends JComponent
       int deltaX = getViewOffsetX() - offsetX;
       int deltaY = getViewOffsetY() - offsetY;
 
-      boundsCache.x += deltaX;
-      boundsCache.y += deltaY;
+      boundsCache.addX(deltaX);
+      boundsCache.addY(deltaY);
 
       offsetX = getViewOffsetX();
       offsetY = getViewOffsetY();
@@ -4571,8 +4569,8 @@ public class ZoneRenderer extends JComponent
 
           // Center on drop point
           if (!token.isSnapToScale() && !token.isSnapToGrid()) {
-            token.setX(token.getX() - size.width / 2);
-            token.setY(token.getY() - size.height / 2);
+            token.setX(token.getX() - (int)size.getWidth() / 2);
+            token.setY(token.getY() - (int)size.getHeight() / 2);
           }
           break;
         case OBJECT:
@@ -4584,8 +4582,8 @@ public class ZoneRenderer extends JComponent
 
           // Center on drop point
           if (!token.isSnapToScale() && !token.isSnapToGrid()) {
-            token.setX(token.getX() - size.width / 2);
-            token.setY(token.getY() - size.height / 2);
+            token.setX(token.getX() - (int)size.getWidth() / 2);
+            token.setY(token.getY() - (int)size.getHeight() / 2);
           }
           break;
       }
@@ -4867,7 +4865,7 @@ public class ZoneRenderer extends JComponent
       z.setFont(font);
       FontRenderContext frc = z.getFontRenderContext();
       TextLayout tl = new TextLayout(tokenName, font, frc);
-      Rectangle textbox = tl.getPixelBounds(null, 0, 0);
+      java.awt.Rectangle textbox = tl.getPixelBounds(null, 0, 0);
 
       // Now create a larger BufferedImage that will hold both the existing cursor and a token name
 
@@ -4875,9 +4873,9 @@ public class ZoneRenderer extends JComponent
       // of the string
       // to represent the bounding box of the 'arrow+tokenName'
       Rectangle bounds =
-          new Rectangle(Math.max(img.getWidth(), textbox.width), img.getHeight() + textbox.height);
+          new Rectangle(Math.max(img.getWidth(), textbox.getWidth()), img.getHeight() + textbox.getHeight());
       BufferedImage cursor =
-          new BufferedImage(bounds.width, bounds.height, Transparency.TRANSLUCENT);
+          new BufferedImage((int)bounds.getWidth(), (int)bounds.getHeight(), Transparency.TRANSLUCENT);
       Graphics2D g2d = cursor.createGraphics();
       g2d.setFont(font);
       g2d.setComposite(z.getComposite());
@@ -4889,8 +4887,8 @@ public class ZoneRenderer extends JComponent
       // g2d.setTransform( ((Graphics2D)this.getGraphics()).getTransform() );
       // g2d.drawImage(img, null, 0, 0);
       g2d.drawImage(
-          img, new AffineTransform(1f, 0f, 0f, 1f, 0, 0), null); // Draw the arrow at 1:1 resolution
-      g2d.translate(0, img.getHeight() + textbox.height / 2);
+          img, new java.awt.geom.AffineTransform(1f, 0f, 0f, 1f, 0, 0), null); // Draw the arrow at 1:1 resolution
+      g2d.translate(0, img.getHeight() + textbox.getHeight() / 2);
       // g2d.transform(new AffineTransform(0.5f, 0f, 0f, 0.5f, 0, 0)); // Why do I need this to
       // scale down the
       // text??
@@ -4900,8 +4898,8 @@ public class ZoneRenderer extends JComponent
       // as nice looking as normal
       // g2d.setBackground(Color.BLACK);
       // g2d.setColor(Color.WHITE);
-      // g2d.fillRect(0, bounds.height-textbox.height, textbox.width, textbox.height);
-      // g2d.drawString(tokenName, 0F, bounds.height - descent);
+      // g2d.fillRect(0, bounds.getHeight()-textbox.getHeight(), textbox.getWidth(), textbox.getHeight());
+      // g2d.drawString(tokenName, 0F, bounds.getHeight() - descent);
       g2d.dispose();
       c = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0, 0), tokenName);
       SwingUtil.restoreAntiAliasing(g2d, oldAA);

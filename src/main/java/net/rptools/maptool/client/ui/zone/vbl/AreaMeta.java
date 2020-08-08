@@ -14,7 +14,7 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ public class AreaMeta {
     if (centerPoint == null) {
       centerPoint =
           new Point2D.Double(
-              area.getBounds().x + area.getBounds().width / 2,
-              area.getBounds().y + area.getBounds().height / 2);
+              area.getBounds().getX() + area.getBounds().getWidth() / 2,
+              area.getBounds().getY() + area.getBounds().getHeight() / 2);
     }
     return centerPoint;
   }

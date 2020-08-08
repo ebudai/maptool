@@ -27,7 +27,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -347,7 +347,7 @@ public class GraphicsUtil {
     Area newClip = new Area(g.getClip());
     newClip.intersect(new Area(shape));
 
-    g2.setClip(newClip);
+    g2.setClip(newClip.asShape());
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING,
         RenderingHints.VALUE_ANTIALIAS_OFF); // Faster without antialiasing, and looks just as good
@@ -445,7 +445,7 @@ public class GraphicsUtil {
             g.fillRect(0, 0, size.width, size.height);
 
             g.setColor(Color.gray);
-            ((Graphics2D) g).fill(line);
+            ((Graphics2D) g).fill(line.asShape());
 
             g.setColor(Color.red);
             for (Point2D p : points) {

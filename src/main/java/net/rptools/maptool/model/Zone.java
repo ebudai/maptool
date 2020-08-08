@@ -16,8 +16,8 @@ package net.rptools.maptool.model;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Rectangle;
+import net.rptools.lib.geom.Area;
 import java.util.*;
 import net.rptools.lib.MD5Key;
 import net.rptools.maptool.client.AppPreferences;
@@ -429,9 +429,9 @@ public class Zone extends BaseModel {
     initiativeList.setHideNPC(zone.initiativeList.isHideNPC());
 
     boardPosition = (Point) zone.boardPosition.clone();
-    exposedArea = (Area) zone.exposedArea.clone();
-    topology = (Area) zone.topology.clone();
-    topologyTerrain = (Area) zone.topologyTerrain.clone();
+    exposedArea = (Area) zone.exposedArea.copy();
+    topology = (Area) zone.topology.copy();
+    topologyTerrain = (Area) zone.topologyTerrain.copy();
     aStarRounding = zone.aStarRounding;
     topologyMode = zone.topologyMode;
     isVisible = zone.isVisible;
@@ -1828,8 +1828,8 @@ public class Zone extends BaseModel {
      * usually centred on token x & y So token y + bounding y give you the bottom of the box Then
      * subtract portion of height to get the centre point of the base.
      */
-    int bottom = (t.isSnapToScale() ? t.getY() + b1.y : b1.y) + b1.height;
-    int centre = t.isSnapToScale() ? b1.height / 2 : b1.width / 4;
+    int bottom = (int) ((t.isSnapToScale() ? t.getY() + b1.getY() : b1.getY()) + b1.getHeight());
+    int centre = (int) (t.isSnapToScale() ? b1.getHeight() / 2 : b1.getWidth() / 4);
     return bottom - centre;
   }
 

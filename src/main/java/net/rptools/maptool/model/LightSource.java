@@ -15,9 +15,9 @@
 package net.rptools.maptool.model;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Rectangle;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -169,34 +169,34 @@ public class LightSource implements Comparable<LightSource> {
     int ty = 0;
     switch (position) {
       case NW:
-        tx -= footprintBounds.width / 2;
-        ty -= footprintBounds.height / 2;
+        tx -= footprintBounds.getWidth() / 2;
+        ty -= footprintBounds.getHeight() / 2;
         break;
       case N:
-        ty -= footprintBounds.height / 2;
+        ty -= footprintBounds.getHeight() / 2;
         break;
       case NE:
-        tx += footprintBounds.width / 2;
-        ty -= footprintBounds.height / 2;
+        tx += footprintBounds.getWidth() / 2;
+        ty -= footprintBounds.getHeight() / 2;
         break;
       case W:
-        tx -= footprintBounds.width / 2;
+        tx -= footprintBounds.getWidth() / 2;
         break;
       case CENTER:
         break;
       case E:
-        tx += footprintBounds.width / 2;
+        tx += footprintBounds.getWidth() / 2;
         break;
       case SW:
-        tx -= footprintBounds.width / 2;
-        ty += footprintBounds.height / 2;
+        tx -= footprintBounds.getWidth() / 2;
+        ty += footprintBounds.getHeight() / 2;
         break;
       case S:
-        ty += footprintBounds.height / 2;
+        ty += footprintBounds.getHeight() / 2;
         break;
       case SE:
-        tx += footprintBounds.width / 2;
-        ty += footprintBounds.height / 2;
+        tx += footprintBounds.getWidth() / 2;
+        ty += footprintBounds.getHeight() / 2;
         break;
     }
     area.transform(AffineTransform.getTranslateInstance(tx, ty));

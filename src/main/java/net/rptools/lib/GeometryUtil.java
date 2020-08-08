@@ -14,10 +14,9 @@
  */
 package net.rptools.lib;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.List;
@@ -170,11 +169,7 @@ public class GeometryUtil {
   }
 
   public static int countAreaPoints(Area area) {
-    int count = 0;
-    for (PathIterator iter = area.getPathIterator(null); !iter.isDone(); iter.next()) {
-      count++;
-    }
-    return count;
+    return area.getGeometry().getNumPoints();
   }
 
   public static Area createLine(List<Point2D> points, int width) {

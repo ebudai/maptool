@@ -20,10 +20,10 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
+import net.rptools.lib.geom.Rectangle;
 import java.awt.Transparency;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -1369,16 +1369,16 @@ public class Token extends BaseModel implements Cloneable {
 
     Rectangle footprintBounds = getBounds(MapTool.getFrame().getCurrentZoneRenderer().getZone());
     Dimension imgSize = new Dimension(getWidth(), getHeight());
-    SwingUtil.constrainTo(imgSize, footprintBounds.width, footprintBounds.height);
+    SwingUtil.constrainTo(imgSize, (int)footprintBounds.getWidth(), (int)footprintBounds.getHeight());
 
     // Lets account for ISO images
     double iso_ho = 0;
     if (getShape() == TokenShape.FIGURE) {
-      double th = getHeight() * (double) footprintBounds.width / getWidth();
-      iso_ho = footprintBounds.height - th;
+      double th = getHeight() * (double) footprintBounds.getWidth() / getWidth();
+      iso_ho = footprintBounds.getHeight() - th;
       footprintBounds =
           new Rectangle(
-              footprintBounds.x, footprintBounds.y - (int) iso_ho, footprintBounds.width, (int) th);
+              footprintBounds.getX(), footprintBounds.getY() - (int) iso_ho, footprintBounds.getWidth(), (int) th);
     }
 
     // Lets figure in offset if image is not free size/native size aka snapToScale
@@ -1386,14 +1386,14 @@ public class Token extends BaseModel implements Cloneable {
     int offsety = 0;
     if (isSnapToScale()) {
       offsetx =
-          imgSize.width < footprintBounds.width ? (footprintBounds.width - imgSize.width) / 2 : 0;
+              imgSize.width < footprintBounds.getWidth() ? (int) ((footprintBounds.getWidth() - imgSize.width) / 2) : 0;
       offsety =
-          imgSize.height < footprintBounds.height
-              ? (footprintBounds.height - imgSize.height) / 2
-              : 0;
+              imgSize.height < footprintBounds.getHeight()
+                  ? (int) ((footprintBounds.getHeight() - imgSize.height) / 2)
+                  : 0;
     }
-    double tx = footprintBounds.x + offsetx;
-    double ty = footprintBounds.y + offsety + iso_ho;
+    double tx = footprintBounds.getX() + offsetx;
+    double ty = footprintBounds.getY() + offsety + iso_ho;
 
     // Apply the coordinate translation
     AffineTransform atArea = AffineTransform.getTranslateInstance(tx, ty);
@@ -1458,8 +1458,8 @@ public class Token extends BaseModel implements Cloneable {
     Rectangle footprintBounds =
         footprint.getBounds(grid, grid.convert(new ZonePoint(getX(), getY())));
 
-    double w = footprintBounds.width;
-    double h = footprintBounds.height;
+    double w = footprintBounds.getWidth();
+    double h = footprintBounds.getHeight();
 
     // Sizing
     if (!isSnapToScale()) {
@@ -1470,29 +1470,29 @@ public class Token extends BaseModel implements Cloneable {
         h = (w / 2);
       }
     } else {
-      w = footprintBounds.width * footprint.getScale() * sizeScale;
-      h = footprintBounds.height * footprint.getScale() * sizeScale;
+      w = footprintBounds.getWidth() * footprint.getScale() * sizeScale;
+      h = footprintBounds.getHeight() * footprint.getScale() * sizeScale;
     }
     // Positioning
     if (!isSnapToGrid()) {
-      footprintBounds.x = getX();
-      footprintBounds.y = getY();
+      footprintBounds.setX(getX());
+      footprintBounds.setY(getY());
     } else {
       if (!isBackgroundStamp()) {
         // Center it on the footprint
-        footprintBounds.x -= (w - footprintBounds.width) / 2;
-        footprintBounds.y -= (h - footprintBounds.height) / 2;
+        footprintBounds.addX(-((w - footprintBounds.getWidth()) / 2));
+        footprintBounds.addY(-((h - footprintBounds.getHeight()) / 2));
       } else {
         // footprintBounds.x -= zone.getGrid().getSize()/2;
         // footprintBounds.y -= zone.getGrid().getSize()/2;
       }
     }
-    footprintBounds.width = (int) w; // perhaps make this a double
-    footprintBounds.height = (int) h;
+    footprintBounds.setWidth((int) w); // perhaps make this a double
+    footprintBounds.setHeight((int) h);
 
     // Offset
-    footprintBounds.x += anchorX;
-    footprintBounds.y += anchorY;
+    footprintBounds.addX(anchorX);
+    footprintBounds.addY(anchorY);
     return footprintBounds;
   }
 
@@ -1512,8 +1512,8 @@ public class Token extends BaseModel implements Cloneable {
         offsetY = getY() + (int) centerOffset.y;
       } else {
         Rectangle tokenBounds = getBounds(zone);
-        offsetX = tokenBounds.x + tokenBounds.width / 2;
-        offsetY = tokenBounds.y + tokenBounds.height / 2;
+        offsetX = (int) (tokenBounds.getX() + tokenBounds.getWidth() / 2);
+        offsetY = (int) (tokenBounds.getY() + tokenBounds.getHeight() / 2);
       }
     } else {
       offsetX = getX();
@@ -1576,30 +1576,30 @@ public class Token extends BaseModel implements Cloneable {
         double footprintOffsetY = 0;
         if (!isBackgroundStamp()) {
           // Non-background tokens can have an offset from top left corner
-          footprintOffsetX = tokenBounds.width - footprintBounds.width;
-          footprintOffsetY = tokenBounds.height - footprintBounds.height;
+          footprintOffsetX = tokenBounds.getWidth() - footprintBounds.getWidth();
+          footprintOffsetY = tokenBounds.getHeight() - footprintBounds.getHeight();
         }
-        double cellsX = footprintBounds.width / grid.getCellWidth();
-        double cellsY = footprintBounds.height / grid.getCellHeight();
+        double cellsX = footprintBounds.getWidth() / grid.getCellWidth();
+        double cellsY = footprintBounds.getHeight() / grid.getCellHeight();
         Dimension cellOffset = grid.getCellOffset();
 
         offsetX = footprintOffsetX / 2.0 - cellOffset.width * cellsX;
         offsetY = footprintOffsetY / 2.0 - cellOffset.height * cellsY;
         if (grid.isHex() && "large".equalsIgnoreCase(footprint.getName())) {
           // Merudo: not sure why this special case is needed.
-          offsetX = offsetX - Math.min(grid.getCellWidth(), grid.getCellHeight()) / 2;
-          offsetY = offsetY - Math.min(grid.getCellWidth(), grid.getCellHeight()) / 2;
+          offsetX -= Math.min(grid.getCellWidth(), grid.getCellHeight()) / 2;
+          offsetY -= Math.min(grid.getCellWidth(), grid.getCellHeight()) / 2;
         }
       } else {
         // Free-size tokens have their position at their center, plus a grid-specific offset
         Point2D.Double centerOffset = grid.getCenterOffset();
-        offsetX = tokenBounds.width / 2.0 - centerOffset.x;
-        offsetY = tokenBounds.height / 2.0 - centerOffset.y;
+        offsetX = tokenBounds.getWidth() / 2.0 - centerOffset.x;
+        offsetY = tokenBounds.getHeight() / 2.0 - centerOffset.y;
       }
     } else {
       // Gridless non-background tokens hve their position at their center, plus half a cell
-      offsetX = tokenBounds.width / 2.0 - grid.getCellWidth() / 2.0;
-      offsetY = tokenBounds.height / 2.0 - grid.getCellHeight() / 2.0;
+      offsetX = tokenBounds.getWidth() / 2.0 - grid.getCellWidth() / 2.0;
+      offsetY = tokenBounds.getHeight() / 2.0 - grid.getCellHeight() / 2.0;
     }
     return new Point2D.Double(offsetX, offsetY);
   }

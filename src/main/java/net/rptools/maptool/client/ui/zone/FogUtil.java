@@ -20,12 +20,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
+import net.rptools.lib.geom.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -444,8 +444,8 @@ public class FogUtil {
       bounds = token.getBounds(zone);
     }
 
-    x = bounds.x + bounds.width / 2;
-    y = bounds.y + bounds.height / 2;
+    x = (int) (bounds.getX() + bounds.getWidth() / 2);
+    y = (int) (bounds.getY() + bounds.getHeight() / 2);
 
     return new Point(x, y);
   }
@@ -475,7 +475,7 @@ public class FogUtil {
                 Integer.MAX_VALUE));
 
     int pointCount = 0;
-    for (PathIterator iter = topology.getPathIterator(null); !iter.isDone(); iter.next()) {
+    for (PathIterator iter = topology.asShape().getPathIterator(null); !iter.isDone(); iter.next()) {
       pointCount++;
     }
     System.out.println("Starting test " + pointCount + " points");
@@ -551,7 +551,7 @@ public class FogUtil {
               g2.fillRect(0, 0, size.width / 2, size.height);
 
               g2.setColor(Color.green);
-              g2.fill(top);
+              g2.fill(top.asShape());
               g2.dispose();
             }
             g.setColor(Color.black);
@@ -564,17 +564,17 @@ public class FogUtil {
             // g.setColor(Color.lightGray);
             // g2d.fill(a1.createTransformedArea(at));
 
-            g.setClip(new Rectangle(size.width / 2, 0, size.width / 2, size.height));
+            g.setClip(new java.awt.Rectangle(size.width / 2, 0, size.width / 2, size.height));
             g2d.translate(200, 0);
             g.setColor(Color.green);
             g2d.drawImage(topImage, 0, 0, this);
             g.setColor(Color.gray);
             if (theArea != null) {
-              g2d.fill(theArea.createTransformedArea(at));
+              g2d.fill(theArea.createTransformedArea(at).asShape());
             }
             for (AreaMeta areaMeta : data.getAreaList(new Point(0, 0))) {
               g.setColor(Color.red);
-              g2d.draw(areaMeta.area.createTransformedArea(at));
+              g2d.draw(areaMeta.area.createTransformedArea(at).asShape());
             }
             // g.setColor(Color.red);
             // System.out.println("Size: " + data.metaList.size() + " - " + skippedAreaList.size());
