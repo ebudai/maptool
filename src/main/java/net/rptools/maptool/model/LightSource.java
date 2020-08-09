@@ -17,12 +17,12 @@ package net.rptools.maptool.model;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import net.rptools.lib.geom.Area;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import net.rptools.lib.FileUtil;
+import net.rptools.lib.geom.Area;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 

@@ -16,7 +16,6 @@ package net.rptools.maptool.model;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import net.rptools.lib.geom.Area;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.tool.PointerTool;
 import net.rptools.maptool.client.walker.WalkerMetric;

@@ -16,11 +16,11 @@ package net.rptools.maptool.client.tool.drawing;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import net.rptools.lib.geom.Area;
 import java.io.IOException;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.ui.zone.ZoneRenderer;
 import net.rptools.maptool.model.GUID;

@@ -14,9 +14,9 @@
  */
 package net.rptools.maptool.client.walker;
 
-import net.rptools.lib.geom.Area;
 import java.util.Collection;
 import java.util.Set;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.ui.zone.RenderPathWorker;
 import net.rptools.maptool.client.walker.astar.AStarCellPoint;
 import net.rptools.maptool.model.CellPoint;

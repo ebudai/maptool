@@ -15,12 +15,12 @@
 package net.rptools.maptool.client.ui.zone.vbl;
 
 import java.awt.BasicStroke;
-import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.util.GraphicsUtil;
 import org.jetbrains.annotations.NotNull;
 

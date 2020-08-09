@@ -16,13 +16,13 @@ package net.rptools.maptool.model.drawing;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import net.rptools.lib.geom.Area;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.model.CellPoint;
 import net.rptools.maptool.model.ZonePoint;

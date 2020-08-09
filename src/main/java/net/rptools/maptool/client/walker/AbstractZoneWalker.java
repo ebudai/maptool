@@ -14,12 +14,12 @@
  */
 package net.rptools.maptool.client.walker;
 
-import net.rptools.lib.geom.Area;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.ui.zone.RenderPathWorker;
 import net.rptools.maptool.model.CellPoint;
 import net.rptools.maptool.model.Path;

@@ -16,12 +16,12 @@ package net.rptools.maptool.client.ui.zone;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.util.GraphicsUtil;
 
 public class AreaData {

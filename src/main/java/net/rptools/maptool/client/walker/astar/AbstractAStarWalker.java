@@ -16,7 +16,6 @@ package net.rptools.maptool.client.walker.astar;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import net.rptools.lib.geom.Area;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +28,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.walker.AbstractZoneWalker;
 import net.rptools.maptool.model.CellPoint;

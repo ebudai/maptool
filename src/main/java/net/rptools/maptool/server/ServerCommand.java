@@ -14,10 +14,10 @@
  */
 package net.rptools.maptool.server;
 
-import net.rptools.lib.geom.Area;
 import java.util.List;
 import java.util.Set;
 import net.rptools.lib.MD5Key;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.model.Asset;
 import net.rptools.maptool.model.Campaign;
 import net.rptools.maptool.model.CampaignProperties;

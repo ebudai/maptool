@@ -18,10 +18,10 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
+import net.rptools.lib.geom.Area;
 
 /** @author drice */
 public class LineSegment extends AbstractDrawing {

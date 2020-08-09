@@ -14,11 +14,11 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import net.rptools.lib.geom.Area;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.util.GraphicsUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

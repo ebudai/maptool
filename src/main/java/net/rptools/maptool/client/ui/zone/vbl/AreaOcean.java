@@ -14,10 +14,10 @@
  */
 package net.rptools.maptool.client.ui.zone.vbl;
 
-import net.rptools.lib.geom.Area;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Set;
+import net.rptools.lib.geom.Area;
 
 public class AreaOcean implements AreaContainer {
 

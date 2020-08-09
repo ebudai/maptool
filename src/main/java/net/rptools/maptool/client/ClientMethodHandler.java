@@ -16,13 +16,13 @@ package net.rptools.maptool.client;
 
 import java.awt.EventQueue;
 import java.awt.Point;
-import net.rptools.lib.geom.Area;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import net.rptools.clientserver.hessian.AbstractMethodHandler;
 import net.rptools.lib.MD5Key;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.functions.ExecFunction;
 import net.rptools.maptool.client.functions.MacroLinkFunction;
 import net.rptools.maptool.client.ui.MapToolFrame;

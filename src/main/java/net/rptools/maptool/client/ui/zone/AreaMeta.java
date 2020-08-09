@@ -14,13 +14,13 @@
  */
 package net.rptools.maptool.client.ui.zone;
 
-import net.rptools.lib.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Set;
 import net.rptools.lib.GeometryUtil;
 import net.rptools.lib.GeometryUtil.PointNode;
+import net.rptools.lib.geom.Area;
 
 public class AreaMeta {
   Area area;

@@ -16,8 +16,8 @@ package net.rptools.maptool.model.drawing;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import net.rptools.lib.geom.Area;
 import java.util.List;
+import net.rptools.lib.geom.Area;
 
 /**
  * @author Jagged

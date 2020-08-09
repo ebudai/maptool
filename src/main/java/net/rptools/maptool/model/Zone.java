@@ -17,9 +17,9 @@ package net.rptools.maptool.model;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.rptools.lib.geom.Area;
 import java.util.*;
 import net.rptools.lib.MD5Key;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.AppPreferences;
 import net.rptools.maptool.client.AppUtil;
 import net.rptools.maptool.client.MapTool;
@@ -1939,7 +1939,6 @@ public class Zone extends BaseModel {
         visionType = VisionType.NIGHT;
       } else if (topology != null && !topology.isEmpty()) {
         visionType = VisionType.DAY;
-
       } else {
         visionType = VisionType.OFF;
       }

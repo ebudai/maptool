@@ -14,11 +14,11 @@
  */
 package net.rptools.maptool.client;
 
-import net.rptools.lib.geom.Area;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import net.rptools.lib.MD5Key;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.functions.ExecFunction;
 import net.rptools.maptool.client.functions.MacroLinkFunction;
 import net.rptools.maptool.model.Asset;

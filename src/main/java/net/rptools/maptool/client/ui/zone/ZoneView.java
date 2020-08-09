@@ -15,9 +15,6 @@
 package net.rptools.maptool.client.ui.zone;
 
 import java.awt.Point;
-import net.rptools.lib.geom.AffineTransform;
-import net.rptools.lib.geom.Area;
-
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +34,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
+import net.rptools.lib.geom.AffineTransform;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.AppUtil;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.ui.zone.vbl.AreaTree;

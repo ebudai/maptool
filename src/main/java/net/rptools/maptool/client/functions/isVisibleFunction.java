@@ -14,9 +14,9 @@
  */
 package net.rptools.maptool.client.functions;
 
-import net.rptools.lib.geom.Area;
 import java.math.BigDecimal;
 import java.util.List;
+import net.rptools.lib.geom.Area;
 import net.rptools.maptool.client.AppUtil;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.MapToolVariableResolver;

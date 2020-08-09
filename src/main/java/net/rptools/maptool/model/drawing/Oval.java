@@ -15,8 +15,8 @@
 package net.rptools.maptool.model.drawing;
 
 import java.awt.Graphics2D;
-import net.rptools.lib.geom.Area;
 import java.awt.geom.Ellipse2D;
+import net.rptools.lib.geom.Area;
 
 /** An oval. */
 public class Oval extends Rectangle {
