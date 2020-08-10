@@ -354,7 +354,7 @@ public abstract class HexGrid extends Grid {
   /*
    * (non-Javadoc)
    *
-   * @see net.rptools.maptool.model.Grid#validateMove(java.awt.Rectangle, int, int, java.awt.geom.Area)
+   * @see net.rptools.maptool.model.Grid#validateMove(java.awt.Rectangle, int, int, Area)
    */
 
   private boolean checkOneSlice(ZonePoint zp, int dir, Area exposedFog) {

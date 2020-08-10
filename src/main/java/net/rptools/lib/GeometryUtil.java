@@ -14,7 +14,8 @@
  */
 package net.rptools.lib;
 
-import java.awt.geom.Area;
+import net.rptools.lib.geom.Area;
+
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;

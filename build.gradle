@@ -110,7 +110,7 @@ javafx {
 
 run {
     args = ['-v=' + appSemVer]
-    applicationDefaultJvmArgs = ["-Xss8M", "-Dsentry.environment=Development", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor, "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED"]
+    applicationDefaultJvmArgs = ["-Xss8M", "-Dsentry.environment=Development", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor, "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED", "--add-opens=javafx.desktop/sun.awt.geom=ALL-UNNAMED"]
     // Add -Dlog4j2.debug to see log4j2 details
 
     if (System.getProperty("exec.args") != null) {
@@ -124,7 +124,7 @@ runtime {
 
     jpackage {
         installerOutputDir = file("releases")
-        jvmArgs = ["-Xss8M", "-Dsentry.environment=Production", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor.toLowerCase(), "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED"]
+        jvmArgs = ["-Xss8M", "-Dsentry.environment=Production", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor.toLowerCase(), "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED", "--add-opens=javafx.desktop/sun.awt.geom=ALL-UNNAMED"]
 
         imageOptions = []
         imageName = project.name + developerRelease
@@ -225,7 +225,7 @@ dependencies {
 
     // RPTool Libs
     implementation 'net.rptools.decktool:decktool:1.0.b1'
-    implementation 'com.github.ebudai:clientserver:1.5.3b'
+    implementation 'com.github.ebudai:clientserver:1.54b'
     implementation 'com.github.RPTools:maptool-resources:1.6.0'
     implementation 'com.github.RPTools:parser:1.8.2'
     implementation 'com.github.RPTools:dicelib:1.6.6'
@@ -265,7 +265,7 @@ dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.11.1'
     implementation 'yasb:yasb:0.2-21012007'
     implementation 'de.muntjak.tinylookandfeel:tinylaf-nocp:1.4.0'
-
+    implementation 'com.caucho:hessian:4.0.63'
     implementation 'com.jayway.jsonpath:json-path:2.4.0'
 
     // For PDF image extraction

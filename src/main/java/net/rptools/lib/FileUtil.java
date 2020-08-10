@@ -505,7 +505,7 @@ public class FileUtil {
   public static XStream getConfiguredXStream() {
     XStream xStream = new XStream();
     XStream.setupDefaultSecurity(xStream);
-    xStream.allowTypesByWildcard(new String[] {"net.rptools.**", "java.awt.**", "sun.awt.**"});
+    xStream.allowTypesByWildcard(new String[] {"net.rptools.**", "java.awt.**", "sun.awt.**", "org.locationtech.jts.**"});
     return xStream;
   }
 }

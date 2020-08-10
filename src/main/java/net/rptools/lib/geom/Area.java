@@ -15,21 +15,25 @@
 package net.rptools.lib.geom;
 
 import java.awt.*;
-import java.awt.geom.PathIterator;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import org.jetbrains.annotations.NotNull;
-import org.locationtech.jts.awt.ShapeReader;
-import org.locationtech.jts.awt.ShapeWriter;
-import org.locationtech.jts.geom.*;
+import java.util.Collection;
+import java.util.Iterator;
 
-public class Area implements Shape, Cloneable {
+import org.locationtech.jts.awt.ShapeReader;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
+import org.locationtech.jts.operation.polygonize.Polygonizer;
+
+public class Area extends java.awt.geom.Area implements Cloneable {
 
   private static final GeometryFactory FACTORY = new GeometryFactory();
 
-  private @NotNull Geometry geometry;
+  private Geometry geometry;
   private Rectangle2D bounds;
-  private boolean boundsAreDirty = true;
 
   public Area() {
     geometry = FACTORY.createGeometryCollection();
@@ -48,17 +52,33 @@ public class Area implements Shape, Cloneable {
             rectangle.y + rectangle.height);
     this.geometry = FACTORY.toGeometry(envelope);
     this.bounds = new Rectangle(rectangle);
-    boundsAreDirty = false;
   }
 
   public Area(Area area) {
+    super(area);
+    if (area.geometry == null) {
+      //this happens when loading campaigns saved before the changeover to JTS
+      area.geometry = ShapeReader.read(area.getPathIterator(null, 1), FACTORY);
+    }
     this.geometry = area.geometry.copy();
-    this.bounds = new Rectangle(area.getBounds());
-    this.boundsAreDirty = area.boundsAreDirty;
+    this.geometry = validate(this.geometry);
+    if (area.bounds != null) {
+      this.bounds = new Rectangle(area.getBounds());
+    }
+  }
+
+  public Area(GeneralPath path) {
+    super(path);
+    GeneralPath copy = new GeneralPath(path);
+    copy.closePath();
+    this.geometry = ShapeReader.read(copy.getPathIterator(null, 1), FACTORY);
+    this.geometry = validate(this.geometry);
   }
 
   public Area(Shape shape) {
+    super(shape);
     this.geometry = ShapeReader.read(shape.getPathIterator(null, 1), FACTORY);
+    this.geometry = validate(this.geometry);
   }
 
   @Override
@@ -72,9 +92,8 @@ public class Area implements Shape, Cloneable {
 
   @Override
   public Rectangle2D getBounds2D() {
-    if (boundsAreDirty) {
+    if (bounds == null) {
       bounds = envelopeToRectangle(geometry.getEnvelopeInternal());
-      boundsAreDirty = false;
     }
     return bounds;
   }
@@ -119,32 +138,18 @@ public class Area implements Shape, Cloneable {
     return geometry.contains(rectangleToGeometry(rectangle));
   }
 
-  @Override
-  public PathIterator getPathIterator(java.awt.geom.AffineTransform at) {
-    ShapeWriter writer = new ShapeWriter();
-    Shape shape = writer.toShape(geometry);
-    return shape.getPathIterator(at);
-  }
-
-  @Override
-  public PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) {
-    ShapeWriter writer = new ShapeWriter();
-    Shape shape = writer.toShape(geometry);
-    return shape.getPathIterator(at, flatness);
-  }
-
   public boolean isSingular() {
     return geometry.getNumGeometries() < 2;
   }
 
   public void intersect(Area area) {
-    geometry.intersection(area.geometry);
-    boundsAreDirty = true;
+    geometry = geometry.intersection(area.geometry);
+    bounds = null;
   }
 
   public void transform(AffineTransform transform) {
     geometry = transform.transform(geometry);
-    boundsAreDirty = true;
+    bounds = null;
   }
 
   public void transform(java.awt.geom.AffineTransform transform) {
@@ -153,20 +158,19 @@ public class Area implements Shape, Cloneable {
 
   public Area add(Area area) {
     geometry = geometry.union(area.geometry);
-    boundsAreDirty = true;
+    bounds = null;
     return this;
   }
 
   public Area subtract(Area area) {
     geometry = geometry.difference(area.geometry);
-    boundsAreDirty = true;
+    bounds = null;
     return this;
   }
 
-  public Area reset() {
+  public void reset() {
     geometry = FACTORY.createGeometryCollection();
-    boundsAreDirty = true;
-    return this;
+    bounds = null;
   }
 
   private static Rectangle2D envelopeToRectangle(Envelope envelope) {
@@ -175,12 +179,8 @@ public class Area implements Shape, Cloneable {
   }
 
   private static Geometry rectangleToGeometry(Rectangle2D rectangle) {
-    return rectangleToGeometry(rectangle.getBounds());
-  }
-
-  private static Geometry rectangleToGeometry(Rectangle rectangle) {
     return rectangleToGeometry(
-        rectangle.x, rectangle.x + rectangle.width, rectangle.y, rectangle.y + rectangle.height);
+            rectangle.getX(), rectangle.getX() + rectangle.getWidth(), rectangle.getY(), rectangle.getY() + rectangle.getHeight());
   }
 
   private static Geometry rectangleToGeometry(double x1, double x2, double y1, double y2) {
@@ -194,5 +194,95 @@ public class Area implements Shape, Cloneable {
 
   public Area createTransformedArea(java.awt.geom.AffineTransform transform) {
     return new AffineTransform(transform).createTransformedShape(this);
+  }
+
+  //taken from https://stackoverflow.com/questions/31473553/is-there-a-way-to-convert-a-self-intersecting-polygon-to-a-multipolygon-in-jts
+  /**
+   * Get / create a valid version of the geometry given. If the geometry is a polygon or multi polygon, self intersections /
+   * inconsistencies are fixed. Otherwise the geometry is returned.
+   *
+   * @param geom
+   * @return a geometry
+   */
+  private static Geometry validate(Geometry geom){
+    GeometrySnapper.snapToSelf(geom, Double.MIN_VALUE, true);
+    if(geom instanceof Polygon){
+      if(geom.isValid()){
+        geom.normalize(); // validate does not pick up rings in the wrong order - this will fix that
+        return geom; // If the polygon is valid just return it
+      }
+      Polygonizer polygonizer = new Polygonizer();
+      addPolygon((Polygon)geom, polygonizer);
+      return toPolygonGeometry(polygonizer.getPolygons());
+    }else if(geom instanceof MultiPolygon){
+      if(geom.isValid()){
+        geom.normalize(); // validate does not pick up rings in the wrong order - this will fix that
+        return geom; // If the multipolygon is valid just return it
+      }
+      Polygonizer polygonizer = new Polygonizer();
+      for(int n = geom.getNumGeometries(); n-- > 0;){
+        addPolygon((Polygon)geom.getGeometryN(n), polygonizer);
+      }
+      return toPolygonGeometry(polygonizer.getPolygons());
+    }else{
+      return geom; // In my case, I only care about polygon / multipolygon geometries
+    }
+  }
+
+  /**
+   * Add all line strings from the polygon given to the polygonizer given
+   *
+   * @param polygon polygon from which to extract line strings
+   * @param polygonizer polygonizer
+   */
+  private static void addPolygon(Polygon polygon, Polygonizer polygonizer){
+    addLineString(polygon.getExteriorRing(), polygonizer);
+    for(int n = polygon.getNumInteriorRing(); n-- > 0;){
+      addLineString(polygon.getInteriorRingN(n), polygonizer);
+    }
+  }
+
+  /**
+   * Add the linestring given to the polygonizer
+   *
+   * @param lineString line string
+   * @param polygonizer polygonizer
+   */
+  private static void addLineString(LineString lineString, Polygonizer polygonizer){
+
+    LineString line = lineString;
+    if(line instanceof LinearRing){ // LinearRings are treated differently to line strings : we need a LineString NOT a LinearRing
+      line = line.getFactory().createLineString(line.getCoordinateSequence());
+    }
+
+    // unioning the linestring with the point makes any self intersections explicit.
+    Point point = line.getFactory().createPoint(line.getCoordinateN(0));
+    Geometry toAdd = line.union(point);
+
+    //Add result to polygonizer
+    polygonizer.add(toAdd);
+  }
+
+  /**
+   * Get a geometry from a collection of polygons.
+   *
+   * @param polygons collection
+   * @return null if there were no polygons, the polygon if there was only one, or a MultiPolygon containing all polygons otherwise
+   */
+  private static Geometry toPolygonGeometry(Collection<Polygon> polygons){
+    switch(polygons.size()){
+      case 0:
+        return null; // No valid polygons!
+      case 1:
+        return polygons.iterator().next(); // single polygon - no need to wrap
+      default:
+        //polygons may still overlap! Need to sym difference them
+        Iterator<Polygon> iter = polygons.iterator();
+        Geometry ret = iter.next();
+        while(iter.hasNext()){
+          ret = ret.symDifference(iter.next());
+        }
+        return ret;
+    }
   }
 }

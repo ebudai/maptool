@@ -61,10 +61,7 @@ import net.rptools.maptool.model.LookupTable;
 import net.rptools.maptool.model.MacroButtonProperties;
 import net.rptools.maptool.model.Token;
 import net.rptools.maptool.model.Zone;
-import net.rptools.maptool.model.transform.campaign.AssetNameTransform;
-import net.rptools.maptool.model.transform.campaign.ExportInfoTransform;
-import net.rptools.maptool.model.transform.campaign.PCVisionTransform;
-import net.rptools.maptool.model.transform.campaign.TokenPropertyMapTransform;
+import net.rptools.maptool.model.transform.campaign.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -90,6 +87,7 @@ public class PersistenceUtil {
   // how to implement?)
   // 1.4.0 Added lumens to LightSource class, old versions will not load unless saved as b89
   // compatible
+  // 1.4.1 Changed java.awt.geom.Area to use JTS instead
 
   private static final ModelVersionManager campaignVersionManager = new ModelVersionManager();
   private static final ModelVersionManager assetnameVersionManager = new ModelVersionManager();
@@ -128,6 +126,7 @@ public class PersistenceUtil {
     campaignVersionManager.registerTransformation("1.3.75", new ExportInfoTransform());
     campaignVersionManager.registerTransformation(
         "1.3.78", new TokenPropertyMapTransform()); // FJE 2010-12-29
+    //campaignVersionManager.registerTransformation("1.8.0", new AreaTransform());
 
     // For a short time, assets were stored separately in files ending with ".dat". As of 1.3.64,
     // they are
