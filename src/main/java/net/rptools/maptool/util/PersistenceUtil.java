@@ -76,7 +76,7 @@ public class PersistenceUtil {
   private static final String ASSET_DIR = "assets/"; // $NON-NLS-1$
   public static final String HERO_LAB = "herolab"; // $NON-NLS-1$
 
-  private static final String CAMPAIGN_VERSION = "1.4.1";
+  private static final String CAMPAIGN_VERSION = "1.8.0";
 
   // Please add a single note regarding why the campaign version number has been updated:
   // 1.3.70 ownerOnly added to model.Light (not backward compatible)
@@ -126,7 +126,7 @@ public class PersistenceUtil {
     campaignVersionManager.registerTransformation("1.3.75", new ExportInfoTransform());
     campaignVersionManager.registerTransformation(
         "1.3.78", new TokenPropertyMapTransform()); // FJE 2010-12-29
-    //campaignVersionManager.registerTransformation("1.8.0", new AreaTransform());
+    campaignVersionManager.registerTransformation("1.8.0", new AreaTransform());
 
     // For a short time, assets were stored separately in files ending with ".dat". As of 1.3.64,
     // they are

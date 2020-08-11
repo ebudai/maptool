@@ -17,7 +17,7 @@ package net.rptools.maptool.client.ui.zone.vbl;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import net.rptools.lib.geom.Area;
 import net.rptools.maptool.util.GraphicsUtil;
 import org.apache.logging.log4j.LogManager;
@@ -60,32 +60,30 @@ public class AreaTree {
 
     theArea = area;
 
-    List<AreaOcean> oceanList = new ArrayList<AreaOcean>();
-    List<AreaIsland> islandList = new ArrayList<AreaIsland>();
+    Collection<AreaOcean> oceanList = new ArrayList<>();
+    Collection<AreaIsland> islandList = new ArrayList<>();
 
     // Break the big area into independent areas
     float[] coords = new float[6];
     AreaMeta areaMeta = new AreaMeta();
     for (PathIterator iter = area.getPathIterator(null); !iter.isDone(); iter.next()) {
       int type = iter.currentSegment(coords);
+      // Holes are oceans, solids are islands
       switch (type) {
-        case PathIterator.SEG_CLOSE:
+        case PathIterator.SEG_CLOSE -> {
           areaMeta.close();
-
-          // Holes are oceans, solids are islands
           if (areaMeta.isHole()) {
             oceanList.add(new AreaOcean(areaMeta));
           } else {
             islandList.add(new AreaIsland(areaMeta));
           }
-          break;
-        case PathIterator.SEG_LINETO:
-          areaMeta.addPoint(coords[0], coords[1]);
-          break;
-        case PathIterator.SEG_MOVETO:
+        }
+        case PathIterator.SEG_LINETO -> areaMeta.addPoint(coords[0], coords[1]);
+        case PathIterator.SEG_MOVETO -> {
           areaMeta = new AreaMeta();
           areaMeta.addPoint(coords[0], coords[1]);
-          break;
+        }
+        default -> throw new IllegalStateException("Unexpected value: " + type);
       }
     }
     // Create the hierarchy
@@ -101,7 +99,7 @@ public class AreaTree {
       island.addOcean(ocean);
     }
     // Now put each island into the containing ocean
-    List<AreaIsland> globalIslandList = new ArrayList<AreaIsland>();
+    Collection<AreaIsland> globalIslandList = new ArrayList<>();
     for (AreaIsland island : islandList) {
       AreaOcean ocean = findSmallestContainer(island, oceanList);
       if (ocean == null) {
@@ -118,7 +116,7 @@ public class AreaTree {
     }
   }
 
-  private <T extends AreaContainer> T findSmallestContainer(AreaContainer item, List<T> list) {
+  private <T extends AreaContainer> T findSmallestContainer(AreaContainer item, Iterable<T> list) {
     T smallest = null;
     for (T container : list) {
       if (!GraphicsUtil.contains(container.getBounds(), item.getBounds())) {

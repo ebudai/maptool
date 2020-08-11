@@ -16,19 +16,21 @@ package net.rptools.lib.geom;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.locationtech.jts.awt.ShapeReader;
+import org.locationtech.jts.awt.ShapeWriter;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 
-public class Area extends java.awt.geom.Area implements Cloneable {
+public class Area implements Shape, Cloneable {
 
   private static final GeometryFactory FACTORY = new GeometryFactory();
 
@@ -55,7 +57,6 @@ public class Area extends java.awt.geom.Area implements Cloneable {
   }
 
   public Area(Area area) {
-    super(area);
     if (area.geometry == null) {
       //this happens when loading campaigns saved before the changeover to JTS
       area.geometry = ShapeReader.read(area.getPathIterator(null, 1), FACTORY);
@@ -68,7 +69,6 @@ public class Area extends java.awt.geom.Area implements Cloneable {
   }
 
   public Area(GeneralPath path) {
-    super(path);
     GeneralPath copy = new GeneralPath(path);
     copy.closePath();
     this.geometry = ShapeReader.read(copy.getPathIterator(null, 1), FACTORY);
@@ -76,7 +76,6 @@ public class Area extends java.awt.geom.Area implements Cloneable {
   }
 
   public Area(Shape shape) {
-    super(shape);
     this.geometry = ShapeReader.read(shape.getPathIterator(null, 1), FACTORY);
     this.geometry = validate(this.geometry);
   }
@@ -136,6 +135,20 @@ public class Area extends java.awt.geom.Area implements Cloneable {
   @Override
   public boolean contains(Rectangle2D rectangle) {
     return geometry.contains(rectangleToGeometry(rectangle));
+  }
+
+  @Override
+  public PathIterator getPathIterator(java.awt.geom.AffineTransform at) {
+    ShapeWriter writer = new ShapeWriter();
+    Shape shape = writer.toShape(this.geometry);
+    return shape.getPathIterator(at);
+  }
+
+  @Override
+  public PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) {
+    ShapeWriter writer = new ShapeWriter();
+    Shape shape = writer.toShape(this.geometry);
+    return shape.getPathIterator(at, flatness);
   }
 
   public boolean isSingular() {

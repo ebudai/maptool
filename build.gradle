@@ -110,7 +110,7 @@ javafx {
 
 run {
     args = ['-v=' + appSemVer]
-    applicationDefaultJvmArgs = ["-Xss8M", "-Dsentry.environment=Development", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor, "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED", "--add-opens=javafx.desktop/sun.awt.geom=ALL-UNNAMED"]
+    applicationDefaultJvmArgs = ["-Xss8M", "-Dsentry.environment=Development", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor, "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED"]
     // Add -Dlog4j2.debug to see log4j2 details
 
     if (System.getProperty("exec.args") != null) {
@@ -124,7 +124,7 @@ runtime {
 
     jpackage {
         installerOutputDir = file("releases")
-        jvmArgs = ["-Xss8M", "-Dsentry.environment=Production", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor.toLowerCase(), "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED", "--add-opens=javafx.desktop/sun.awt.geom=ALL-UNNAMED"]
+        jvmArgs = ["-Xss8M", "-Dsentry.environment=Production", "-Dfile.encoding=UTF-8", "-DMAPTOOL_DATADIR=.maptool-" + vendor.toLowerCase(), "-XX:+ShowCodeDetailsInExceptionMessages",  "--add-opens=javafx.web/javafx.scene.web=ALL-UNNAMED", "--add-opens=javafx.web/com.sun.webkit=ALL-UNNAMED"]
 
         imageOptions = []
         imageName = project.name + developerRelease
@@ -185,18 +185,17 @@ runtime {
     }
 }
 // In this section you declare where to find the dependencies of your project
-allprojects {
-    repositories {
-        // Use 'jcenter' for resolving your dependencies.
-        // You can declare any Maven/Ivy/file repository here.
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-        maven { url = 'http://maptool.craigs-stuff.net/repo/' }
-        maven { url = 'http://www.nerps.net/repo/' }
-        maven { url = 'https://jitpack.io' }
-    }
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url = 'http://maptool.craigs-stuff.net/repo/' }
+    maven { url = 'http://www.nerps.net/repo/' }
+    maven { url = 'https://jitpack.io' }
 }
+
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
@@ -254,6 +253,7 @@ dependencies {
     implementation 'net.java.abeille:abeille-formsrt:2.0'
     implementation 'org.hibernate:antlr:2.7.5H3'
     implementation 'org.reflections:reflections:0.9.11'
+    implementation 'com.caucho:hessian:4.0.63'
     implementation 'org.mozilla:rhino:1.7.12'
     implementation 'ca.odell.renderpack:renderpack:1.2004'
     implementation 'net.tsc.servicediscovery:servicediscovery:1.0.b5'
@@ -265,7 +265,7 @@ dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.11.1'
     implementation 'yasb:yasb:0.2-21012007'
     implementation 'de.muntjak.tinylookandfeel:tinylaf-nocp:1.4.0'
-    implementation 'com.caucho:hessian:4.0.63'
+
     implementation 'com.jayway.jsonpath:json-path:2.4.0'
 
     // For PDF image extraction
@@ -290,7 +290,7 @@ dependencies {
 
     // For some math functions used in the A* Pathfinding
     // https://locationtech.github.io/jts/jts-features.html
-    implementation group: 'org.locationtech.jts', name: 'jts-core', version: '1.17.0'	// https://mvnrepository.com/artifact/org.locationtech.jts/jts-core
+    implementation group: 'org.locationtech.jts', name: 'jts-core', version: '1.16.1'	// https://mvnrepository.com/artifact/org.locationtech.jts/jts-core
 
     // For RESTful functions
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.3.0'
